@@ -197,8 +197,11 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
     .site-nav .site-navigation .site-menu > li {
       display: inline-block; }
       .site-nav .site-navigation .site-menu > li > a {
-        font-size: 14px;
-        padding: 10px 15px;
+        position: relative;
+        top: -50px;
+        left: 200px;
+        font-size: 20px;
+        padding: 10px 20px;
         color: #000000;
         display: inline-block;
         text-decoration: none !important;
@@ -1334,3 +1337,20 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
       content: "\f095"; }
     .site-footer ul.quick-info li.address:before {
       content: "\e8b4"; }
+
+    .img-logo {
+      position: relative;
+      width: 80px;
+      left: -100px;
+      top: 5px;
+    }
+
+    .container {
+      height: 80px;
+    }
+
+    .logo.m-0 {
+      position: relative;
+      top: -70px;
+      font-size: 50px;
+    }
