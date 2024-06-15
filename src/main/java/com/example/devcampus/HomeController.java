@@ -34,4 +34,3 @@ public class HomeController {
         return "thymeleaf/mypage";
     }
 }
-
