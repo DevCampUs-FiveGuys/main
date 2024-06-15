@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 //@MapperScan("data.mapper")
-@ComponentScan({"com.example.devcampus","data.*","controller.*","data.naver.cloud"})
+@ComponentScan({"com.example.devcampus","data.*","controller.*"})
 public class DevCampUsApplication {
 
     public static void main(String[] args) {
