@@ -50,7 +50,7 @@
                     O(!0)
                 }), window.addEventListener("resize", (0, f.default)(O, 50, !0)), window.addEventListener("orientationchange", (0, f.default)(O, 50, !0)), window.addEventListener("scroll", (0, u.default)(function () {
                     (0, b.default)(w, j.once)
-                }, 99)), document.addEventListener("DOMNodeRemoved", function (e) {
+                }, 99)), document.addEventListener("DOMNodeInserted", function (e) {
                     var t = e.target;
                     t && 1 === t.nodeType && t.hasAttribute && t.hasAttribute("data-aos") && (0, f.default)(S, 50, !0)
                 }), (0, d.default)("[data-aos]", S), w)
