@@ -207,7 +207,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
         text-decoration: none !important;
         color: #000000; }
         .site-nav .site-navigation .site-menu > li > a:hover {
-          color: #009ECE; }
+          color: #387926; }
       .site-nav .site-navigation .site-menu > li.cta-button a {
         padding: 5px 22px;
         border: 1px solid rgba(0, 0, 0, 0.1);
@@ -219,8 +219,8 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
           border-color: #009ECE; }
       .site-nav .site-navigation .site-menu > li.cta-button.active a {
         color: #ffffff;
-        background: #009ECE;
-        border-color: #009ECE; }
+        background: #00C300;
+        border-color: #00C300; }
       .site-nav .site-navigation .site-menu > li.active > a {
         color: #000000; }
     .site-nav .site-navigation .site-menu .has-children {
@@ -611,7 +611,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
     right: 0;
     top: 0;
     background: black;
-    background: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
+    background: k-webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
     background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
     background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%); }
@@ -1299,7 +1299,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        background: #009ECE;
+        background: #387926;
         display: inline-block;
         position: relative;
         color: #ffffff;
