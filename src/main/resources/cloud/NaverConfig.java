@@ -1,4 +1,4 @@
-package data.naver.cloud;
+package cloud;
 
 import lombok.Getter;
 import lombok.Setter;

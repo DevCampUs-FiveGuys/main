@@ -1,4 +1,4 @@
-package data.mapper;
+package mapper;
 
 public interface MyPageMapperInter {
 }

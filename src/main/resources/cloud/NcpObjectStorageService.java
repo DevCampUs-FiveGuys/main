@@ -1,4 +1,4 @@
-package data.naver.cloud;
+package cloud;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
