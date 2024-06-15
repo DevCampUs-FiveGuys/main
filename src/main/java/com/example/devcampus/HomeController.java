@@ -9,4 +9,7 @@ public class HomeController {
     public String home() {
         return "thymeleaf/main";
     }
+
+    @GetMapping("/portfolio")
+    public String portfolio() { return "portfolio/list"; }
 }
