@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+  <div class="container">
+    <h2>마이페이지</h2>
+    <div class="main-content">
+      <nav class="sidebar">
+        <ul>
+          <li><a href="#">출석현황</a></li>
+          <li><a href="#">찜목록</a></li>
+          <li><a href="#">게시글</a></li>
+          <li><a href="#">정보수정</a></li>
+          <li><a href="#">학생승인</a></li>
+        </ul>
+      </nav>
+      <div class="content">
+        <div class="calendar">
+          <!-- Calendar content -->
+          <div>
+            <h3>2024년 6월</h3>
+            <!-- Calendar grid will go here -->
+          </div>
+        </div>
+        <div class="attendance-summary">
+          <h3>나의 출결</h3>
+          <ul>
+            <li>출석: <span>1</span></li>
+            <li>지각: <span>1</span></li>
+            <li>결석: <span>1</span></li>
+            <li>휴가: <span>1</span></li>
+            <li>병가: <span>1</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</html>
