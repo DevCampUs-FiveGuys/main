@@ -33,7 +33,4 @@ public class HomeController {
     public String mypage() {
         return "thymeleaf/mypage";
     }
-
-    @GetMapping("/portfolio")
-    public String portfolio() { return "portfolio/list"; }
 }
