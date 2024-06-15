@@ -7,6 +7,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     @GetMapping("/")
     public String home() {
-        return "thymeleaf/main";
+        return "main";
+    }
+    @GetMapping("/signup")
+    public String signup() {
+        return "thymeleaf/signup";
+    }
+    @GetMapping("/login")
+    public String login() {
+        return "thymeleaf/login";
+    }
+    @GetMapping("/review")
+    public String review() {
+        return "thymeleaf/review";
+    }
+    @GetMapping("/portfolio")
+    public String portfolio() {
+        return "thymeleaf/portfolio";
+    }
+    @GetMapping("/qna")
+    public String qna() {
+        return "thymeleaf/qna";
+    }
+    @GetMapping("/mypage")
+    public String mypage() {
+        return "thymeleaf/mypage";
     }
 }
