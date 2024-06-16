@@ -8,12 +8,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class QnaListController {
 
     @NonNull
     private QnaService qnaService;
+
+    @GetMapping("/qna/list")
+    public String qnalist(
+            Model model
+    ) {
+       int qnatotalCount=qnaService.getQnaTotalCount();
+        List<QnaDto> qnalist=qnaService.getAllQnaList();
+
+        model.addAttribute("qnalist", qnalist);
+        model.addAttribute("qnatotalCount", qnatotalCount);
+
+        return "thymeleaf/qnalist";
+    }
 
     @GetMapping("/qna/write")
     public String qnawrite() {
@@ -27,7 +42,7 @@ public class QnaListController {
     {
         qnaService.insertQna(qnadto);
 
-        return "thymeleaf/qna";
+        return "qnalist";
     }
 
     @GetMapping("/qna/updateform")
@@ -47,7 +62,7 @@ public class QnaListController {
             @ModelAttribute QnaDto qnadto
     ){
         qnaService.updateQna(qnadto);
-        return "thymeleaf/qna";
+        return "qnalist";
     }
 
     @GetMapping("/qna/delete")

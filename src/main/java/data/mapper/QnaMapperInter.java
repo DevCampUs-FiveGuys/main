@@ -18,7 +18,7 @@ public interface QnaMapperInter {
     @Select("select count(*) from qna")
     public int getQnaTotalCount();
 
-    @Select("select * from qna order by qna_id desc")
+    @Select("select * from qna order by qna_id asc")
     public List<QnaDto> getAllQnaList();
 
     @Select("select * from qna where qna_id=#{qna_id}")

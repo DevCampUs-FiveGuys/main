@@ -114,7 +114,7 @@
     }
 }
 
-button:focus {
+.btn-12:focus {
     outline: none;
     border: none;
 }

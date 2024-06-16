@@ -25,10 +25,10 @@ public class HomeController {
     public String portfolio() {
         return "thymeleaf/portfolio";
     }
-    @GetMapping("/qna")
-    public String qna() {
-        return "thymeleaf/qna";
-    }
+//    @GetMapping("/qna")
+//    public String qna() {
+//        return "thymeleaf/qna";
+//    }
     @GetMapping("/mypage")
     public String mypage() {
         return "thymeleaf/mypage";
