@@ -1,12 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+      layout:decorate="~{/layouts/layout}">
 
 <div layout:fragment="content">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-3">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a th:href="@{/student_mypage/attendance}"><i class="icon icon-attendance"></i> 출석현황</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student_mypage/portfolio_favorites}"><i class="icon icon-heart"></i> 찜목록</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student_mypage/portfolio_posts}"><i class="icon icon-file-text"></i> 게시글</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student_mypage/updateProfile}"><i class="icon icon-edit"></i> 정보수정</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
                 <h2>정보수정</h2>
                 <p>여기에 정보수정 내용을 추가하세요.</p>
             </div>
