@@ -41,6 +41,25 @@ body {
 .bg-secondary-light {
   background-color: rgba(0, 158, 206, 0.05); }
 
+/* 마이페이지 아이콘 (승필) */
+.icon {
+  font-family: 'icomoon';
+  font-size: 18px;
+  margin-right: 10px;
+}
+.icon-attendance:before {
+  content: "\e5ca";
+}
+.icon-heart:before {
+  content: "\e87d";
+}
+.icon-file-text:before {
+  content: "\e873";
+}
+.icon-edit:before {
+  content: "\e254";
+}
+
 a {
   color: #009ECE;
   -webkit-transition: .3s all ease;
