@@ -2,7 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/portfolio.css}">
+</head>
 <div layout:fragment="content">
+    <h1 class="portfolio_write_h1">PortFolio Write</h1>
     <div class="portfolio_write">
     <form th:action="@{/portfolio/insert}" method="post" enctype="multipart/form-data">
         <div class="title">
@@ -11,7 +15,7 @@
         </div>
         <div class="description">
             <label class="text-black" for="message">내용</label>
-            <textarea name="" class="form-control" id="message" cols="30" rows="5"></textarea>
+            <textarea class="form-control" id="message" cols="30" rows="17"></textarea>
         </div>
         <div class="portfolio_file">
             <button type="submit">파일첨부</button>

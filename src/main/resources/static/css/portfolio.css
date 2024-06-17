@@ -1437,3 +1437,33 @@ body {
 .course-details .date {
   color: #777;
 }
+
+/* portfolio css */
+.portfolio_write {
+  position: relative;
+  left: 700px;
+  height: 800px;
+  top: 65px;
+}
+
+.portfolio_file {
+  position: relative;
+  top: -20px;
+}
+
+.title {
+  width: 500px;
+}
+
+.description {
+  width: 500px;
+  height: 500px;
+}
+
+.portfolio_write_h1 {
+  text-align: center;
+}
+
+.portfolio_h1 {
+  text-align: center;
+}
