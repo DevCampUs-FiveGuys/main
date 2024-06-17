@@ -3,6 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 
+<head>
+    <link rel="stylesheet" th:href="@{/css/review.css}">
+</head>
+
 <div layout:fragment="content">
 
     <script type="text/javascript">
@@ -12,7 +16,7 @@
             let selectedCourseName = CourseNameSelect.value;
 
             let courseNums = {
-                "클라우드 기반 웹 개발자 데브옵스": ["10기", "11기", "12기","13기"],
+                "클라우드 기반 웹 개발자 데브옵스": ["10기", "11기", "12기", "13기"],
                 "클라우드 기반 웹 AlaaS": ["1기", "2기", "3기", "4기"],
                 "클라우드 기반 자바 풀스택": ["8기", "9기", "10기"]
             };
@@ -31,7 +35,6 @@
             }
         }
     </script>
-
     <!-- 제목 -->
     <div class="untree_co-section">
         <div class="container">
@@ -50,15 +53,17 @@
             <!--    top-1 : 과정명, 기수 검색 -->
             <div class="row justify-content-center mb-5 text-center">
                 <div class="col-lg-6">
-                <p>과정명과 기수를 선택하여 후기를 볼 수 있어요!</p>
+                    <p>과정명과 기수를 선택하여 후기를 볼 수 있어요!</p>
                     <div>
-                        <select id="courseName" onchange="chooseCourse()" class="course-select" style="width: 250px; height: 25px; margin-right: 20px; border-radius: 20px;">
+                        <select id="courseName" onchange="chooseCourse()" class="course-select"
+                                style="width: 250px; height: 25px; margin-right: 20px; border-radius: 20px;">
                             <option selected class="course-selected" style="align-content: center">과정을 선택해주세요</option>
                             <option value="클라우드 기반 웹 개발자 데브옵스">클라우드 기반 웹 개발자 데브옵스</option>
                             <option value="클라우드 기반 웹 AlaaS">클라우드 기반 웹 AlaaS</option>
                             <option value="클라우드 기반 자바 풀스택">클라우드 기반 자바 풀스택</option>
                         </select>
-                        <select id="courseNum" class="course-select" style="width: 200px; height: 25px; border-radius: 20px;">
+                        <select id="courseNum" class="course-select"
+                                style="width: 200px; height: 25px; border-radius: 20px;">
                             <option selected class="course-selected">기수를 선택해주세요</option>
                         </select>
                     </div>
@@ -99,76 +104,83 @@
 
                     <div style="height: 70px; gap: 5px; font-size: 40px">
                         <!-- 별점을 표시할 영역 -->
-                        <i class="icon-star bi bi-star" data-value="1"></i>
-                        <i class="icon-star bi bi-star" data-value="2"></i>
-                        <i class="icon-star bi bi-star" data-value="3"></i>
-                        <i class="icon-star bi bi-star" data-value="4"></i>
-                        <i class="icon-star bi bi-star" data-value="5"></i>
+                        <fieldset class="rate" onchange="updateStarValue()">
+                            <input type="radio" id="rating10" name="rating" value="5.0"><label for="rating10" title="5점"></label>
+                            <input type="radio" id="rating9" name="rating" value="4.5"><label class="half" for="rating9" title="4.5점"></label>
+                            <input type="radio" id="rating8" name="rating" value="4.0"><label for="rating8" title="4점"></label>
+                            <input type="radio" id="rating7" name="rating" value="3.5"><label class="half" for="rating7" title="3.5점"></label>
+                            <input type="radio" id="rating6" name="rating" value="3.0"><label for="rating6" title="3점"></label>
+                            <input type="radio" id="rating5" name="rating" value="2.5"><label class="half" for="rating5" title="2.5점"></label>
+                            <input type="radio" id="rating4" name="rating" value="2.0"><label for="rating4" title="2점"></label>
+                            <input type="radio" id="rating3" name="rating" value="1.5"><label class="half" for="rating3" title="1.5점"></label>
+                            <input type="radio" id="rating2" name="rating" value="1.0"><label for="rating2" title="1점"></label>
+                            <input type="radio" id="rating1" name="rating" value="0.5"><label class="half" for="rating1" title="0.5점"></label>
+                        </fieldset>
                     </div>
-                    <div style="display: flex">
-                        <input type="text" class="form-control" required="required" placeholder="후기 입력" style="float:left; width: 80%;">
-<!--                        <textarea class="form-control" placeholder="후기 입력" style="width: 80%;border: 1px solid gray"></textarea>-->
-                        <button type="submit" class="btn btn-primary" style="margin: auto">등록</button>
-                    </div>
+<!--                    <input type="hidden" id="rating" name="rating" value="0">-->
+
+                    <form th:action="@{/review/insert}" method="get" th:object="${reviewDto}">
+                        <div style="display: flex">
+                            <input type="text" class="form-control" th:field="*{content}" required="required"
+                                   placeholder="후기 입력" style="float:left; width: 80%;">
+                            <!--                        <textarea class="form-control" placeholder="후기 입력" style="width: 80%;border: 1px solid gray"></textarea>-->
+                            <input type="hidden" id="star" name="star" th:field="*{star}">
+                            <button type="submit" class="btn btn-primary" style="margin: auto">등록</button>
+                        </div>
+                    </form>
+                    <script>
+                        function updateStarValue() {
+                            let selectedRating = document.querySelector('input[name="rating"]:checked').value;
+                            if (selectedRating) {
+                                document.getElementById('star').value = selectedRating;
+                            }
+                        }
+                    </script>
                 </div>
             </div>
         </div>
     </div>
-
     <!--    입력된 후기 목록 -->
-    <div style="padding-bottom: 50px">
-    <div class="reviews" style="display: flex; padding-top: 30px;">
+    <div class="reviews" style="display: flex; padding-top: 30px" th:each="reviewlist : ${reviewlist}">
         <div style="margin: auto; width: 700px; height: 200px; border: 1px solid darkgray; padding: 20px;">
             <div style="display: flex; justify-content: space-between;">
                 <div style="display: flex; gap: 10px; align-items: center">
                     <div class="review-name" style="font-size: 15px; color: black;">박민지</div>
-                    <div class="review-start" style="display: flex; gap: 2px;">
-                        <i class="icon-star"></i>
-                        <i class="icon-star-o"></i>
-                        <i class="icon-star-o"></i>
-                        <i class="icon-star-o"></i>
-                        <i class="icon-star-o"></i>
-                    </div>
-                    <div class="review-gender">남자</div>
-                </div>
-                <div class="review-like" style="display: flex; align-items: center; gap: 5px;">
-                    <i class="icon-heart"></i> 좋아요
-                </div>
-            </div>
-            <div class="review-content" style="color: black; padding-top: 15px; height: 100px">수업이 재밌어요</div>
-            <div style="display: flex; justify-content: space-between; align-items: center">
-                <div class="review-writetime" style="font-size: 15px; color: gray;">2024-06-13 11:22</div>
-                <span class="icon-delete" style="font-size: 30px"></span>
-            </div>
-        </div>
-    </div>
 
-    <!--    입력된 후기 목록 -->
-    <div class="reviews" style="display: flex; padding-top: 30px">
-        <div style="margin: auto; width: 700px; height: 200px; border: 1px solid darkgray; padding: 20px;">
-            <div style="display: flex; justify-content: space-between;">
-                <div style="display: flex; gap: 10px; align-items: center">
-                    <div class="review-name" style="font-size: 15px; color: black;">박민지</div>
                     <div class="review-start" style="display: flex; gap: 2px">
-                        <i class="icon-star"></i>
-                        <i class="icon-star-o"></i>
-                        <i class="icon-star-o"></i>
-                        <i class="icon-star-o"></i>
-                        <i class="icon-star-o"></i>
+
                     </div>
+                    <span th:text="${reviewlist.star}"></span>
+                    <fieldset class="rate2">
+                        <input type="radio" id="rating15" name="rating" value="5.0" th:checked="${reviewlist.star == 5.0}">
+                        <label for="rating5" title="5점"></label>
+                        <input type="radio" id="rating14" name="rating" value="4.0" th:checked="${reviewlist.star == 4.0}">
+                        <label for="rating4" title="4점"></label>
+                        <input type="radio" id="rating13" name="rating" value="3.0" th:checked="${reviewlist.star == 3.0}">
+                        <label for="rating3" title="3점"></label>
+                        <input type="radio" id="rating12" name="rating" value="2.0" th:checked="${reviewlist.star == 2.0}">
+                        <label for="rating2" title="2점"></label>
+                        <input type="radio" id="rating11" name="rating" value="1.0" th:checked="${reviewlist.star == 1.0}">
+                        <label for="rating1" title="1점"></label>
+                    </fieldset>
+                    <div id="star-container"></div>
+
                     <div class="review-gender">남자</div>
                 </div>
-                <div class="review-like" style="display: flex; align-items: center; gap: 5px;">
-                    <i class="icon-heart"></i> 좋아요
+                    <i class="icon-heart"> 좋아요</i>
                 </div>
-            </div>
-            <div class="review-content" style="color: black; padding-top: 15px; height: 100px">수업이 재밌어요</div>
+            <div class="review-content" th:text="${reviewlist.content}"
+                 style="color: black; padding-top: 15px; height: 100px"></div>
             <div style="display: flex; justify-content: space-between; align-items: center">
-                <div class="review-writetime" style="font-size: 15px; color: gray;">2024-06-13 11:22</div>
-                <span class="icon-delete" style="font-size: 30px"></span>
+                <div class="review-writetime" th:text="${#dates.format(reviewlist.created_at, 'yyyy-MM-dd')}"
+                     style="font-size: 15px; color: gray;"></div>
+                <a th:href="@{/review/delete(review_id=${reviewlist.review_id})}">
+                    <i class="icon-delete" style="font-size: 30px"></i>
+                </a>
             </div>
+            </div>
+
         </div>
-    </div>
     </div>
 </div> <!-- layout:fragment = content-->
 
