@@ -7,13 +7,13 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <form th:action="@{/qna/save}" method="post" th:object="${qna}">
+    <form th:action="@{/qna/insert}" method="get" th:object="${qnadto}">
     <table>
         <tr><td><h2>FAQ작성</h2></td></tr>
         <tr><td class="header">Title</td></tr>
-        <tr><td><input type="text" placeholder="제목을 입력하세요" name="title"></td></tr>
+        <tr><td><input type="text" placeholder="제목을 입력하세요" th:field="*{title}" name="title"></td></tr>
         <tr><td class="header">Comment</td></tr>
-        <tr><td><textarea placeholder="내용을 입력하세요" name="detail"></textarea></td></tr>
+        <tr><td><textarea placeholder="내용을 입력하세요" th:field="*{content}" name="detail"></textarea></td></tr>
         <tr><td><input type="submit" value="등록" onclick="alert('작성 완료!')"></td></tr>
     </table>
     </form>

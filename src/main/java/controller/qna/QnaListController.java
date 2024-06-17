@@ -31,7 +31,11 @@ public class QnaListController {
     }
 
     @GetMapping("/qna/write")
-    public String qnawrite() {
+    public String qnawrite(Model model) {
+
+        QnaDto qnadto=new QnaDto();
+        model.addAttribute("qnadto",qnadto);
+
         return "thymeleaf/qnawrite";
     }
 
@@ -42,7 +46,7 @@ public class QnaListController {
     {
         qnaService.insertQna(qnadto);
 
-        return "qnalist";
+        return "redirect:/qna/list";
     }
 
     @GetMapping("/qna/updateform")
@@ -71,7 +75,7 @@ public class QnaListController {
     ){
         qnaService.deleteQna(qna_id);
 
-        return "thymeleaf/qnadelete";
+        return "redirect:/qna/list";
     }
 
 }
