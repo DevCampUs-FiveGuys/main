@@ -33,4 +33,13 @@ public class HomeController {
     public String student_mypage() {
         return "thymeleaf/student/student_mypage";
     }
+    @GetMapping("/portfolioDetail")
+    public String portfolioDetail() {
+        return "thymeleaf/portfolioDetail";
+    }
+
+    @GetMapping("/portfolio/portfolioWrite")
+    public String portfolioWrite() {
+        return "thymeleaf/portfolioWrite";
+    }
 }
