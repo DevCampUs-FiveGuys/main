@@ -29,8 +29,8 @@ public class HomeController {
     public String qna() {
         return "thymeleaf/qna";
     }
-    @GetMapping("/mypage")
-    public String mypage() {
-        return "thymeleaf/mypage";
+    @GetMapping("/student_mypage")
+    public String student_mypage() {
+        return "thymeleaf/student/student_mypage";
     }
 }

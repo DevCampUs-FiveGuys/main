@@ -60,6 +60,29 @@ body {
   content: "\e254";
 }
 
+/* 출석현황 캘린더 및 버튼 (승필) */
+.attendance-buttons {
+  margin-bottom: 20px;
+}
+
+.attendance-buttons button {
+  margin-right: 10px;
+}
+
+.attendance-summary {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.attendance-summary div {
+  font-size: 16px;
+  font-weight: bold;
+}
+
 a {
   color: #009ECE;
   -webkit-transition: .3s all ease;
