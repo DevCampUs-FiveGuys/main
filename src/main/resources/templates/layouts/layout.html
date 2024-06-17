@@ -8,6 +8,9 @@
     <!-- js, css -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
           rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css'
+          rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
@@ -18,13 +21,11 @@
     <link rel="stylesheet" th:href="@{/css/aos.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage_icon.css}">
+    <link rel="stylesheet" th:href="@{/css/attendance.css}">
 
     <th:block layout:fragment="script"></th:block>
     <th:block layout:fragment="css"></th:block>
-
-    <!-- 캘린더 API 추가 (승필) -->
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
 </head>
 <body>
 <div th:replace="~{/fragments/header::header}"></div>
@@ -43,7 +44,7 @@
 <script th:src="@{/js/jarallax.min.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script th:src="@{/js/custom.js}"></script>
-<script th:src="@{/js/attendance.js}"></script> <!-- 출석현황 및 휴가신청 추가 (승필) -->
+<script th:src="@{/js/attendance.js}"></script>
 <script th:src="@{/js/qnaupdate.js}"></script>
 </body>
 </html>
