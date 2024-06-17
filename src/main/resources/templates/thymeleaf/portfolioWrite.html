@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<div layout:fragment="content">
+    <div class="portfolio_write">
+    <form th:action="@{/portfolio/insert}" method="post" enctype="multipart/form-data">
+        <div class="title">
+            <label class="text-black">제목</label>
+            <input type="text" class="form-control" id="tile">
+        </div>
+        <div class="description">
+            <label class="text-black" for="message">내용</label>
+            <textarea name="" class="form-control" id="message" cols="30" rows="5"></textarea>
+        </div>
+        <div class="portfolio_file">
+            <button type="submit">파일첨부</button>
+        </div>
+        <tr>
+            <td colspan="2" th:align="center">
+                <button type="submit" class="btn btn-primary">저장</button>
+                <button type="button" class="btn btn-danger" onclick="history.back()">이전</button>
+            </td>
+        </tr>
+    </form>
+    </div>
+</div>
+</html>

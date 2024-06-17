@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a th:href="@{/student_mypage/attendance}"><i class="icon icon-attendance"></i> 출석현황</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student_mypage/portfolio_favorites}"><i class="icon icon-heart"></i> 찜목록</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student_mypage/portfolio_posts}"><i class="icon icon-file-text"></i> 게시글</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student_mypage/updateProfile}"><i class="icon icon-edit"></i> 정보수정</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <h2>출석현황</h2>
+                <div class="attendance-buttons">
+                    <button id="check-in-btn" class="btn btn-primary">입실</button>
+                    <button id="check-out-btn" class="btn btn-primary">퇴실</button>
+                    <button id="vacation-btn" class="btn btn-primary" data-toggle="modal" data-target="#vacationModal">휴가신청</button>
+                </div>
+                <div id="calendar"></div>
+                <div class="attendance-summary">
+                    <div>출석: <span id="attendance-count">1</span></div>
+                    <div>지각: <span id="late-count">1</span></div>
+                    <div>결석: <span id="absent-count">1</span></div>
+                    <div>휴가: <span id="vacation-count">1</span></div>
+                    <div>병가: <span id="sick-leave-count">1</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="vacationModal" tabindex="-1" aria-labelledby="vacationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="vacationModalLabel">휴가 신청</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="vacation-form">
+                        <div class="form-group">
+                            <label for="vacation-date">날짜</label>
+                            <input type="date" class="form-control" id="vacation-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="vacation-reason">사유</label>
+                            <textarea class="form-control" id="vacation-reason" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">신청</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
