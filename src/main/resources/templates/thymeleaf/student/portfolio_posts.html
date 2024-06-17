@@ -3,11 +3,16 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 
+<head>
+    <link rel="stylesheet" th:href="@{/css/student_mypage.css}">
+</head>
+
+<body>
 <div layout:fragment="content">
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <ul class="list-group">
+                <ul class="list-group mt-4">
                     <li class="list-group-item">
                         <a th:href="@{/student_mypage/attendance}"><i class="icon icon-attendance"></i> 출석현황</a>
                     </li>
@@ -23,10 +28,11 @@
                 </ul>
             </div>
             <div class="col-md-9">
-                <h2>게시글</h2>
+                <h2 class="text-center my-4">게시글</h2>
                 <p>여기에 게시글 내용을 추가하세요.</p>
             </div>
         </div>
     </div>
 </div>
+</body>
 </html>
