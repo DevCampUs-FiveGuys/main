@@ -56,7 +56,11 @@
                      data-parent="#accordion">
                   <div class="card-body">
                     <p th:text="${qna.content}"></p>
-                    <a th:href="@{/qna/delete(qna_id=${qna.qna_id})}">글삭제</a>
+                    <div class="btn-set">
+                      <a th:href="@{/qna/updateform(qna_id=${qna.qna_id})}">수정</a>
+                      <p class="seperate">|</p>
+                      <a th:href="@{/qna/delete(qna_id=${qna.qna_id})}">삭제</a>
+                    </div>
                   </div>
                 </div>
               </div>

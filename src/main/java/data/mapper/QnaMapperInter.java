@@ -24,7 +24,7 @@ public interface QnaMapperInter {
     @Select("select * from qna where qna_id=#{qna_id}")
     public QnaDto getQnaData(int qna_id);
 
-    @Update("update qna set title=#{title},content=#{content},update_at=#{now()} where qna_id=#{qna_id}")
+    @Update("update qna set title=#{title},content=#{content},updated_at=NOW() where qna_id=#{qna_id}")
     public void updateQna(QnaDto qnadto);
 
     @Delete("delete from qna where qna_id=#{qna_id}")

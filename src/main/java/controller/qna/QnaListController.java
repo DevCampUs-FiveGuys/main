@@ -66,7 +66,7 @@ public class QnaListController {
             @ModelAttribute QnaDto qnadto
     ){
         qnaService.updateQna(qnadto);
-        return "qnalist";
+        return "redirect:/qna/list";
     }
 
     @GetMapping("/qna/delete")
