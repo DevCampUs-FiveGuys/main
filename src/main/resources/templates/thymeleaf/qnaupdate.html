@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/qnaupdate.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <table>
+        <tr><td><h2>FAQ수정</h2></td></tr>
+        <tr><td class="header">Title</td></tr>
+        <tr><td><input type="text" placeholder="제목을 입력하세요" name="title" th:value="${qna.title}"></td></tr>
+        <tr><td class="header">Comment</td></tr>
+        <tr><td><textarea placeholder="내용을 입력하세요" name="detail" th:text="${qna.content}"></textarea></td></tr>
+        <tr><td><input type="submit" value="등록" onclick="alert('작성 완료!')"></td></tr>
+    </table>
+</div>
+</body>
+</html>
