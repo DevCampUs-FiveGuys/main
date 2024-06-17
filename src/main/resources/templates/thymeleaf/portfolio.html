@@ -6,32 +6,6 @@
     <link rel="stylesheet" th:href="@{/css/portfolio.css}">
 </head>
 <div layout:fragment="content">
-    <h1 class="portfolio_h1">PortFolio</h1>
-    <div class="container">
-        <div class="filters">
-            <button class="active">전체</button>
-            <button>강남센터</button>
-            <button>N캠프_Devops</button>
-            <button>AI WeekKlasse</button>
-            <button>N캠프_AlaaS</button>
-            <button>씨아카데미</button>
-            <button>AWS캠프</button>
-            <button th:onclick="|location.href='@{/portfolio/portfolioWrite}'|">글쓰기</button>
-        </div>
-
-        <div class="course-list">
-            <div class="course">
-                <img th:src="@{images/devops.png}" style="width: 300px; height: 170px" th:onclick="|location.href='@{/portfolioDetail}'|"
-                        alt="네이버클라우드캠프 15기"/>
-                <div class="course-details">
-                    <p class="title" th:onclick="|location.href='@{/portfolioDetail}'|">
-                        [강남센터] [N캠프] 클라우드 기반 웹 개발자 & 데브옵스 과정_15기
-                    </p>
-                    <p class="date">개강일: 2024-07-02</p>
-                    <p class="date">교육기간: 2024-07-02 ~ 2025-01-08</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    포트폴리오가 들어갈 자리 입니다.
 </div>
 </html>
