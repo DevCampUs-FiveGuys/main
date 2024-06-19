@@ -34,6 +34,6 @@ public interface QnaMapperInter {
 
     //후기 삭제 기능 : 메인 페이지에서 선택한 후기의 삭제 버튼 클릭 하면 선택한 후기의 qna_id와 같은 qna_id를 qna DB에서 찾아서 데이터 삭제함
     @Delete("delete from qna where qna_id=#{qna_id}")
-    public int deleteQna(int qna_id);
+    public void deleteQna(int qna_id);
 
 }
