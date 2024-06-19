@@ -18,8 +18,14 @@ public interface ReviewMapperInter {
     @Select("select * from review where review_id=#{review_id}")
     public ReviewDto getReiewData(int review_id);
     @Delete("delete from review where review_id=#{review_id}")
-    public int deleteReview(int review_id);
+    public void deleteReview(int review_id);
     @Select ("select round(avg(star),1) from review")
     public  double getAvgStar();
+
+
+//    @Select("select `like` from review where review_id=#{review_id}")
+//    public int getLikeCount(int review_id);
+
+//    @Select("selec")
 
 }

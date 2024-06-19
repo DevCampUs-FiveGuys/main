@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReviewService {
@@ -21,11 +20,14 @@ public class ReviewService {
     public List<ReviewDto> getAllReview(){
         return reviewMapperInter.getAllReview();
     }
-    public int deleteReview(int review_id) {
-        return reviewMapperInter.deleteReview(review_id);
+    public void deleteReview(int review_id) {
+        reviewMapperInter.deleteReview(review_id);
     }
     public  double getAvgStar() {
         return reviewMapperInter.getAvgStar();
     }
+//    public int getLikeCount(int review_id) {
+//        return reviewMapperInter.getLikeCount(review_id);
+//    }
 
 }
