@@ -1,4 +1,5 @@
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+/* 평점 카운팅 */
 .rate { display: inline-block;border: 0;margin-right: 15px;}
 .rate > input {display: none;}
 .rate > label {float: right;color: #ddd}
@@ -51,4 +52,78 @@
 .area_bar_in {
     background-color: red;
 }
-
+.rating-avg-title {
+    padding-bottom: 20px;
+    font-weight: bold;
+}
+.rating-avg {
+    color: #d9d9dc;
+    font-weight: bold;
+    margin: 0
+}
+.rating-percentage-title {
+    display: block;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.rating-percentage{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.choose-rate-title{
+    padding-top: 50px;
+    color: black
+}
+.choose-rate-box {
+    height: 70px;
+    gap: 5px;
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+.reviews{
+    display: flex;
+    padding-top: 30px;
+}
+.reviews-box {
+    margin: auto;
+    width: 700px;
+    height: 200px;
+    border: 1px solid darkgray;
+    padding: 20px;
+}
+.reviews-box-1 {
+    display: flex;
+    justify-content: space-between;
+}
+.reviews-box-2 {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.review-name {
+    font-size: 15px;
+    color: black;"
+}
+.review-content {
+    color: black;
+    padding-top: 15px;
+    height: 100px;
+}
+.reviews-box-3{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.review-writetime {
+    font-size: 15px;
+    color: gray;
+}
+.icon-delete {
+    font-size: 25px;
+    color: gray;
+}
+.icon-heart{
+    color: red;
+}
