@@ -5,6 +5,8 @@ import data.mapper.MyPageMapperInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MyPageService {
 
@@ -21,5 +23,21 @@ public class MyPageService {
 
     public void applyVacation(MyPageDto dto) {
         mapper.insertVacation(dto);
+    }
+
+    public List<MyPageDto> getAttendancesByMemberId(int memberId) {
+        return mapper.getAttendancesByMemberId(memberId);
+    }
+
+    public List<MyPageDto> getVacationsByMemberId(int memberId) {
+        return mapper.getVacationsByMemberId(memberId);
+    }
+
+    public void deleteAttendance(int attendanceId) {
+        mapper.deleteAttendance(attendanceId);
+    }
+
+    public void deleteVacation(int vacationId) {
+        mapper.deleteVacation(vacationId);
     }
 }

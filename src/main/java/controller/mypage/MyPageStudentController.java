@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 public class MyPageStudentController {
     @Autowired
@@ -38,6 +40,26 @@ public class MyPageStudentController {
     public String applyVacation(@RequestBody MyPageDto dto) {
         myPageService.applyVacation(dto);
         return "휴가 신청이 성공적으로 처리되었습니다.";
+    }
+
+    @GetMapping("/student_mypage/attendance/events")
+    @ResponseBody
+    public List<MyPageDto> getEvents(int memberId) {
+        List<MyPageDto> attendances = myPageService.getAttendancesByMemberId(memberId);
+        List<MyPageDto> vacations = myPageService.getVacationsByMemberId(memberId);
+        attendances.addAll(vacations);
+        return attendances;
+    }
+
+    @PostMapping("/student_mypage/attendance/delete")
+    @ResponseBody
+    public String deleteEvent(@RequestBody MyPageDto dto) {
+        if (dto.getAttendanceId() != 0) {
+            myPageService.deleteAttendance(dto.getAttendanceId());
+        } else if (dto.getVacationId() != 0) {
+            myPageService.deleteVacation(dto.getVacationId());
+        }
+        return "삭제가 성공적으로 처리되었습니다.";
     }
 
     @GetMapping("/student_mypage/portfolio_favorites")

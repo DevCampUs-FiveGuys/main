@@ -18,4 +18,19 @@
         VALUES (#{date}, #{reason}, #{confirm}, #{memberId})
     </insert>
 
+    <select id="getAttendancesByMemberId" resultType="data.dto.MyPageDto">
+        SELECT * FROM attendance WHERE member_id = #{memberId}
+    </select>
+
+    <select id="getVacationsByMemberId" resultType="data.dto.MyPageDto">
+        SELECT * FROM vacation WHERE member_id = #{memberId}
+    </select>
+
+    <delete id="deleteAttendance">
+        DELETE FROM attendance WHERE attendance_id = #{attendanceId}
+    </delete>
+
+    <delete id="deleteVacation">
+        DELETE FROM vacation WHERE vacation_id = #{vacationId}
+    </delete>
 </mapper>
