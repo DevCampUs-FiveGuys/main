@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface MemberMapperInter {
     public void insertMember(MemberDto memberDto);
     public int checkID(String email);
+    public MemberDto findByUsername(String email);
 }

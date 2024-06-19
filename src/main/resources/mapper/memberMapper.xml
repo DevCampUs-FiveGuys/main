@@ -8,4 +8,7 @@
     <select id="checkID" parameterType="String" resultType="int">
         select count(*) from member where email = #{email}
     </select>
+    <select id="findByUsername" resultType="MemberDto">
+        select * from member where email = #{email}
+    </select>
 </mapper>
