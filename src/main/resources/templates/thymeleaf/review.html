@@ -12,7 +12,7 @@
 
     <script type="text/javascript">
 
-<!--        과정명 & 기수 select -->
+        <!--        과정명 & 기수 select -->
         function chooseCourse() {
             let CourseNameSelect = document.getElementById("courseName");
             let CourseNumSelect = document.getElementById("courseNum");
@@ -37,13 +37,67 @@
                 }
             }
         }
-        function addLike(){
-            const pushHeartBtn = document.querySelector(".icon-heart");
-            pushHeartBtn.style.color = 'red';
+
+        function updateStarValue() {
+            let selectedRating = document.querySelector('input[name="rating"]:checked').value;
+            if (selectedRating) {
+                document.getElementById('star').value = selectedRating;
+            }
         }
 
 
+        function clickLike(element, review_id) {
+            if (element.style.color === 'red') {
+                element.style.color = 'black';
+            } else {
+                element.style.color = 'red';
+            }
 
+            // 좋아요 카운트 증가/감소
+            const likeCountSpan = element.nextElementSibling.nextElementSibling;
+            let likeCount = parseInt(likeCountSpan.textContent);
+            if (element.style.color === 'red') {
+                likeCount++;
+            } else {
+                likeCount--;
+            }
+            likeCountSpan.textContent = likeCount;
+
+            // AJAX 요청을 통해 서버에 좋아요 업데이트
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `/update-like/${review_id}`, true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Like updated successfully!");
+                } else if (xhr.readyState === 4) {
+                    console.error("Error updating like.");
+                }
+            };
+            xhr.send(JSON.stringify({likeCount: likeCount}));
+        }
+
+        <!-- 하트 누르면 빨간색 하트로 변하는 click event -->
+        function clickLike(element, review_id) {
+            // element.style.color='red';
+            const likeCountSpan = element.nextElementSibling.nextElementSibling;
+            let likeCount = parseInt(likeCountSpan.textContent);
+            likeCount++;
+            likeCountSpan.textContent = likeCount;
+
+            //     ajax 요청 통해 서버에 좋아요 없데이트
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `/update-like/${review_id}`, true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Like updated successfully!")
+                } else if (xhr.readyState === 4) {
+                    console.log("Error updating like");
+                }
+            };
+            xhr.send(JSON.stringify({likeCount: likeCount}));
+        }
 
     </script>
     <!-- 제목 -->
@@ -83,13 +137,14 @@
             </div>
 
             <!--      top-2 : 평점 &  비율 & 성별      -->
-            <div class="row align-items-stretch" >
+            <div class="row align-items-stretch">
                 <div class="col-md-6 col-lg-4">
                     <div class="untree_co-testimonial h-100" style="text-align: center">
-<!--                        <span class="quote" style="display: block">평점</span>-->
+                        <!--                        <span class="quote" style="display: block">평점</span>-->
                         <div class="averageRating">
                             <h5 style="padding-bottom: 20px; font-weight: bold">수강생 평점</h5>
-                            <h2 style="color: #d9d9dc; font-weight: bold; margin: 0"> <span th:text="${reviewAvg}" style="color: black; font-weight:bold"></span> / 5.0</h2>
+                            <h2 style="color: #d9d9dc; font-weight: bold; margin: 0"><span th:text="${reviewAvg}" style="color: black; font-weight:bold"></span>
+                                / 5.0</h2>
                             <fieldset class="rate3">
                                 <input type="radio" value="5.0" th:checked="${reviewAvg <= 5.0 && reviewAvg > 4.5}">
                                 <label title="5점"></label>
@@ -119,12 +174,14 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="untree_co-testimonial h-100" style="text-align: center">
                         <div>
-                            <h5 style= "display: block; margin-bottom: 20px; font-weight: bold">점수별비율</h5>
-                            <div th:each="range : ${starRangePercentageMap}" style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+                            <h5 style="display: block; margin-bottom: 20px; font-weight: bold">점수별비율</h5>
+                            <div th:each="range : ${starRangePercentageMap}"
+                                 style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
                                 <i class="icon-star" style="color: lightgray"></i>
                                 <span th:text="${range.key}" style="display: block; margin-right: 10px"></span>
                                 <div class="area_bar_outer">
-                                    <div class="area_bar_in" th:style="'width:' + ${range.value} + '%; height : 100%;'"></div>
+                                    <div class="area_bar_in"
+                                         th:style="'width:' + ${range.value} + '%; height : 100%;'"></div>
                                 </div>
                                 <span th:text="${range.value} + '%'" style="margin-left: 10px"></span>
                             </div>
@@ -159,25 +216,14 @@
                             <input type="radio" id="rating1" name="rating" value="0.5"><label class="half" for="rating1" title="0.5점"></label>
                         </fieldset>
                     </div>
-<!--                    <input type="hidden" id="rating" name="rating" value="0">-->
-
                     <form th:action="@{/review/insert}" method="post" th:object="${reviewDto}">
                         <div style="display: flex">
                             <input type="text" class="form-control" th:field="*{content}" required="required"
                                    placeholder="후기 입력" style="float:left; width: 80%;">
-                            <!--                        <textarea class="form-control" placeholder="후기 입력" style="width: 80%;border: 1px solid gray"></textarea>-->
                             <input type="hidden" id="star" name="star" th:field="*{star}">
                             <button type="submit" class="btn btn-primary" style="margin: auto">등록</button>
                         </div>
                     </form>
-                    <script>
-                        function updateStarValue() {
-                            let selectedRating = document.querySelector('input[name="rating"]:checked').value;
-                            if (selectedRating) {
-                                document.getElementById('star').value = selectedRating;
-                            }
-                        }
-                    </script>
                 </div>
             </div>
         </div>
@@ -188,7 +234,7 @@
             <div style="display: flex; justify-content: space-between;">
                 <div style="display: flex; gap: 10px; align-items: center">
                     <div class="review-name" style="font-size: 15px; color: black;">박민지</div>
-                    <fieldset class="rate2" >
+                    <fieldset class="rate2">
                         <input type="radio" value="5.0" th:checked="${reviewlist.star == 5.0}">
                         <label title="5점"></label>
                         <input type="radio" value="4.5" th:checked="${reviewlist.star == 4.5}">
@@ -212,12 +258,18 @@
                     </fieldset>
                     <div class="review-gender">남자</div>
                 </div>
-                <div th:each="reviewlist : ${reviewlist}">
-                    <i class="icon-heart" onclick="addLike()"></i>
+
+                <div id="reviewLike-[[${reviewlist.index}]]">
+                    <i class="icon-heart" style="color: red"></i>
                     <span>좋아요 :</span>
                     <span class="like-count" th:text="${reviewlist.like}">0</span>
                 </div>
-
+<!--                <div class="review-like">-->
+<!--                    <span th:if="${reviewStat.isClicked}" class="fa fa-heart" style="color: red" onclick="clickLike(this, [[${reviewlist.review_id}]])"></span>-->
+<!--                    <span th:if="${!reviewStat.isClicked}" class="fa fa-heart" style="color: black" onclick="clickLike(this, [[${reviewlist.review_id}]])"></span>-->
+<!--                    <span>&nbsp;</span>-->
+<!--                    <span th:text="${reviewStat.likeCount}">0</span>-->
+<!--                </div>-->
             </div>
             <div class="review-content" th:text="${reviewlist.content}"
                  style="color: black; padding-top: 15px; height: 100px"></div>
@@ -228,8 +280,6 @@
                     <i class="icon-delete" style="font-size: 25px; color: gray"></i>
                 </a>
             </div>
-            </div>
-
         </div>
     </div>
 </div> <!-- layout:fragment = content-->
