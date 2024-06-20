@@ -1,0 +1,129 @@
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+/* 평점 카운팅 */
+.rate { display: inline-block;border: 0;margin-right: 15px;}
+.rate > input {display: none;}
+.rate > label {float: right;color: #ddd}
+.rate > label:before {display: inline-block;font-size: 3rem;padding: .3rem .2rem;margin: 0;cursor: default;font-family: FontAwesome;content: "\f005 ";}
+.rate .half:before {content: "\f089 "; position: absolute;padding-right: 0;}
+.rate input:checked ~ label,
+.rate label:hover,.rate label:hover ~ label { color: #f73c32 !important;  }
+.rate input:checked + .rate label:hover,
+.rate input input:checked ~ label:hover,
+.rate input:checked ~ .rate label:hover ~ label,
+.rate label:hover ~ input:checked ~ label { color: #f73c32 !important;  }
+
+.rate2 { display: inline-block;border: 0;margin-right: 15px; cursor: none}
+.rate2 > input {display: none;}
+.rate2 > label {float: right;color: #ddd}
+.rate2 > label:before {display: inline-block;font-size: 1rem;padding: .3rem .2rem;margin: 0;cursor: default;font-family: FontAwesome;content: "\f005 ";}
+.rate2 .half:before {content: "\f089 "; position: absolute;padding-right: 0;}
+.rate2 input:checked ~ label { color: #f73c32 !important;  }
+.rate2 input:checked,
+.rate2 input input:checked,
+.rate2 input:checked { color: #f73c32 !important;  }
+
+.rate3 { display: inline-block;border: 0; cursor: none}
+.rate3 > input {display: none;}
+.rate3 > label {float: right;color: #ddd}
+.rate3 > label:before {display: inline-block;font-size: 2rem;padding: .3rem .2rem;margin: 0;cursor: default;font-family: FontAwesome;content: "\f005 ";}
+.rate3 .half:before {content: "\f089 "; position: absolute;}
+.rate3 input:checked ~ label { color: #f73c32 !important;  }
+.rate3 input:checked,
+.rate3 input input:checked,
+.rate3 input:checked { color: #f73c32 !important;  }
+
+.icon-heart {
+    cursor: pointer;
+    color: grey;
+}
+.icon-heart.liked {
+    color: red;
+}
+
+.area_bar_outer {
+    position: relative;
+    width: 120px;
+    height: 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: lightgray ;
+}
+
+.area_bar_in {
+    background-color: red;
+}
+.rating-avg-title {
+    padding-bottom: 20px;
+    font-weight: bold;
+}
+.rating-avg {
+    color: #d9d9dc;
+    font-weight: bold;
+    margin: 0
+}
+.rating-percentage-title {
+    display: block;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.rating-percentage{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.choose-rate-title{
+    padding-top: 50px;
+    color: black
+}
+.choose-rate-box {
+    height: 70px;
+    gap: 5px;
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+.reviews{
+    display: flex;
+    padding-top: 30px;
+}
+.reviews-box {
+    margin: auto;
+    width: 700px;
+    height: 200px;
+    border: 1px solid darkgray;
+    padding: 20px;
+}
+.reviews-box-1 {
+    display: flex;
+    justify-content: space-between;
+}
+.reviews-box-2 {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.review-name {
+    font-size: 15px;
+    color: black;"
+}
+.review-content {
+    color: black;
+    padding-top: 15px;
+    height: 100px;
+}
+.reviews-box-3{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.review-writetime {
+    font-size: 15px;
+    color: gray;
+}
+.icon-delete {
+    font-size: 25px;
+    color: gray;
+}
+.icon-heart{
+    color: red;
+}
