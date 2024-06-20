@@ -2,106 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
-
 <head>
     <link rel="stylesheet" th:href="@{/css/review.css}">
 </head>
 
+<script type="text/javascript">
+
+
+
+    // Doughnut Chart
+</script>
+
+
 <div layout:fragment="content">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-
-    <script type="text/javascript">
-
-        // 과정명 & 기수 select
-        function chooseCourse() {
-            let CourseNameSelect = document.getElementById("courseName");
-            let CourseNumSelect = document.getElementById("courseNum");
-            let selectedCourseName = CourseNameSelect.value;
-
-            let courseNums = {
-                "클라우드 기반 웹 개발자 데브옵스": ["10기", "11기", "12기", "13기"],
-                "클라우드 기반 웹 AlaaS": ["1기", "2기", "3기", "4기"],
-                "클라우드 기반 자바 풀스택": ["8기", "9기", "10기"]
-            };
-
-            // 기존 기수 옵션 제거
-            CourseNumSelect.innerHTML = '<option selected class="course-select" value="">기수를 선택하세요</option>';
-
-            // 선택된 과정명에 맞는 기수 옵션 추가
-            if (courseNums[selectedCourseName]) {
-                for (let i = 0; i < courseNums[selectedCourseName].length; i++) {
-                    let option = document.createElement("option");
-                    option.value = courseNums[selectedCourseName][i];
-                    option.text = courseNums[selectedCourseName][i];
-                    CourseNumSelect.appendChild(option);
-                }
-            }
-        }
-        // 평점 반영 함수
-        function updateStarValue() {
-            let selectedRating = document.querySelector('input[name="rating"]:checked').value;
-            if (selectedRating) {
-                document.getElementById('star').value = selectedRating;
-            }
-        }
-
-
-        function clickLike(element, review_id) {
-            if (element.style.color === 'red') {
-                element.style.color = 'black';
-            } else {
-                element.style.color = 'red';
-            }
-
-            // 좋아요 카운트 증가/감소
-            const likeCountSpan = element.nextElementSibling.nextElementSibling;
-            let likeCount = parseInt(likeCountSpan.textContent);
-            if (element.style.color === 'red') {
-                likeCount++;
-            } else {
-                likeCount--;
-            }
-            likeCountSpan.textContent = likeCount;
-
-            // AJAX 요청을 통해 서버에 좋아요 업데이트
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", `/update-like/${review_id}`, true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log("Like updated successfully!");
-                } else if (xhr.readyState === 4) {
-                    console.error("Error updating like.");
-                }
-            };
-            xhr.send(JSON.stringify({likeCount: likeCount}));
-        }
-
-        // 하트 누르면 빨간색 하트로 변하는 click event
-        function clickLike(element, review_id) {
-            // element.style.color='red';
-            const likeCountSpan = element.nextElementSibling.nextElementSibling;
-            let likeCount = parseInt(likeCountSpan.textContent);
-            likeCount++;
-            likeCountSpan.textContent = likeCount;
-
-            //     ajax 요청 통해 서버에 좋아요 없데이트
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", `/update-like/${review_id}`, true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log("Like updated successfully!")
-                } else if (xhr.readyState === 4) {
-                    console.log("Error updating like");
-                }
-            };
-            xhr.send(JSON.stringify({likeCount: likeCount}));
-        }
-    </script>
-
-
-
     <!-- 제목 -->
     <div class="untree_co-section">
         <div class="container">
@@ -188,11 +101,12 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <div class="untree_co-testimonial h-100">
-                        <span class="quote">성별 비율</span>
-                        <blockquote>
-                            <p>비율 그래프 들어갈 공간 !</p>
-                        </blockquote>
+                    <div class="untree_co-testimonial h-100" style="text-align: center">
+                        <h5 class="rating-percentage-title">성별 비율</h5>
+                        <canvas id="canvas1"></canvas>
+<!--                        <div style="width: 300px; height: 300px">-->
+<!--                            <canvas id="canvas1" ></canvas>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>
@@ -263,12 +177,6 @@
                     <span>좋아요 :</span>
                     <span class="like-count" th:text="${reviewlist.like}">0</span>
                 </div>
-<!--                <div class="review-like">-->
-<!--                    <span th:if="${reviewStat.isClicked}" class="fa fa-heart" style="color: red" onclick="clickLike(this, [[${reviewlist.review_id}]])"></span>-->
-<!--                    <span th:if="${!reviewStat.isClicked}" class="fa fa-heart" style="color: black" onclick="clickLike(this, [[${reviewlist.review_id}]])"></span>-->
-<!--                    <span>&nbsp;</span>-->
-<!--                    <span th:text="${reviewStat.likeCount}">0</span>-->
-<!--                </div>-->
             </div>
             <div class="review-content" th:text="${reviewlist.content}"></div>
             <div class="reviews-box-3">
@@ -279,6 +187,131 @@
             </div>
         </div>
     </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+        // 과정명 & 기수 select
+        function chooseCourse() {
+            let CourseNameSelect = document.getElementById("courseName");
+            let CourseNumSelect = document.getElementById("courseNum");
+            let selectedCourseName = CourseNameSelect.value;
+
+            let courseNums = {
+                "클라우드 기반 웹 개발자 데브옵스" : ["10기", "11기", "12기", "13기"],
+                "클라우드 기반 웹 AlaaS" : ["1기", "2기", "3기", "4기"],
+                "클라우드 기반 자바 풀스택": ["8기", "9기", "10기"]
+            };
+
+            // 기존 기수 옵션 제거
+            CourseNumSelect.innerHTML = '<option selected class="course-select" value="">기수를 선택하세요</option>';
+
+            // 선택된 과정명에 맞는 기수 옵션 추가
+            if (courseNums[selectedCourseName]) {
+                for (let i = 0; i < courseNums[selectedCourseName].length; i++) {
+                    let option = document.createElement("option");
+                    option.value = courseNums[selectedCourseName][i];
+                    option.text = courseNums[selectedCourseName][i];
+                    CourseNumSelect.appendChild(option);
+                }
+            }
+        }
+        // 평점 반영 함수
+        function updateStarValue() {
+            let selectedRating = document.querySelector('input[name="rating"]:checked').value;
+            if (selectedRating) {
+                document.getElementById('star').value = selectedRating;
+            }
+        }
+
+
+        function clickLike(element, review_id) {
+            if (element.style.color === 'red') {
+                element.style.color = 'black';
+            } else {
+                element.style.color = 'red';
+            }
+
+            // 좋아요 카운트 증가/감소
+            const likeCountSpan = element.nextElementSibling.nextElementSibling;
+            let likeCount = parseInt(likeCountSpan.textContent);
+            if (element.style.color === 'red') {
+                likeCount++;
+            } else {
+                likeCount--;
+            }
+            likeCountSpan.textContent = likeCount;
+
+            // AJAX 요청을 통해 서버에 좋아요 업데이트
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `/update-like/${review_id}`, true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Like updated successfully!");
+                } else if (xhr.readyState === 4) {
+                    console.error("Error updating like.");
+                }
+            };
+            xhr.send(JSON.stringify({likeCount: likeCount}));
+        }
+
+        // 하트 누르면 빨간색 하트로 변하는 click event
+        function clickLike(element, review_id) {
+            // element.style.color='red';
+            const likeCountSpan = element.nextElementSibling.nextElementSibling;
+            let likeCount = parseInt(likeCountSpan.textContent);
+            likeCount++;
+            likeCountSpan.textContent = likeCount;
+
+            //     ajax 요청 통해 서버에 좋아요 없데이트
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `/update-like/${review_id}`, true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Like updated successfully!")
+                } else if (xhr.readyState === 4) {
+                    console.log("Error updating like");
+                }
+            };
+            xhr.send(JSON.stringify({likeCount: likeCount}));
+        }
+        // Doughnut Chart
+        $(function(){
+            let malePercentage = [[${malePercentage}]];
+            let femalePercentage = [[${femalePercentage}]];
+
+            let options = {
+                // legend: false,
+                responsive: false
+            };
+            new Chart("canvas1", {
+                type: 'doughnut',
+                tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+                data: {
+                    datasets: [{
+                        data: [malePercentage, femalePercentage],
+                        backgroundColor: [
+                            "#72B8FA",
+                            "#F383B0"
+                        ],
+                        hoverBackgroundColor: [
+                            "#72B8FA",
+                            "#F383B0"
+                        ]
+                    }],
+                    labels: [
+                        "남성",
+                        "여성"
+                    ]
+                },
+                // options: { responsive: false }
+            });
+        });
+    </script>
 </div> <!-- layout:fragment = content-->
+
 
 </html>

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ReviewService {
+public class  ReviewService {
     @Autowired
     private ReviewMapperInter reviewMapperInter;
 
@@ -29,5 +29,8 @@ public class ReviewService {
 //    public int getLikeCount(int review_id) {
 //        return reviewMapperInter.getLikeCount(review_id);
 //    }
+
+    public int countByGender(int gender){return reviewMapperInter.countByGender(gender);}
+    public int getTotalGender(){return reviewMapperInter.getTotalGender();}
 
 }

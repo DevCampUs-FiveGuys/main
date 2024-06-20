@@ -1,10 +1,7 @@
 package data.mapper;
 
 import data.dto.ReviewDto;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -26,6 +23,12 @@ public interface ReviewMapperInter {
 //    @Select("select `like` from review where review_id=#{review_id}")
 //    public int getLikeCount(int review_id);
 
-//    @Select("selec")
+    // 성별 개수 count 하기
+    @Select("select count(*) from member where gender=#{gender}")
+    public int countByGender(int gender);
+    @Select("select count(*) from member")
+    public int getTotalGender();
+    @Update("update review set `like`=#{}")
+    public int updateLike();
 
 }

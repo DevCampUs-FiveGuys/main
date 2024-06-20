@@ -8,7 +8,7 @@ public interface CheckLikeMapperInter {
     //힘이들땐 하늘을봐
 
     @Select("select count(*) from checklike where rev_id = #{rev_id}")
-    public int ShowCountLike(int rev_id);
+    public int getCountLike(int rev_id);
 
     @Insert("insert into checklike (mem_id, rev_id) values (#{mem_id}, #{rev_id})")
     public void insertLike(int mem_id, int rev_id);

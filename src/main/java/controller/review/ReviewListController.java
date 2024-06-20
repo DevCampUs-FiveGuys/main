@@ -29,6 +29,17 @@ public class ReviewListController {
         // Fetch reviews from the database
         List<ReviewDto> reviewlist = reviewService.getAllReview();
 
+        // 멤버 전체 명수
+        int totalGender = reviewService.getTotalGender();
+        // 남자 멤버
+        int maleCount = reviewService.countByGender(0);
+        // 여자 멤버
+        int femaleCount = reviewService.countByGender(1);
+
+        // 남여 비율 계산
+        String malePercentage = String.format("%.1f", ((double) maleCount / totalGender * 100));
+        String femalePercentage = String.format("%.1f", ((double) femaleCount / totalGender * 100));
+
         // Count the number of reviews in each star range
         Map<String, Long> starRangeCountMap = reviewlist.stream()
                 .collect(Collectors.groupingBy(
@@ -70,10 +81,14 @@ public class ReviewListController {
         model.addAttribute("reviewlist", reviewlist);
         model.addAttribute("reviewAvg", reviewService.getAvgStar());
         model.addAttribute("starRangePercentageMap", sortedStarRangePercentageMap);
+        model.addAttribute("malePercentage", malePercentage);
+        model.addAttribute("femalePercentage", femalePercentage);
+
 //        model.addAttribute("likeCount", checkListService.ShowCountLike(reviewService.getid()));
 //        model.addAttribute("reviewLikeCount", reviewService.getLikeCount(review_id));
         //checklike dto를 받아와 어차피 dto 안에 rev_id가 있는데 이게 reviewlist의 review_id랑 같은 거잖아?
         //이거를 == 써가지고 같으면 checklike의 showcountlike를 사용하면 되지 않을까?
+
 
 
         return "thymeleaf/review"; // Return the name of the Thymeleaf template
@@ -93,5 +108,7 @@ public class ReviewListController {
 
         return "redirect:/review/list";
     }
+
+
 
 }
