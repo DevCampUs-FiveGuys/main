@@ -60,6 +60,15 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        http
+                .formLogin((form) -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/api/user/login")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/"));
+
+
         return http.build();
     }
 }
