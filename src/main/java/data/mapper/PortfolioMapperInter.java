@@ -12,6 +12,10 @@ public interface PortfolioMapperInter {
 
     public void deletePortfolio(int portfolio_id);
 
-    public PortfolioDto portfolioData(int Portfolio_id);
-}
+    public PortfolioDto getData(int Portfolio_id);
 
+    public int getTotalCount();
+
+    public void updateReadcount(int portfolio_id);
+
+}
