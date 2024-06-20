@@ -3,11 +3,20 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 
+<head>
+    <link rel="stylesheet" th:href="@{/css/student_mypage.css}">
+    <link rel="stylesheet" th:href="@{/css/attendance_result.css}">
+    <!-- 일반 alert 대신에 SweetAlert2 쓰기 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
 <div layout:fragment="content">
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <ul class="list-group">
+                <ul class="list-group mt-4">
                     <li class="list-group-item">
                         <a th:href="@{/student_mypage/attendance}"><i class="icon icon-attendance"></i> 출석현황</a>
                     </li>
@@ -23,19 +32,34 @@
                 </ul>
             </div>
             <div class="col-md-9">
-                <h2>출석현황</h2>
+                <h2 class="text-center my-4">출석현황</h2>
                 <div class="attendance-buttons">
                     <button id="check-in-btn" class="btn btn-primary">입실</button>
                     <button id="check-out-btn" class="btn btn-primary">퇴실</button>
                     <button id="vacation-btn" class="btn btn-primary" data-toggle="modal" data-target="#vacationModal">휴가신청</button>
                 </div>
                 <div id="calendar"></div>
-                <div class="attendance-summary">
-                    <div>출석: <span id="attendance-count">1</span></div>
-                    <div>지각: <span id="late-count">1</span></div>
-                    <div>결석: <span id="absent-count">1</span></div>
-                    <div>휴가: <span id="vacation-count">1</span></div>
-                    <div>병가: <span id="sick-leave-count">1</span></div>
+                <div class="attendance-result">
+                    <div class="attendance-item">
+                        <span id="attendance-count">0</span>
+                        <div>출석</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="late-count">0</span>
+                        <div>지각</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="absent-count">0</span>
+                        <div>결석</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="vacation-count">0</span>
+                        <div>휴가</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="sick-leave-count">0</span>
+                        <div>병가</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,4 +93,5 @@
         </div>
     </div>
 </div>
+</body>
 </html>

@@ -10,14 +10,12 @@ import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Data
-@Alias("QnaDto")
+@Alias("CourseDto")
 @Builder
 @AllArgsConstructor
-//qna db에 있는 것들
-public class QnaDto {
-    private int qna_id;
-    private String title;
-    private String content;
-    private Timestamp created_at;
-    private Timestamp updated_at;
+public class CourseDto {
+    private String num;
+    private String name;
+    private Timestamp start_day;
+    private Timestamp end_day;
 }
