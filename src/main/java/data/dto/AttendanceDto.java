@@ -10,21 +10,16 @@ import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Data
-@Alias("MyPageDto")
+@Alias("AttendanceDto")
 @Builder
 @AllArgsConstructor
-public class MyPageDto {
-    private int attendanceId;
-    private Timestamp checkIn;
-    private Timestamp checkOut;
+public class AttendanceDto {
+    private int attendance_id;
+    private Timestamp check_in;
+    private Timestamp check_out;
     private int absent;
     private int vacation;
     private int hospital;
     private int late;
-    private int memberId;
-
-    private int vacationId;
-    private Timestamp date;
-    private String reason;
-    private int confirm;
+    private int member_id;
 }

@@ -1,79 +1,65 @@
 package controller.mypage;
 
-import data.dto.MyPageDto;
-import data.service.MyPageService;
+import data.dto.AttendanceDto;
+import data.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/student_mypage")
 public class MyPageStudentController {
-    @Autowired
-    MyPageService myPageService;
 
-    @GetMapping("/student_mypage/attendance")
+    @Autowired
+    private AttendanceService attendanceService;
+
+    @GetMapping("/attendance")
     public String attendance() {
         return "thymeleaf/student/attendance";
     }
 
-    @PostMapping("/student_mypage/attendance/check_in")
-    @ResponseBody
-    public String checkIn(@RequestBody MyPageDto dto) {
-        myPageService.saveCheckIn(dto);
-        return "입실이 성공적으로 처리되었습니다.";
-    }
-
-    @PostMapping("/student_mypage/attendance/check_out")
-    @ResponseBody
-    public String checkOut(@RequestBody MyPageDto dto) {
-        myPageService.saveCheckOut(dto);
-        return "퇴실이 성공적으로 처리되었습니다.";
-    }
-
-    @PostMapping("/student_mypage/attendance/vacation")
-    @ResponseBody
-    public String applyVacation(@RequestBody MyPageDto dto) {
-        myPageService.applyVacation(dto);
-        return "휴가 신청이 성공적으로 처리되었습니다.";
-    }
-
-    @GetMapping("/student_mypage/attendance/events")
-    @ResponseBody
-    public List<MyPageDto> getEvents(int memberId) {
-        List<MyPageDto> attendances = myPageService.getAttendancesByMemberId(memberId);
-        List<MyPageDto> vacations = myPageService.getVacationsByMemberId(memberId);
-        attendances.addAll(vacations);
-        return attendances;
-    }
-
-    @PostMapping("/student_mypage/attendance/delete")
-    @ResponseBody
-    public String deleteEvent(@RequestBody MyPageDto dto) {
-        if (dto.getAttendanceId() != 0) {
-            myPageService.deleteAttendance(dto.getAttendanceId());
-        } else if (dto.getVacationId() != 0) {
-            myPageService.deleteVacation(dto.getVacationId());
-        }
-        return "삭제가 성공적으로 처리되었습니다.";
-    }
-
-    @GetMapping("/student_mypage/portfolio_favorites")
+    @GetMapping("/portfolio_favorites")
     public String portfolio_favorites() {
         return "thymeleaf/student/portfolio_favorites";
     }
 
-    @GetMapping("/student_mypage/portfolio_posts")
+    @GetMapping("/portfolio_posts")
     public String portfolio_posts() {
         return "thymeleaf/student/portfolio_posts";
     }
 
-    @GetMapping("/student_mypage/updateProfile")
+    @GetMapping("/updateProfile")
     public String updateProfile() {
         return "thymeleaf/student/updateProfile";
+    }
+
+    // 출석 기록을 조회하는 [GET] Endpoint
+    @GetMapping("/attendance/{member_id}")
+    @ResponseBody
+    public List<AttendanceDto> getAttendance(@PathVariable int member_id) {
+        return attendanceService.getAttendanceByMemberId(member_id);
+    }
+
+    // 출석 기록을 추가하는 [POST] Endpoint
+    @PostMapping("/attendance")
+    @ResponseBody
+    public void insertAttendance(@RequestBody AttendanceDto attendance) {
+        attendanceService.insertAttendance(attendance);
+    }
+
+    // 출석 기록을 수정하는 [PUT] Endpoint
+    @PutMapping("/attendance")
+    @ResponseBody
+    public void updateAttendance(@RequestBody AttendanceDto attendance) {
+        attendanceService.updateAttendance(attendance);
+    }
+
+    // 출석 기록을 삭제하는 [DELETE] Endpoint
+    @DeleteMapping("/attendance/{attendance_id}")
+    @ResponseBody
+    public void deleteAttendance(@PathVariable int attendance_id) {
+        attendanceService.deleteAttendance(attendance_id);
     }
 }
