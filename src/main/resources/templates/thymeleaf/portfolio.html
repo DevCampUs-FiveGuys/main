@@ -4,8 +4,62 @@
       layout:decorate="~{layouts/layout}">
 <head>
     <link rel="stylesheet" th:href="@{/css/portfolio.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script>
+        // Function to toggle favorite (like) status
+        function toggleFavorite(button) {
+            button.classList.toggle('active'); // Toggle active class for styling
+            const icon = button.querySelector('i');
+            const likeText = button.querySelector('.like-text');
+
+            if (button.classList.contains('active')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas'); // Change to filled heart icon
+                likeText.textContent = '찜함'; // Change text to '찜함'
+                // TODO: Save like state to local storage or send to server
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far'); // Change to empty heart icon
+                likeText.textContent = '찜'; // Change text to '찜'
+                // TODO: Remove like state from local storage or send to server
+            }
+        }
+    </script>
 </head>
+<body>
 <div layout:fragment="content">
-    포트폴리오가 들어갈 자리 입니다.
-</div>
+    <h1 class="portfolio_h1">PortFolio</h1>
+        <div class="filters1">
+            <button class="active">전체</button>
+            <button>강남센터</button>
+            <button>N캠프_Devops</button>
+            <button>AI WeekKlasse</button>
+            <button>N캠프_AlaaS</button>
+            <button>씨아카데미</button>
+            <button>AWS캠프</button>
+            <button class="animate-button" th:onclick="|location.href='@{/portfolio/portfolioWrite}'|">
+                <i class="fas fa-pencil-alt"></i>글쓰기
+            </button>
+        </div>
+
+        <div class="course1-list">
+            <div class="course1">
+                <img th:src="@{images/devops.png}" th:onclick="|location.href='@{/portfolioDetail}'|"
+                     alt="네이버클라우드캠프 15기"/>
+                <div class="course1-details">
+                    <p class="title" th:onclick="|location.href='@{/portfolioDetail}'|">
+                        [강남센터] [N캠프] 클라우드 기반 웹 개발자 & 데브옵스 과정_15기
+                    </p>
+                    <p class="date">개강일: 2024-07-02</p>
+                    <p class="date">교육기간: 2024-07-02 ~ 2025-01-08</p>
+                    <button type="button" class="favorite-button" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
 </html>
