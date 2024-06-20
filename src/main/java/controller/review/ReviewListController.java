@@ -1,16 +1,15 @@
 package controller.review;
 
+import data.dto.CourseDto;
 import data.dto.ReviewDto;
 import data.service.CheckListService;
 import data.service.ReviewService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.PublicKey;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,10 @@ public class ReviewListController {
     public String getReviews(
             Model model) {
         // Fetch reviews from the database
+
         List<ReviewDto> reviewlist = reviewService.getAllReview();
+
+        List<CourseDto> courselist = reviewService.getAllCourseList();
 
         // 멤버 전체 명수
         int totalGender = reviewService.getTotalGender();
@@ -83,6 +85,7 @@ public class ReviewListController {
         model.addAttribute("starRangePercentageMap", sortedStarRangePercentageMap);
         model.addAttribute("malePercentage", malePercentage);
         model.addAttribute("femalePercentage", femalePercentage);
+        model.addAttribute("courselist", courselist);
 
 //        model.addAttribute("likeCount", checkListService.ShowCountLike(reviewService.getid()));
 //        model.addAttribute("reviewLikeCount", reviewService.getLikeCount(review_id));
@@ -109,6 +112,24 @@ public class ReviewListController {
         return "redirect:/review/list";
     }
 
+    @GetMapping("/review/names")
+    @ResponseBody
+    public List<String> getCourseNums(@RequestParam("name") String name){
+        return reviewService.getNumOfCourse(name);
+    }
 
+    @GetMapping("/review/nums")
+    @ResponseBody
+    public String selectAllReview(
+            @RequestParam("name") String name,
+            @RequestParam("num") String num,
+            Model model){
+
+        List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name,num);
+
+        model.addAttribute("selectlist", selectreviewlist);
+
+        return "redirect:/review/list";
+    }
 
 }

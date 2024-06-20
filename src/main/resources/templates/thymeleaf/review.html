@@ -9,7 +9,6 @@
 <script type="text/javascript">
 
 
-
     // Doughnut Chart
 </script>
 
@@ -35,18 +34,44 @@
                 <div class="col-lg-6">
                     <p>과정명과 기수를 선택하여 후기를 볼 수 있어요!</p>
                     <div>
-                        <select id="courseName" onchange="chooseCourse()" class="course-select" style="width: 250px;height: 25px;margin-right: 20px; border-radius: 20px;">
-                            <option selected class="course-selected">과정을 선택해주세요</option>
-                            <option value="클라우드 기반 웹 개발자 데브옵스">클라우드 기반 웹 개발자 데브옵스</option>
-                            <option value="클라우드 기반 웹 AlaaS">클라우드 기반 웹 AlaaS</option>
-                            <option value="클라우드 기반 자바 풀스택">클라우드 기반 자바 풀스택</option>
+                        <select id="courseName" onchange="loadCourseNums()"
+                                style="width: 250px;height: 25px;margin-right: 20px; border-radius: 20px;">
+                            <option value="">과정명을 선택하세요</option>
+                            <!-- Thymeleaf를 이용해 서버에서 받은 과정명 옵션을 반복 -->
+                            <option th:each="courselist : ${courselist}" th:value="${courselist.name}"
+                                    th:text="${courselist.name}"></option>
                         </select>
-                        <select id="courseNum" class="course-select" style="width: 150px; height: 25px; border-radius: 20px">
-                            <option selected class="course-selected">기수를 선택해주세요</option>
+                        <select id="courseNum" style="width: 150px; height: 25px; border-radius: 20px">
+                            <option value="">기수를 선택해주세요</option>
                         </select>
+
+                        <!-- 과정명 선택 script 시작 -->
+                        <script type="text/javascript">
+                            function loadCourseNums() {
+                                let selectedCourseName = $("#courseName").val();
+
+                                $.ajax({
+                                    type: "GET",
+                                    url: "/review/nums",
+                                    data: {name: selectedCourseName},
+                                    dataType: "json",
+                                    success: function (ele) {
+                                        let courseNumSelect = $("#courseNum");
+                                        courseNumSelect.empty();
+                                        courseNumSelect.append('<option value="">기수를 선택해주세요</option>');
+                                        $.each(ele, function (index, item) {
+                                            courseNumSelect.append('<option value="' + item + '">' + item + '</option>');
+                                        });
+                                    },
+                                    error: function (e) {
+                                        console.error("Error fetching course numbers: ", e);
+                                    }
+                                });
+                            }
+                        </script>
+
                     </div>
                 </div>
-
             </div>
 
             <!--      top-2 : 평점 &  비율 & 성별      -->
@@ -56,7 +81,8 @@
                         <!--                        <span class="quote" style="display: block">평점</span>-->
                         <div class="averageRating">
                             <h5 class="rating-avg-title">수강생 평점</h5>
-                            <h2 class="rating-avg"><span th:text="${reviewAvg}" style="color: black; font-weight:bold"></span>
+                            <h2 class="rating-avg"><span th:text="${reviewAvg}"
+                                                         style="color: black; font-weight:bold"></span>
                                 / 5.0</h2>
                             <fieldset class="rate3">
                                 <input type="radio" value="5.0" th:checked="${reviewAvg <= 5.0 && reviewAvg > 4.5}">
@@ -104,9 +130,9 @@
                     <div class="untree_co-testimonial h-100" style="text-align: center">
                         <h5 class="rating-percentage-title">성별 비율</h5>
                         <canvas id="canvas1"></canvas>
-<!--                        <div style="width: 300px; height: 300px">-->
-<!--                            <canvas id="canvas1" ></canvas>-->
-<!--                        </div>-->
+                        <!--                        <div style="width: 300px; height: 300px">-->
+                        <!--                            <canvas id="canvas1" ></canvas>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
             </div>
@@ -117,16 +143,26 @@
                     <div class="choose-rate-box">
                         <!-- 별점을 표시할 영역 -->
                         <fieldset class="rate" onchange="updateStarValue()">
-                            <input type="radio" id="rating10" name="rating" value="5.0"><label for="rating10" title="5점"></label>
-                            <input type="radio" id="rating9" name="rating" value="4.5"><label class="half" for="rating9" title="4.5점"></label>
-                            <input type="radio" id="rating8" name="rating" value="4.0"><label for="rating8" title="4점"></label>
-                            <input type="radio" id="rating7" name="rating" value="3.5"><label class="half" for="rating7" title="3.5점"></label>
-                            <input type="radio" id="rating6" name="rating" value="3.0"><label for="rating6" title="3점"></label>
-                            <input type="radio" id="rating5" name="rating" value="2.5"><label class="half" for="rating5" title="2.5점"></label>
-                            <input type="radio" id="rating4" name="rating" value="2.0"><label for="rating4" title="2점"></label>
-                            <input type="radio" id="rating3" name="rating" value="1.5"><label class="half" for="rating3" title="1.5점"></label>
-                            <input type="radio" id="rating2" name="rating" value="1.0"><label for="rating2" title="1점"></label>
-                            <input type="radio" id="rating1" name="rating" value="0.5"><label class="half" for="rating1" title="0.5점"></label>
+                            <input type="radio" id="rating10" name="rating" value="5.0"><label for="rating10"
+                                                                                               title="5점"></label>
+                            <input type="radio" id="rating9" name="rating" value="4.5"><label class="half" for="rating9"
+                                                                                              title="4.5점"></label>
+                            <input type="radio" id="rating8" name="rating" value="4.0"><label for="rating8"
+                                                                                              title="4점"></label>
+                            <input type="radio" id="rating7" name="rating" value="3.5"><label class="half" for="rating7"
+                                                                                              title="3.5점"></label>
+                            <input type="radio" id="rating6" name="rating" value="3.0"><label for="rating6"
+                                                                                              title="3점"></label>
+                            <input type="radio" id="rating5" name="rating" value="2.5"><label class="half" for="rating5"
+                                                                                              title="2.5점"></label>
+                            <input type="radio" id="rating4" name="rating" value="2.0"><label for="rating4"
+                                                                                              title="2점"></label>
+                            <input type="radio" id="rating3" name="rating" value="1.5"><label class="half" for="rating3"
+                                                                                              title="1.5점"></label>
+                            <input type="radio" id="rating2" name="rating" value="1.0"><label for="rating2"
+                                                                                              title="1점"></label>
+                            <input type="radio" id="rating1" name="rating" value="0.5"><label class="half" for="rating1"
+                                                                                              title="0.5점"></label>
                         </fieldset>
                     </div>
                     <form th:action="@{/review/insert}" method="post" th:object="${reviewDto}">
@@ -146,7 +182,7 @@
         <div class="reviews-box">
             <div class="reviews-box-1">
                 <div class="reviews-box-2">
-                    <div class="review-name">박민지</div>
+                    <div class="review-name"></div>
                     <fieldset class="rate2">
                         <input type="radio" value="5.0" th:checked="${reviewlist.star == 5.0}">
                         <label title="5점"></label>
@@ -172,11 +208,11 @@
                     <div class="review-gender">남자</div>
                 </div>
 
-                <div id="reviewLike-[[${reviewlist.index}]]">
-                    <i class="icon-heart"></i>
-                    <span>좋아요 :</span>
-                    <span class="like-count" th:text="${reviewlist.like}">0</span>
-                </div>
+<!--                <div id="reviewLike-[[${reviewlist.index}]]">-->
+<!--                    <i class="icon-heart"></i>-->
+<!--                    <span>좋아요 :</span>-->
+<!--                    <span class="like-count" th:text="${reviewlist.like}">0</span>-->
+<!--                </div>-->
             </div>
             <div class="review-content" th:text="${reviewlist.content}"></div>
             <div class="reviews-box-3">
@@ -192,31 +228,31 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script>
-        // 과정명 & 기수 select
-        function chooseCourse() {
-            let CourseNameSelect = document.getElementById("courseName");
-            let CourseNumSelect = document.getElementById("courseNum");
-            let selectedCourseName = CourseNameSelect.value;
-
-            let courseNums = {
-                "클라우드 기반 웹 개발자 데브옵스" : ["10기", "11기", "12기", "13기"],
-                "클라우드 기반 웹 AlaaS" : ["1기", "2기", "3기", "4기"],
-                "클라우드 기반 자바 풀스택": ["8기", "9기", "10기"]
-            };
-
-            // 기존 기수 옵션 제거
-            CourseNumSelect.innerHTML = '<option selected class="course-select" value="">기수를 선택하세요</option>';
-
-            // 선택된 과정명에 맞는 기수 옵션 추가
-            if (courseNums[selectedCourseName]) {
-                for (let i = 0; i < courseNums[selectedCourseName].length; i++) {
-                    let option = document.createElement("option");
-                    option.value = courseNums[selectedCourseName][i];
-                    option.text = courseNums[selectedCourseName][i];
-                    CourseNumSelect.appendChild(option);
-                }
-            }
-        }
+        // // 과정명 & 기수 select
+        // function chooseCourse() {
+        //     let CourseNameSelect = document.getElementById("courseName");
+        //     let CourseNumSelect = document.getElementById("courseNum");
+        //     let selectedCourseName = CourseNameSelect.value;
+        //
+        //     let courseNums = {
+        //         "클라우드 기반 웹 개발자 데브옵스" : ["10기", "11기", "12기", "13기"],
+        //         "클라우드 기반 웹 AlaaS" : ["1기", "2기", "3기", "4기"],
+        //         "클라우드 기반 자바 풀스택": ["8기", "9기", "10기"]
+        //     };
+        //
+        //     // 기존 기수 옵션 제거
+        //     CourseNumSelect.innerHTML = '<option selected class="course-select" value="">기수를 선택하세요</option>';
+        //
+        //     // 선택된 과정명에 맞는 기수 옵션 추가
+        //     if (courseNums[selectedCourseName]) {
+        //         for (let i = 0; i < courseNums[selectedCourseName].length; i++) {
+        //             let option = document.createElement("option");
+        //             option.value = courseNums[selectedCourseName][i];
+        //             option.text = courseNums[selectedCourseName][i];
+        //             CourseNumSelect.appendChild(option);
+        //         }
+        //     }
+        // }
         // 평점 반영 함수
         function updateStarValue() {
             let selectedRating = document.querySelector('input[name="rating"]:checked').value;
@@ -278,8 +314,9 @@
             };
             xhr.send(JSON.stringify({likeCount: likeCount}));
         }
+
         // Doughnut Chart
-        $(function(){
+        $(function () {
             let malePercentage = [[${malePercentage}]];
             let femalePercentage = [[${femalePercentage}]];
 
