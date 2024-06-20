@@ -1,0 +1,163 @@
+create table QnA
+(
+    qna_id     smallint auto_increment
+        primary key,
+    title      varchar(100) not null,
+    content    varchar(255) not null,
+    created_at datetime     not null,
+    updated_at datetime     not null
+);
+
+create table course
+(
+    name      varchar(45) not null,
+    num       varchar(20) not null,
+    start_day datetime    not null,
+    end_day   datetime    not null,
+    primary key (num, name)
+);
+
+create table member
+(
+    member_id   smallint auto_increment
+        primary key,
+    password    varchar(255)                not null,
+    name        varchar(100)                not null,
+    gender      tinyint(1)                  not null,
+    email       varchar(100)                not null,
+    tel         varchar(20)                 not null,
+    birth       datetime                    null,
+    create_at   datetime                    not null,
+    updated_at  datetime                    null,
+    photo       varchar(255)                null,
+    roles       varchar(40) default 'guest' not null,
+    course_name varchar(45)                 null,
+    course_num  varchar(20)                 null,
+    constraint email
+        unique (email),
+    constraint member_course_num_name_fk
+        foreign key (course_num, course_name) references course (num, name)
+            on update cascade on delete set null
+);
+
+create table attendance
+(
+    attendance_id smallint auto_increment
+        primary key,
+    check_in      datetime           null,
+    check_out     datetime           null,
+    absent        smallint default 0 not null,
+    vacation      smallint default 0 not null,
+    hospital      smallint default 0 not null,
+    late          smallint default 0 not null,
+    member_id     smallint           null,
+    constraint attendance_ibfk_1
+        foreign key (member_id) references member (member_id)
+);
+
+create index member_id
+    on attendance (member_id);
+
+create table portfolio
+(
+    portfolio_id smallint auto_increment
+        primary key,
+    title        varchar(45)        not null,
+    description  varchar(255)       not null,
+    created_at   datetime           not null,
+    updated_at   datetime           null,
+    file_name    varchar(255)       null,
+    member_id    smallint           null,
+    readcount    smallint default 0 null,
+    constraint portfolio_ibfk_1
+        foreign key (member_id) references member (member_id)
+);
+
+create table heart
+(
+    heart_id     smallint auto_increment
+        primary key,
+    member_id    smallint null,
+    portfolio_id smallint null,
+    constraint heart_ibfk_1
+        foreign key (member_id) references member (member_id),
+    constraint heart_ibfk_2
+        foreign key (portfolio_id) references portfolio (portfolio_id)
+);
+
+create index member_id
+    on heart (member_id);
+
+create index portfolio_id
+    on heart (portfolio_id);
+
+create index member_id
+    on portfolio (member_id);
+
+create table reply
+(
+    reply_id     smallint auto_increment
+        primary key,
+    member_id    smallint     null,
+    portfolio_id smallint     null,
+    comment      varchar(100) not null,
+    created_at   datetime     not null,
+    constraint reply_ibfk_1
+        foreign key (member_id) references member (member_id),
+    constraint reply_ibfk_2
+        foreign key (portfolio_id) references portfolio (portfolio_id)
+);
+
+create index member_id
+    on reply (member_id);
+
+create index portfolio_id
+    on reply (portfolio_id);
+
+create table review
+(
+    review_id  smallint auto_increment
+        primary key,
+    content    varchar(255)       not null,
+    created_at datetime           not null,
+    star       double   default 0 not null,
+    `like`     smallint default 0 null,
+    member_id  smallint           null,
+    constraint review_ibfk_1
+        foreign key (member_id) references member (member_id)
+);
+
+create index member_id
+    on review (member_id);
+
+create table sns
+(
+    sns_id        smallint auto_increment
+        primary key,
+    member_id     smallint     null,
+    type          varchar(45)  not null,
+    name          varchar(45)  not null,
+    access_token  varchar(255) not null,
+    refresh_token varchar(255) not null,
+    auth_code     varchar(255) not null,
+    constraint sns_ibfk_1
+        foreign key (member_id) references member (member_id)
+);
+
+create index member_id
+    on sns (member_id);
+
+create table vacation
+(
+    vacation_id smallint auto_increment
+        primary key,
+    date        datetime             not null,
+    reason      varchar(255)         not null,
+    confirm     tinyint(1) default 0 not null,
+    member_id   smallint             null,
+    constraint vacation_ibfk_1
+        foreign key (member_id) references member (member_id)
+);
+
+create index member_id
+    on vacation (member_id);
