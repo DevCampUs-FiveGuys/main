@@ -27,7 +27,7 @@ public class  ReviewService {
     }
 
     public List<ReviewDto> getAllReview(){
-        return reviewMapperInter.getAllReview();
+        return reviewMapperInter.getAllReview();aa7
     }
 
     public void deleteReview(int review_id) {
