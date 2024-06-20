@@ -7,17 +7,16 @@ import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
 import java.sql.Timestamp;
-
 @NoArgsConstructor
 @Data
-@Alias("QnaDto")
+@Alias("ReviewDto")
 @Builder
 @AllArgsConstructor
-//qna db에 있는 것들
-public class QnaDto {
-    private int qna_id;
-    private String title;
+public class ReviewDto {
+    private int review_id;
     private String content;
     private Timestamp created_at;
-    private Timestamp updated_at;
+    private double star;
+    private int like;
+    private int member_id;
 }

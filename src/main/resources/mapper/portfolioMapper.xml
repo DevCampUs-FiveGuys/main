@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="data.mapper.PortfolioMapperInter">
-    <insert id="insertPortfolio" parameterType="data.dto.PortfolioDto">
-        INSERT INTO portfolio (member_id, title, description, file_name, readcount, created_at, updated_at)
-        VALUES (#{member_id}, #{title}, #{description}, #{file_name}, #{readcount}, now(), now())
+
+    <insert id="insertportfolio" parameterType="PortfolioDto">
+        insert into portfolio (portfolio_id,member_id,title,description,file_name,readcount,
+                               created_at,updated_at) values (#{portfolio_id},#{member_id},#{title},#{description},#{file_name},#{readcount},now(),now())
     </insert>
 
+    <select id="getTotalCount" resultType="int">
+        select count(*) from portfolio
+    </select>
 
-    <select id="portfolioData" parameterType="int" resultType="PortfolioDto">
+    <update id="updateReadcount" parameterType="int">
+        update portfolio set readcount=readcount+1 where portfolio_id=#{portfolio_id}
+    </update>
+
+    <select id="getData" parameterType="int" resultType="PortfolioDto">
         select * from portfolio where portfolio_id=#{portfolio_id}
     </select>
 
     <update id="updatePortfolio" parameterType="PortfolioDto">
-        update portfolio set title=#{title},description=#{description}
+        update portfolio set title=#{title}, description=#{description}, file_name=#{file_name} where portfolio_id=#{portfolio_id}
     </update>
 
     <delete id="deletePortfolio" parameterType="int">
         delete from portfolio where portfolio_id=#{portfolio_id}
     </delete>
+
 </mapper>
