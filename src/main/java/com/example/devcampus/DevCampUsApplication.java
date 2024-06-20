@@ -9,7 +9,7 @@ import org.thymeleaf.extras.springsecurity6.util.SpringSecurityContextUtils;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @MapperScan("data.mapper")
-@ComponentScan({"com.example.devcampus","data.*","controller.*","data.naver.cloud"})
+@ComponentScan({"com.example.devcampus","data.*","controller.*","data.naver.cloud","config"})
 public class DevCampUsApplication {
 
     public static void main(String[] args) {
