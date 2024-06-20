@@ -6,6 +6,7 @@
         layout:decorate="~{layouts/layout}"
 >
 
+<!-- ***** 문의 게시판 디자인 CSS 불러오기 ***** -->
 <head>
   <link rel="stylesheet" th:href="@{/css/qnalist.css}">
 </head>
@@ -13,6 +14,9 @@
 
 <body>
 <div layout:fragment="content">
+
+  <!-- ***** FAQ 작성 버튼 ***** -->
+
   <section class="faq-section">
     <div class="faq-insert">
       <div class="faq-insert_button">
@@ -28,12 +32,16 @@
     </div>
     <div class="container">
       <div class="row">
-        <!-- ***** FAQ Start ***** -->
+
+        <!-- ***** FAQ 시작 ***** -->
+
         <div class="col-lg-12 offset-lg-0">
           <div class="faq-title text-center pb-3">
             <h2>Frequently Asked Questions</h2>
           </div>
         </div>
+
+        <!-- ***** FAQ 리스트 나열 시작 ***** -->
 
         <div id="accordion" class="col-lg-12 offset-lg-0">
           <th:block th:each="qna, qnastat : ${qnalist}">
@@ -46,7 +54,10 @@
                         th:aria-expanded="${qnastat.index == 0}"
                         th:aria-controls="'faqCollapse-' + ${qnastat.index}">
                       <span class="badge" th:text="${qnastat.index + 1}"></span>
+
+                      <!-- ***** FAQ 제목 ***** -->
                       <span th:text="${qna.title}"></span>
+
                     </h5>
                   </div>
                 </div>
@@ -54,14 +65,26 @@
                      class="collapse"
                      aria-labelledby="faqHeading-[[${qnastat.index}]]"
                      data-parent="#accordion">
+                  <!-- ***** FAQ 내용 ***** -->
                   <div class="card-body">
                     <p th:text="${qna.content}"></p>
+
+                    <!-- ***** FAQ 수정/삭제 버튼 ***** -->
+                    <div class="btn-set">
+                      <a th:href="@{/qna/updateform(qna_id=${qna.qna_id})}">수정</a>
+                      <p class="seperate">|</p>
+                      <a th:href="@{/qna/delete(qna_id=${qna.qna_id})}">삭제</a>
+                    </div>
+
                   </div>
                 </div>
               </div>
             </div>
           </th:block>
         </div>
+
+        <!-- ***** FAQ 리스트 나열 끝 ***** -->
+
       </div>
     </div>
   </section>

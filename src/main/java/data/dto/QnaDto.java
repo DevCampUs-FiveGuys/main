@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 @Alias("QnaDto")
 @Builder
 @AllArgsConstructor
+//qna db에 있는 것들
 public class QnaDto {
     private int qna_id;
     private String title;
