@@ -13,10 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.http.HttpRequest;
 
 @Controller
-@RequestMapping("/portfolio")
 public class PortfolioController {
 
-    @Autowired
+    /*@Autowired
     private PortfolioService portfolioService;
 
     @PostMapping("/insert")
@@ -24,10 +23,10 @@ public class PortfolioController {
             @ModelAttribute PortfolioDto dto,
             @RequestParam("upload")MultipartFile upload,
             HttpRequest request
-            )
+    )
     {
         portfolioService.insertPortfolio(dto);
         return "redirect:/portfolio?portfolio_id=" + dto.getPortfolio_id();
-    }
+    }*/
 
 }

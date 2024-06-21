@@ -127,3 +127,8 @@
 .icon-heart{
     color: red;
 }
+
+canvas {
+    margin: 0 auto;
+    display: block;
+}
