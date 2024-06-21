@@ -22,12 +22,12 @@ public class  ReviewService {
         reviewMapperInter.insertReview(reviewDto);
     }
 
-    public List<ReviewDto> selectAllReview(String name, String num){
-        return reviewMapperInter.selectAllReview(name, num);
-    }
+//    public List<ReviewDto> selectAllReview(String name, String num){
+//        return reviewMapperInter.selectAllReview(name, num);
+//    }
 
     public List<ReviewDto> getAllReview(){
-        return reviewMapperInter.getAllReview();aa7
+        return reviewMapperInter.getAllReview();
     }
 
     public void deleteReview(int review_id) {
@@ -57,8 +57,8 @@ public class  ReviewService {
         return courseMapperInter.getAllCourseList();
     }
 
-    public List<String> getMemberName(String name, String num){
-        return reviewMapperInter.getMemberName(name, num);
-    }
+//    public List<String> getMemberName(String name, String num){
+//        return reviewMapperInter.getMemberName(name, num);
+//    }
 
 }

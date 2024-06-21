@@ -89,10 +89,6 @@ public class ReviewListController {
 
 //        model.addAttribute("likeCount", checkListService.ShowCountLike(reviewService.getid()));
 //        model.addAttribute("reviewLikeCount", reviewService.getLikeCount(review_id));
-        //checklike dto를 받아와 어차피 dto 안에 rev_id가 있는데 이게 reviewlist의 review_id랑 같은 거잖아?
-        //이거를 == 써가지고 같으면 checklike의 showcountlike를 사용하면 되지 않을까?
-
-
 
         return "thymeleaf/review"; // Return the name of the Thymeleaf template
     }
@@ -118,18 +114,18 @@ public class ReviewListController {
         return reviewService.getNumOfCourse(name);
     }
 
-    @GetMapping("/review/nums")
-    @ResponseBody
-    public String selectAllReview(
-            @RequestParam("name") String name,
-            @RequestParam("num") String num,
-            Model model){
-
-        List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name,num);
-
-        model.addAttribute("selectlist", selectreviewlist);
-
-        return "redirect:/review/list";
-    }
+//    @GetMapping("/review/nums")
+//    @ResponseBody
+//    public String selectAllReview(
+//            @RequestParam("name") String name,
+//            @RequestParam("num") String num,
+//            Model model){
+//
+//        List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name,num);
+//
+//        model.addAttribute("selectlist", selectreviewlist);
+//
+//        return "redirect:/review/list";
+//    }
 
 }

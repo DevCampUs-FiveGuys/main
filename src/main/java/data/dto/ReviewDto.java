@@ -16,7 +16,7 @@ public class ReviewDto {
     private String content;
     private Timestamp created_at;
     private double star;
-    private int like_count;
+    private int like;
     private String name;
     private int gender;
 }
