@@ -114,18 +114,17 @@ public class ReviewListController {
         return reviewService.getNumOfCourse(name);
     }
 
-//    @GetMapping("/review/nums")
-//    @ResponseBody
-//    public String selectAllReview(
-//            @RequestParam("name") String name,
-//            @RequestParam("num") String num,
-//            Model model){
-//
-//        List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name,num);
-//
-//        model.addAttribute("selectlist", selectreviewlist);
-//
-//        return "redirect:/review/list";
-//    }
+    @GetMapping("/review/nums")
+    @ResponseBody
+    public List<ReviewDto> selectAllReview(
+            @RequestParam("name") String name,
+            @RequestParam("num") String num){
+
+        List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name,num);
+
+       //  model.addAttribute("selectlist", selectreviewlist);
+
+        return selectreviewlist;
+    }
 
 }

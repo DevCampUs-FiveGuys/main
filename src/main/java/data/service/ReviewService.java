@@ -22,9 +22,9 @@ public class  ReviewService {
         reviewMapperInter.insertReview(reviewDto);
     }
 
-//    public List<ReviewDto> selectAllReview(String name, String num){
-//        return reviewMapperInter.selectAllReview(name, num);
-//    }
+    public List<ReviewDto> selectAllReview(String name, String num){
+        return reviewMapperInter.selectAllReview(name, num);
+    }
 
     public List<ReviewDto> getAllReview(){
         return reviewMapperInter.getAllReview();

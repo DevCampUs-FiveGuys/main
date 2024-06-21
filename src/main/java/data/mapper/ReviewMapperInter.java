@@ -10,14 +10,20 @@ public interface ReviewMapperInter {
 
     @Insert("insert into review (content, star, created_at) values (#{content}, #{star}, now())")
     public void insertReview(ReviewDto reviewDto);
-//    @Select("select content, created_at, star, `like` like_count,name,gender from review join(select member_id,name,gender from member where course_name=#{name} and course_num=#{num} as mem on mem.member_id = review.member_id)")
+
+    //    @Select("select content, created_at, star, `like` like_count,name,gender, review_id from review join(select member_id,name,gender from member where course_name=#{name} and course_num=#{num} as mem on mem.member_id = review.member_id)")
 //    public List<ReviewDto> selectAllReview(String name, String num);
+    @Select("select content, created_at, star, `like` like_count, name, gender, review_id from review join (select member_id, name, gender from member where course_name=#{name} and course_num=#{num}) as mem on mem.member_id = review.member_id")
+    public List<ReviewDto> selectAllReview(String name, String num);
+
     @Select("select * from review where review_id=#{review_id}")
     public ReviewDto getReiewData(int review_id);
+
     @Delete("delete from review where review_id=#{review_id}")
     public void deleteReview(int review_id);
-    @Select ("select round(avg(star),1) from review")
-    public  double getAvgStar();
+
+    @Select("select round(avg(star),1) from review")
+    public double getAvgStar();
 
     @Select("select * from review order by review_id asc")
     public List<ReviewDto> getAllReview();
@@ -31,6 +37,9 @@ public interface ReviewMapperInter {
 
     @Select("select count(*) from member")
     public int getTotalGender();
+
+
+//    List<ReviewDto> selectAllReview(String name, String num);
 //    @Update("update review set `like`=#{}")
 //    public int updateLike();
 
