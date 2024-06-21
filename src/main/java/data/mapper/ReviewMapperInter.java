@@ -13,7 +13,7 @@ public interface ReviewMapperInter {
 
     //    @Select("select content, created_at, star, `like` like_count,name,gender, review_id from review join(select member_id,name,gender from member where course_name=#{name} and course_num=#{num} as mem on mem.member_id = review.member_id)")
 //    public List<ReviewDto> selectAllReview(String name, String num);
-    @Select("select content, created_at, star, `like` like_count, name, gender, review_id from review join (select member_id, name, gender from member where course_name=#{name} and course_num=#{num}) as mem on mem.member_id = review.member_id")
+    @Select("select content, created_at, star, `like` like_count, name, gender, review_id, review.member_id, name from review join (select member_id, name, gender from member where course_name=#{name} and course_num=#{num}) as mem on mem.member_id = review.member_id")
     public List<ReviewDto> selectAllReview(String name, String num);
 
     @Select("select * from review where review_id=#{review_id}")
