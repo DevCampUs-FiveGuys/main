@@ -9,12 +9,12 @@ import java.util.List;
 @Mapper
 public interface CourseMapperInter {
 
-    @Select("select * from course")
+    //중복처리한 과정명을 course db에서 불러오기
+    @Select("select distinct name from course")
     public List<CourseDto> getAllCourseList();
 
-    @Select("select num from course where name=${name}")
-    public String getNumOfCourse(String name);
-
-
+    //과정명 선택시 과정명에 해당하는 기수명을 course db에서 불러오기
+    @Select("select num from course where name=#{name}")
+    public List<String> getNumOfCourse(String name);
 
 }

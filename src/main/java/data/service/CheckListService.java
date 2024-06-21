@@ -11,7 +11,7 @@ public class CheckListService {
     private CheckLikeMapperInter checkLikeMapperInter;
 
     public int ShowCountLike(int rev_id){
-        return checkLikeMapperInter.ShowCountLike(rev_id);
+        return checkLikeMapperInter.getCountLike(rev_id);
     }
 
     public void insertLike(int mem_id, int rev_id){
