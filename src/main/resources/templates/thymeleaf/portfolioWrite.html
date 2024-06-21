@@ -14,7 +14,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <form action="/portfolio/update" method="post" enctype="multipart/form-data">
+    <form action="/portfolio/insert" method="post" enctype="multipart/form-data">
         <div class="modern-title-input-container">
             <h1>Portfolio Write</h1>
             <label for="modern-title-input" class="modern-title-label"></label>
@@ -22,7 +22,7 @@
         </div>
         <div>
             <div class="p_edit">
-                <div id="summernote"></div>
+                <textarea id="summernote" name="description" th:value="${description}"></textarea>
                 <script>
                     $('#summernote').summernote({
                         placeholder: '내용을 입력하세요',
