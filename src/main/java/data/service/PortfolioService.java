@@ -6,19 +6,17 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class PortfolioService {
 
-    @NonNull
+    @Autowired
     private PortfolioMapperInter portfolioMapper;
 
     public void insertPortfolio(PortfolioDto dto)
     {
-        int portfolio_id = dto.getPortfolio_id();
-
         portfolioMapper.insertPortfolio(dto);
     }
 
@@ -27,14 +25,14 @@ public class PortfolioService {
         return portfolioMapper.getTotalCount();
     }
 
-    public void updateReadcount(int portfolio_id)
+    /*public void updateReadcount(int portfolio_id)
     {
         portfolioMapper.updateReadcount(portfolio_id);
-    }
+    }*/
 
-    public PortfolioDto getData(int portfolio_id)
+    public PortfolioDto getData()
     {
-        return portfolioMapper.getData(portfolio_id);
+        return portfolioMapper.getData();
     }
 
     public void updatePortfolio(PortfolioDto dto)

@@ -4,7 +4,7 @@
       layout:decorate="~{layouts/layout}">
 <head>
     <link rel="stylesheet" th:href="@{/css/portfolio.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <script>
         // Function to toggle favorite (like) status
@@ -25,10 +25,10 @@
                 // TODO: Remove like state from local storage or send to server
             }
         }
-    </script>
+    </script>-->
 </head>
 <body>
-<div layout:fragment="content">
+    <div layout:fragment="content">
     <h1 class="portfolio_h1">PortFolio</h1>
         <div class="filters1">
             <button class="active">전체</button>
@@ -44,22 +44,25 @@
         </div>
 
         <div class="course1-list">
+            <tr th:each="dto : ${list}">
+                <td th:text="${dto.title}"></td>
+                <td th:text="${dto.description}"></td>
+            </tr>
             <div class="course1">
-                <img th:src="@{images/devops.png}" th:onclick="|location.href='@{/portfolioDetail}'|"
-                     alt="네이버클라우드캠프 15기"/>
-                <div class="course1-details">
-                    <p class="title" th:onclick="|location.href='@{/portfolioDetail}'|">
-                        [강남센터] [N캠프] 클라우드 기반 웹 개발자 & 데브옵스 과정_15기
-                    </p>
-                    <p class="date">개강일: 2024-07-02</p>
-                    <p class="date">교육기간: 2024-07-02 ~ 2025-01-08</p>
-                    <button type="button" class="favorite-button" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
+            <img th:src="@{images/devops.png}" th:onclick="|location.href='@{/portfolioDetail}'|"
+                alt="네이버클라우드캠프 15기"/>
+            <div class="course1-details">
+                 <p class="title" th:onclick="|location.href='@{/portfolioDetail}'|">
+                    [강남센터] [N캠프] 클라우드 기반 웹 개발자 & 데브옵스 과정_15기
+                 </p>
+                 <p class="date">개강일: 2024-07-02</p>
+                 <p class="date">교육기간: 2024-07-02 ~ 2025-01-08</p>
+                 <button type="button" class="favorite-button" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                 </button>
             </div>
+         </div>
         </div>
     </div>
-
 </body>
 </html>
