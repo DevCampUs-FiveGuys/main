@@ -28,7 +28,9 @@ public interface ReviewMapperInter {
     public int countByGender(int gender);
     @Select("select count(*) from member")
     public int getTotalGender();
-    @Update("update review set `like`=#{}")
-    public int updateLike();
+//    @Update("update review set `like`=#{}")
+//    public int updateLike();
+
+
 
 }

@@ -1,6 +1,8 @@
 package data.service;
 
+import data.dto.CourseDto;
 import data.dto.ReviewDto;
+import data.mapper.CourseMapperInter;
 import data.mapper.ReviewMapperInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,8 @@ public class  ReviewService {
     @Autowired
     private ReviewMapperInter reviewMapperInter;
 
+    @Autowired
+    private CourseMapperInter courseMapperInter;
 
     public void insertReview(ReviewDto reviewDto) {
         reviewMapperInter.insertReview(reviewDto);
@@ -32,5 +36,13 @@ public class  ReviewService {
 
     public int countByGender(int gender){return reviewMapperInter.countByGender(gender);}
     public int getTotalGender(){return reviewMapperInter.getTotalGender();}
+
+    public List<String> getNumOfCourse(String name){
+        return courseMapperInter.getNumOfCourse(name);
+    }
+
+    public List<CourseDto> getAllCourseList(){
+        return courseMapperInter.getAllCourseList();
+    }
 
 }
