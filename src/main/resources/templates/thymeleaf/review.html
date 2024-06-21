@@ -6,14 +6,6 @@
     <link rel="stylesheet" th:href="@{/css/review.css}">
 </head>
 
-<script type="text/javascript">
-
-
-
-    // Doughnut Chart
-</script>
-
-
 <div layout:fragment="content">
     <!-- 제목 -->
     <div class="untree_co-section">
@@ -30,7 +22,7 @@
 
     <div class="untree_co-section bg-light" style="border-bottom: 1px solid gray">
         <div class="container">
-            <!--    top-1 : 과정명, 기수 검색 -->
+            <!--  과정명, 기수 검색 -->
             <div class="row justify-content-center mb-5 text-center">
                 <div class="col-lg-6">
                     <p>과정명과 기수를 선택하여 후기를 볼 수 있어요!</p>
@@ -38,7 +30,7 @@
                         <select id="courseName" onchange="loadCourseNums()"
                                 style="width: 250px;height: 25px;margin-right: 20px; border-radius: 20px;">
                             <option value="">과정명을 선택하세요</option>
-                            <!-- Thymeleaf를 이용해 서버에서 받은 과정명 옵션을 반복 -->
+                            <!-- Thymeleaf를 이용해 서버에서 받은 과정명을 출력 -->
                             <option th:each="courselist : ${courselist}" th:value="${courselist.name}"
                                     th:text="${courselist.name}"></option>
                         </select>
@@ -46,7 +38,7 @@
                             <option value="">기수를 선택해주세요</option>
                         </select>
 
-                        <!-- 과정명 선택 script 시작 -->
+                        <!-- 과정명 선택시 기수명 불러오는 기능 script -->
                         <script type="text/javascript">
                             function loadCourseNums() {
                                 let selectedCourseName = $("#courseName").val();
@@ -72,10 +64,9 @@
                         </script>
                     </div>
                 </div>
-
             </div>
 
-            <!--      top-2 : 평점 &  비율 & 성별      -->
+            <!--   평점 &  비율 & 성별     -->
             <div class="row align-items-stretch">
                 <div class="col-md-6 col-lg-4">
                     <div class="untree_co-testimonial h-100" style="text-align: center">
@@ -224,60 +215,7 @@
             }
         }
 
-
-        // function clickLike(element, review_id) {
-        //     if (element.style.color === 'red') {
-        //         element.style.color = 'black';
-        //     } else {
-        //         element.style.color = 'red';
-        //     }
-        //
-        //     // 좋아요 카운트 증가/감소
-        //     const likeCountSpan = element.nextElementSibling.nextElementSibling;
-        //     let likeCount = parseInt(likeCountSpan.textContent);
-        //     if (element.style.color === 'red') {
-        //         likeCount++;
-        //     } else {
-        //         likeCount--;
-        //     }
-        //     likeCountSpan.textContent = likeCount;
-        //
-        //     // AJAX 요청을 통해 서버에 좋아요 업데이트
-        //     const xhr = new XMLHttpRequest();
-        //     xhr.open("POST", `/update-like/${review_id}`, true);
-        //     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        //     xhr.onreadystatechange = function () {
-        //         if (xhr.readyState === 4 && xhr.status === 200) {
-        //             console.log("Like updated successfully!");
-        //         } else if (xhr.readyState === 4) {
-        //             console.error("Error updating like.");
-        //         }
-        //     };
-        //     xhr.send(JSON.stringify({likeCount: likeCount}));
-        // }
-        //
-        // // 하트 누르면 빨간색 하트로 변하는 click event
-        // function clickLike(element, review_id) {
-        //     // element.style.color='red';
-        //     const likeCountSpan = element.nextElementSibling.nextElementSibling;
-        //     let likeCount = parseInt(likeCountSpan.textContent);
-        //     likeCount++;
-        //     likeCountSpan.textContent = likeCount;
-        //
-        //     //     ajax 요청 통해 서버에 좋아요 없데이트
-        //     const xhr = new XMLHttpRequest();
-        //     xhr.open("POST", `/update-like/${review_id}`, true);
-        //     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        //     xhr.onreadystatechange = function () {
-        //         if (xhr.readyState === 4 && xhr.status === 200) {
-        //             console.log("Like updated successfully!")
-        //         } else if (xhr.readyState === 4) {
-        //             console.log("Error updating like");
-        //         }
-        //     };
-        //     xhr.send(JSON.stringify({likeCount: likeCount}));
-        // }
-        // Doughnut Chart
+        // 성별 비율 Doughnut Chart
         $(function(){
             let malePercentage = [[${malePercentage}]];
             let femalePercentage = [[${femalePercentage}]];
@@ -306,7 +244,6 @@
                         "여성"
                     ]
                 },
-                // options: { responsive: false }
             });
         });
     </script>
