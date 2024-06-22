@@ -23,10 +23,6 @@ public interface AttendanceMapperInter {
     @Delete("delete from attendance where DATE(check_in) = DATE(now()) and member_id = 1")
     public void deleteCheckIn(int member_id);
 
-    // 캘린더 내에서 퇴실 마크를 클릭해서 삭제하면 check_out 데이터도 DB 에서 삭제
-    @Update("update attendance set check_out = null where DATE(check_in) = DATE(now()) and member_id = 1")
-    public void deleteCheckOut(int member_id);
-
     // 당일에 출석을 하면 출석일수 데이터가 업데이트 되어야함 (출석일수 조회)
     @Select("select count(*) from attendance where member_id = 1 and check_in is not null")
     public int getAttendanceDays(int member_id);

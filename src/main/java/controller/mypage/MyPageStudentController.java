@@ -67,13 +67,6 @@ public class MyPageStudentController {
         attendanceService.deleteCheckIn(member_id);
     }
 
-    // 퇴실 데이터 삭제 (업데이트)
-    @DeleteMapping("/attendance/checkout")
-    @ResponseBody
-    public void deleteCheckOut(@RequestParam int member_id) {
-        attendanceService.deleteCheckOut(member_id);
-    }
-
     // 출석일수 조회
     @GetMapping("/attendance/days")
     @ResponseBody

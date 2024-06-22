@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         info.event.remove();
+                        removeAttendanceMarks(info.event.startStr);
+                        deleteVacation(info.event.startStr); // AJAX call to delete vacation
                         Swal.fire({
                             title: '취소 완료',
                             text: '휴가가 취소되었습니다.',
@@ -27,15 +29,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             } else if (info.event.title.startsWith('입실')) {
-                if (checkOutDone) {
+                // Check if check-out is already done
+                var checkOutEvent = calendar.getEvents().find(event => event.title.startsWith('퇴실') && event.startStr === info.event.startStr);
+                if (checkOutEvent) {
                     Swal.fire({
                         title: '취소 오류',
-                        text: '퇴실을 먼저 취소해야 입실을 취소할 수 있습니다.',
+                        text: '이미 퇴실을 완료하여 입실을 취소할 수 없습니다.',
                         icon: 'error',
                         confirmButtonColor: '#3085d6',
                     });
                     return;
                 }
+
                 var currentTime = new Date();
                 if ((currentTime - checkInTime) > 300000) { // 5 minutes in milliseconds
                     Swal.fire({
@@ -59,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (result.isConfirmed) {
                         info.event.remove();
                         removeAttendanceMarks(info.event.startStr);
+                        deleteCheckIn(); // AJAX call to delete check-in
                         Swal.fire({
                             title: '취소 완료',
                             text: '입실이 취소되었습니다.',
@@ -69,44 +75,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         checkInTime = null;
                     }
                 });
-            } else if (info.event.title.startsWith('퇴실')) {
-                var currentTime = new Date();
-                if ((currentTime - checkOutTime) > 300000) { // 5 minutes in milliseconds
-                    Swal.fire({
-                        title: '취소 오류',
-                        text: '퇴실 후 5분이 지나 취소할 수 없습니다.',
-                        icon: 'error',
-                        confirmButtonColor: '#3085d6',
-                    });
-                    return;
-                }
-                Swal.fire({
-                    title: '퇴실 취소',
-                    text: '퇴실을 취소 하시겠습니까?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: '확인',
-                    cancelButtonText: '취소',
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        info.event.remove();
-                        removeAttendanceMarks(info.event.startStr);
-                        Swal.fire({
-                            title: '취소 완료',
-                            text: '퇴실이 취소되었습니다.',
-                            icon: 'success',
-                            confirmButtonColor: '#3085d6',
-                        });
-                        checkOutDone = false;
-                        checkOutTime = null;
-                    }
-                });
             }
         }
     });
+
     calendar.render();
+
+    // Load attendance data from the server
+    loadAttendanceData();
 
     // Utility function to format dates
     function formatDate(date) {
@@ -148,6 +124,57 @@ document.addEventListener('DOMContentLoaded', function () {
         checkOutTime = null;
     }
 
+    // AJAX function to load attendance data
+    function loadAttendanceData() {
+        $.ajax({
+            url: '/student_mypage/attendance/all',
+            method: 'GET',
+            data: {
+                member_id: 1
+            },
+            success: function (data) {
+                data.forEach(function (attendance) {
+                    var date = formatDate(new Date(attendance.check_in || attendance.check_out));
+
+                    if (attendance.check_in) {
+                        addEvent('입실: ' + new Date(attendance.check_in).toLocaleTimeString(), date, '#4287f5', 2);
+                        checkInDone = true; // Check-in is done for this date
+                    }
+                    if (attendance.check_out) {
+                        addEvent('퇴실: ' + new Date(attendance.check_out).toLocaleTimeString(), date, '#4287f5', 2);
+                        checkOutDone = true; // Check-out is done for this date
+                    }
+
+                    // Determine attendance status
+                    if (attendance.check_in && attendance.check_out) {
+                        var checkInTime = new Date(attendance.check_in);
+                        var status = '출석';
+                        var statusColor = '#1dd174';
+                        var checkInHour = checkInTime.getHours();
+                        var checkInMinute = checkInTime.getMinutes();
+
+                        if (checkInHour > 9 || (checkInHour == 9 && checkInMinute > 40)) {
+                            status = '지각';
+                            statusColor = '#fab70f';
+                            if (checkInHour >= 14) {
+                                status = '결석';
+                                statusColor = '#e62e2e';
+                            }
+                        }
+                        addEvent(status, date, statusColor, 1);
+                    } else if (attendance.absent) {
+                        addEvent('결석', date, '#e62e2e', 1);
+                    } else if (attendance.late) {
+                        addEvent('지각', date, '#fab70f', 1);
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading attendance data:', error);
+            }
+        });
+    }
+
     // Check-in button event listener
     document.getElementById('check-in-btn').addEventListener('click', function () {
         if (checkInDone) {
@@ -175,14 +202,27 @@ document.addEventListener('DOMContentLoaded', function () {
             cancelButtonColor: '#d33',
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: '입실 완료',
-                    text: '입실 시간: ' + checkInTime.toLocaleTimeString(),
-                    icon: 'success',
-                    confirmButtonColor: '#3085d6',
+                $.ajax({
+                    url: '/student_mypage/attendance/checkin',
+                    method: 'POST',
+                    data: {
+                        check_in: currentDate,
+                        member_id: 1
+                    },
+                    success: function () {
+                        Swal.fire({
+                            title: '입실 완료',
+                            text: '입실 시간: ' + checkInTime.toLocaleTimeString(),
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                        });
+                        addEvent('입실: ' + checkInTime.toLocaleTimeString(), currentDate, '#4287f5', 2);
+                        checkInDone = true;
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error checking in:', error);
+                    }
                 });
-                addEvent('입실: ' + checkInTime.toLocaleTimeString(), currentDate, '#4287f5', 2);
-                checkInDone = true;
             }
         });
     });
@@ -223,33 +263,69 @@ document.addEventListener('DOMContentLoaded', function () {
             cancelButtonColor: '#d33',
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: '퇴실 완료',
-                    text: '퇴실 시간: ' + checkOutTime.toLocaleTimeString(),
-                    icon: 'success',
-                    confirmButtonColor: '#3085d6',
-                });
-                addEvent('퇴실: ' + checkOutTime.toLocaleTimeString(), currentDate, '#4287f5', 2);
-                checkOutDone = true;
+                $.ajax({
+                    url: '/student_mypage/attendance/checkout',
+                    method: 'POST',
+                    data: {
+                        check_out: currentDate,
+                        member_id: 1
+                    },
+                    success: function () {
+                        Swal.fire({
+                            title: '퇴실 완료',
+                            text: '퇴실 시간: ' + checkOutTime.toLocaleTimeString(),
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                        });
+                        addEvent('퇴실: ' + checkOutTime.toLocaleTimeString(), currentDate, '#4287f5', 2);
+                        checkOutDone = true;
 
-                // Determine attendance status
-                var status = '출석';
-                var statusColor = '#1dd174';
-                var checkInHour = checkInTime.getHours();
-                var checkInMinute = checkInTime.getMinutes();
+                        // Determine attendance status
+                        var status = '출석';
+                        var statusColor = '#1dd174';
+                        var checkInHour = checkInTime.getHours();
+                        var checkInMinute = checkInTime.getMinutes();
 
-                if (checkInHour > 9 || (checkInHour == 9 && checkInMinute > 40)) {
-                    status = '지각';
-                    statusColor = '#fab70f';
-                    if (checkInHour >= 14) {
-                        status = '결석';
-                        statusColor = '#e62e2e';
+                        if (checkInHour > 9 || (checkInHour == 9 && checkInMinute > 40)) {
+                            status = '지각';
+                            statusColor = '#fab70f';
+                            if (checkInHour >= 14) {
+                                status = '결석';
+                                statusColor = '#e62e2e';
+                            }
+                        }
+                        addEvent(status, currentDate, statusColor, 1);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error checking out:', error);
                     }
-                }
-                addEvent(status, currentDate, statusColor, 1);
+                });
             }
         });
     });
+
+    // Function to delete check-in data
+    function deleteCheckIn() {
+        $.ajax({
+            url: '/student_mypage/attendance/checkin',
+            method: 'DELETE',
+            data: {
+                member_id: 1
+            },
+            success: function () {
+                console.log('Check-in data deleted');
+            },
+            error: function (xhr, status, error) {
+                console.error('Error deleting check-in data:', error);
+            }
+        });
+    }
+
+    // Function to delete vacation data
+    function deleteVacation(date) {
+        // Implement the corresponding server-side function if necessary
+        console.log('Vacation data deleted for date:', date);
+    }
 
     // Vacation form submission event listener
     document.getElementById('vacation-form').addEventListener('submit', function (event) {
@@ -307,14 +383,29 @@ document.addEventListener('DOMContentLoaded', function () {
             cancelButtonColor: '#d33',
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: '휴가 신청 완료',
-                    text: '휴가 날짜: ' + date + '\n휴가 사유: ' + reason,
-                    icon: 'success',
-                    confirmButtonColor: '#3085d6',
+                $.ajax({
+                    url: '/student_mypage/attendance/vacation',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        check_in: date,
+                        vacation: 1,
+                        member_id: 1
+                    }),
+                    success: function () {
+                        Swal.fire({
+                            title: '휴가 신청 완료',
+                            text: '휴가 날짜: ' + date + '\n휴가 사유: ' + reason,
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                        });
+                        addEvent('휴가', date, '#934bd6', 1);
+                        $('#vacationModal').modal('hide');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error applying for vacation:', error);
+                    }
                 });
-                addEvent('휴가', date, '#934bd6', 1);
-                $('#vacationModal').modal('hide');
             }
         });
     });
