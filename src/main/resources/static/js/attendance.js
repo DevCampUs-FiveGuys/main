@@ -29,23 +29,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             } else if (info.event.title.startsWith('입실')) {
-                // Check if check-out is already done
                 var checkOutEvent = calendar.getEvents().find(event => event.title.startsWith('퇴실') && event.startStr === info.event.startStr);
                 if (checkOutEvent) {
                     Swal.fire({
                         title: '취소 오류',
                         text: '이미 퇴실을 완료하여 입실을 취소할 수 없습니다.',
-                        icon: 'error',
-                        confirmButtonColor: '#3085d6',
-                    });
-                    return;
-                }
-
-                var currentTime = new Date();
-                if ((currentTime - checkInTime) > 300000) { // 5 minutes in milliseconds
-                    Swal.fire({
-                        title: '취소 오류',
-                        text: '입실 후 5분이 지나 취소할 수 없습니다.',
                         icon: 'error',
                         confirmButtonColor: '#3085d6',
                     });
@@ -81,15 +69,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     calendar.render();
 
-    // Load attendance data from the server
     loadAttendanceData();
 
-    // Utility function to format dates
     function formatDate(date) {
         return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
     }
 
-    // Function to add an event to the calendar with color and custom property
     function addEvent(title, date, color, statusOrder) {
         calendar.addEvent({
             title: title,
@@ -97,11 +82,10 @@ document.addEventListener('DOMContentLoaded', function () {
             allDay: true,
             backgroundColor: color,
             borderColor: color,
-            statusOrder: statusOrder // Custom property to control event order
+            statusOrder: statusOrder
         });
     }
 
-    // Function to remove attendance marks (출석, 지각, 결석) for a given date
     function removeAttendanceMarks(date) {
         calendar.getEvents().forEach(event => {
             if (event.startStr === date && (event.title === '출석' || event.title === '지각' || event.title === '결석')) {
@@ -110,13 +94,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Track check-in and check-out status and times
     var checkInDone = false;
     var checkOutDone = false;
     var checkInTime = null;
     var checkOutTime = null;
 
-    // Reset check-in and check-out status at the end of each day
     function resetCheckStatus() {
         checkInDone = false;
         checkOutDone = false;
@@ -124,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
         checkOutTime = null;
     }
 
-    // AJAX function to load attendance data
     function loadAttendanceData() {
         $.ajax({
             url: '/student_mypage/attendance/all',
@@ -138,16 +119,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if (attendance.check_in) {
                         addEvent('입실: ' + new Date(attendance.check_in).toLocaleTimeString(), date, '#4287f5', 2);
-                        checkInDone = true; // Check-in is done for this date
+                        checkInDone = true;
+                        checkInTime = new Date(attendance.check_in);
                     }
                     if (attendance.check_out) {
                         addEvent('퇴실: ' + new Date(attendance.check_out).toLocaleTimeString(), date, '#4287f5', 2);
-                        checkOutDone = true; // Check-out is done for this date
-                    }
+                        checkOutDone = true;
+                        checkOutTime = new Date(attendance.check_out);
 
-                    // Determine attendance status
-                    if (attendance.check_in && attendance.check_out) {
-                        var checkInTime = new Date(attendance.check_in);
                         var status = '출석';
                         var statusColor = '#1dd174';
                         var checkInHour = checkInTime.getHours();
@@ -162,12 +141,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             }
                         }
                         addEvent(status, date, statusColor, 1);
-                    } else if (attendance.absent) {
-                        addEvent('결석', date, '#e62e2e', 1);
-                    } else if (attendance.late) {
-                        addEvent('지각', date, '#fab70f', 1);
                     }
                 });
+                updateAttendanceCounts();
             },
             error: function (xhr, status, error) {
                 console.error('Error loading attendance data:', error);
@@ -175,12 +151,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Check-in button event listener
     document.getElementById('check-in-btn').addEventListener('click', function () {
         if (checkInDone) {
             Swal.fire({
                 title: '입실 오류',
-                text: '이미 오늘 입실했습니다.',
+                text: '오늘 이미 입실했습니다.',
                 icon: 'error',
                 confirmButtonColor: '#3085d6',
             });
@@ -227,7 +202,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Check-out button event listener
     document.getElementById('check-out-btn').addEventListener('click', function () {
         if (!checkInDone) {
             Swal.fire({
@@ -241,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (checkOutDone) {
             Swal.fire({
                 title: '퇴실 오류',
-                text: '이미 오늘 퇴실했습니다.',
+                text: '오늘 이미 퇴실했습니다.',
                 icon: 'error',
                 confirmButtonColor: '#3085d6',
             });
@@ -280,7 +254,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         addEvent('퇴실: ' + checkOutTime.toLocaleTimeString(), currentDate, '#4287f5', 2);
                         checkOutDone = true;
 
-                        // Determine attendance status
                         var status = '출석';
                         var statusColor = '#1dd174';
                         var checkInHour = checkInTime.getHours();
@@ -294,7 +267,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 statusColor = '#e62e2e';
                             }
                         }
+
                         addEvent(status, currentDate, statusColor, 1);
+                        updateAttendanceStatus(status);
                     },
                     error: function (xhr, status, error) {
                         console.error('Error checking out:', error);
@@ -304,7 +279,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Function to delete check-in data
     function deleteCheckIn() {
         $.ajax({
             url: '/student_mypage/attendance/checkin',
@@ -321,13 +295,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Function to delete vacation data
     function deleteVacation(date) {
-        // Implement the corresponding server-side function if necessary
         console.log('Vacation data deleted for date:', date);
     }
 
-    // Vacation form submission event listener
     document.getElementById('vacation-form').addEventListener('submit', function (event) {
         event.preventDefault();
         var date = document.getElementById('vacation-date').value;
@@ -335,7 +306,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var currentDate = new Date();
         var formattedCurrentDate = formatDate(currentDate);
 
-        // Prevent vacation requests for today or past dates
         if (date <= formattedCurrentDate) {
             Swal.fire({
                 title: '휴가 신청 오류',
@@ -346,7 +316,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Calculate the start date of the 6-month period
         var courseStartDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 6, currentDate.getDate());
         var formattedCourseStartDate = formatDate(courseStartDate);
 
@@ -410,7 +379,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Additional logic to determine and update attendance status at the end of the day
     function finalizeAttendance() {
         var currentTime = new Date();
         var currentDate = formatDate(currentTime);
@@ -419,22 +387,110 @@ document.addEventListener('DOMContentLoaded', function () {
         var checkOutEvent = events.find(event => event.title.startsWith('퇴실') && event.startStr === currentDate);
 
         if (!checkInEvent && !checkOutEvent) {
-            // No check-in and no check-out recorded, mark as absent
             addEvent('결석', currentDate, '#e62e2e', 1);
+            updateAttendanceStatus('결석');
         } else if (checkInEvent && !checkOutEvent) {
-            // Check-in but no check-out recorded, mark as absent
             addEvent('결석', currentDate, '#e62e2e', 1);
+            updateAttendanceStatus('결석');
         }
 
-        // Reset check-in and check-out status at the end of the day
         resetCheckStatus();
     }
 
-    // Schedule finalizeAttendance to run at the end of each day (23:59)
+    function updateAttendanceStatus(status) {
+        if (status === '출석') {
+            $.ajax({
+                url: '/student_mypage/attendance/days',
+                method: 'GET',
+                data: {
+                    member_id: 1
+                },
+                success: function (attendanceDays) {
+                    updateAttendanceCounts();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error updating attendance days:', error);
+                }
+            });
+        } else if (status === '지각') {
+            $.ajax({
+                url: '/student_mypage/attendance/late',
+                method: 'POST',
+                data: {
+                    member_id: 1
+                },
+                success: function () {
+                    updateAttendanceCounts();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error updating late status:', error);
+                }
+            });
+        } else if (status === '결석') {
+            $.ajax({
+                url: '/student_mypage/attendance/absent',
+                method: 'POST',
+                data: {
+                    member_id: 1
+                },
+                success: function () {
+                    updateAttendanceCounts();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error updating absent status:', error);
+                }
+            });
+        }
+    }
+
+    function updateAttendanceCounts() {
+        $.ajax({
+            url: '/student_mypage/attendance/days',
+            method: 'GET',
+            data: {
+                member_id: 1
+            },
+            success: function (attendanceDays) {
+                document.getElementById('attendance-count').innerText = attendanceDays;
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching attendance days:', error);
+            }
+        });
+
+        $.ajax({
+            url: '/student_mypage/attendance/late/max',
+            method: 'GET',
+            data: {
+                member_id: 1
+            },
+            success: function (lateDays) {
+                document.getElementById('late-count').innerText = lateDays;
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching late days:', error);
+            }
+        });
+
+        $.ajax({
+            url: '/student_mypage/attendance/absent/max',
+            method: 'GET',
+            data: {
+                member_id: 1
+            },
+            success: function (absentDays) {
+                document.getElementById('absent-count').innerText = absentDays;
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching absent days:', error);
+            }
+        });
+    }
+
     setInterval(function () {
         var now = new Date();
         if (now.getHours() === 23 && now.getMinutes() === 59) {
             finalizeAttendance();
         }
-    }, 60000); // Check every minute
+    }, 60000);
 });

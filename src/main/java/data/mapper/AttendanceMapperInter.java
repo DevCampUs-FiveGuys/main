@@ -24,7 +24,7 @@ public interface AttendanceMapperInter {
     public void deleteCheckIn(int member_id);
 
     // 당일에 출석을 하면 출석일수 데이터가 업데이트 되어야함 (출석일수 조회)
-    @Select("select count(*) from attendance where member_id = 1 and check_in is not null")
+    @Select("select count(*) from attendance where member_id = 1 and check_in is not null and check_out is not null and absent = 0 and vacation = 0 and hospital = 0")
     public int getAttendanceDays(int member_id);
 
     // 당일에 지각을 하면 지각 데이터가 업데이트 되어야함 (단, 지각을 3번 하면 1회 결석으로 처리)
