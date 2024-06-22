@@ -123,6 +123,7 @@
                                     if(starVal <= starRating) {
                                         starsHTML += `<input type="radio" value="${starVal}" checked><label title="${starVal}점"></label>`
                                     } else if (starVal - 0.5 === starRating) {
+                                        starsHTML += `<input type="radio" value="${starVal}"><label title="${starVal}점"></label>`;
                                         starsHTML += `<input type="radio" value="${starVal}.5" checked><label class="half" title="${starVal - 0.5}점"></label>`;
                                     }else {
                                         // 그 외의 경우 비어 있는 별을 추가하여 표시
@@ -242,49 +243,43 @@
     <!--    입력된 후기 목록 -->
     <div id="reviewList">
         <div th:fragment="reviewListFrgment">
-            <div class="reviews" th:each="selectlist : ${selectlist}">
+            <div class="reviews" th:each="reviewlist : ${reviewlist}">
                 <div class="reviews-box">
                     <div class="reviews-box-1">
                         <div class="reviews-box-2">
                             <div class="review-name">
-                                <span id="member-name"></span>
+                                <span id="member-name" th:text="${reviewlist.name}"></span>
                             </div>
                             <fieldset class="rate2">
-                                <input type="radio" value="5.0" th:checked="${selectlist.star == 5.0}">
+                                <input type="radio" value="5.0" th:checked="${reviewlist.star == 5.0}">
                                 <label title="5점"></label>
-                                <input type="radio" value="4.5" th:checked="${selectlist.star == 4.5}">
+                                <input type="radio" value="4.5" th:checked="${reviewlist.star == 4.5}">
                                 <label class="half" title="4.5점"></label>
-                                <input type="radio" value="4.0" th:checked="${selectlist.star == 4.0}">
+                                <input type="radio" value="4.0" th:checked="${reviewlist.star == 4.0}">
                                 <label title="4점"></label>
-                                <input type="radio" value="3.5" th:checked="${selectlist.star == 3.5}">
+                                <input type="radio" value="3.5" th:checked="${reviewlist.star == 3.5}">
                                 <label class="half" title="3.5점"></label>
-                                <input type="radio" value="3.0" th:checked="${selectlist.star == 3.0}">
+                                <input type="radio" value="3.0" th:checked="${reviewlist.star == 3.0}">
                                 <label title="3점"></label>
-                                <input type="radio" value="2.5" th:checked="${selectlist.star == 2.5}">
+                                <input type="radio" value="2.5" th:checked="${reviewlist.star == 2.5}">
                                 <label class="half" title="2.5점"></label>
-                                <input type="radio" value="2.0" th:checked="${selectlist.star == 2.0}">
+                                <input type="radio" value="2.0" th:checked="${reviewlist.star == 2.0}">
                                 <label title="2점"></label>
-                                <input type="radio" value="1.5" th:checked="${selectlist.star == 1.5}">
+                                <input type="radio" value="1.5" th:checked="${reviewlist.star == 1.5}">
                                 <label class="half" title="1.5점"></label>
-                                <input type="radio" value="1.0" th:checked="${selectlist.star == 1.0}">
+                                <input type="radio" value="1.0" th:checked="${reviewlist.star == 1.0}">
                                 <label title="1점"></label>
-                                <input type="radio" value="0.5" th:checked="${selectlist.star == 0.5}">
+                                <input type="radio" value="0.5" th:checked="${reviewlist.star == 0.5}">
                                 <label class="half" title="0.5점"></label>
                             </fieldset>
-                            <div class="review-gender" th:text="${selectlist.gender}"></div>
+                            <div class="review-gender" th:text="${reviewlist.gender}"></div>
                         </div>
-
-                        <!--                <div id="reviewLike-[[${reviewlist.index}]]">-->
-                        <!--                    <i class="icon-heart"></i>-->
-                        <!--                    <span>좋아요 :</span>-->
-                        <!--                    <span class="like-count" th:text="${reviewlist.like}">0</span>-->
-                        <!--                </div>-->
                     </div>
-                    <div class="review-content" th:text="${selectlist.content}"></div>
+                    <div class="review-content" th:text="${reviewlist.content}"></div>
                     <div class="reviews-box-3">
                         <div class="review-writetime"
-                             th:text="${#dates.format(selectlist.created_at, 'yyyy-MM-dd')}"></div>
-                        <a th:href="@{/review/delete(review_id=${selectlist.review_id})}">
+                             th:text="${#dates.format(reviewlist.created_at, 'yyyy-MM-dd')}"></div>
+                        <a th:href="@{/review/delete(review_id=${reviewlist.review_id})}">
                             <i class="icon-delete"></i>
                         </a>
                     </div>
