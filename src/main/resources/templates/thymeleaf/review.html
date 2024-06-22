@@ -114,7 +114,6 @@
                                 let starsHTML = "";
                                 const totalStar = 5;
                                 const starVal = totalStar - starRating;
-                                console.log(starVal);
 
 
                                 for (let i = 1; i<=totalStar; i++) {
@@ -247,9 +246,7 @@
                 <div class="reviews-box">
                     <div class="reviews-box-1">
                         <div class="reviews-box-2">
-                            <div class="review-name">
-                                <span id="member-name" th:text="${reviewlist.name}"></span>
-                            </div>
+                            <div class="review-name" th:text="${reviewlist.name}"></div>
                             <fieldset class="rate2">
                                 <input type="radio" value="5.0" th:checked="${reviewlist.star == 5.0}">
                                 <label title="5점"></label>

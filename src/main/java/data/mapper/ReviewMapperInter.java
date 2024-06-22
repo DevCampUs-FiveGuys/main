@@ -25,7 +25,7 @@ public interface ReviewMapperInter {
     @Select("select round(avg(star),1) from review")
     public double getAvgStar();
 
-    @Select("select * from review order by review_id asc")
+    @Select("select content, created_at, star, `like` like_count, name, gender, review_id, review.member_id from review join member on member.member_id = review.member_id order by review_id asc")
     public List<ReviewDto> getAllReview();
 
 //    @Select("select `like` from review where review_id=#{review_id}")
