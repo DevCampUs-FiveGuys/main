@@ -13,7 +13,7 @@ public interface ReviewMapperInter {
 
     //    @Select("select content, created_at, star, `like` like_count,name,gender, review_id from review join(select member_id,name,gender from member where course_name=#{name} and course_num=#{num} as mem on mem.member_id = review.member_id)")
 //    public List<ReviewDto> selectAllReview(String name, String num);
-    @Select("select content, created_at, star, `like` like_count, name, gender, review_id, review.member_id, name from review join (select member_id, name, gender from member where course_name=#{name} and course_num=#{num}) as mem on mem.member_id = review.member_id")
+    @Select("select content, created_at, star, `like`, name, gender, review_id, review.member_id, name from review join (select member_id, name, gender from member where course_name=#{name} and course_num=#{num}) as mem on mem.member_id = review.member_id")
     public List<ReviewDto> selectAllReview(String name, String num);
 
     @Select("select * from review where review_id=#{review_id}")
@@ -25,7 +25,7 @@ public interface ReviewMapperInter {
     @Select("select round(avg(star),1) from review")
     public double getAvgStar();
 
-    @Select("select content, created_at, star, `like` like_count, name, gender, review_id, review.member_id from review join member on member.member_id = review.member_id order by review_id asc")
+    @Select("select content, created_at, star, `like`, name, gender, review_id, review.member_id from review join member on member.member_id = review.member_id order by review_id asc")
     public List<ReviewDto> getAllReview();
 
 //    @Select("select `like` from review where review_id=#{review_id}")
@@ -37,6 +37,9 @@ public interface ReviewMapperInter {
 
     @Select("select count(*) from member")
     public int getTotalGender();
+
+//    @Select("select count(*) from member where course_name=#{course_name} and course_num = #{course_num}")
+//    public int getSelectedGender();
 
 
 //    List<ReviewDto> selectAllReview(String name, String num);

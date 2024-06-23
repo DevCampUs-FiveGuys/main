@@ -4,6 +4,7 @@ import data.dto.CourseDto;
 import data.dto.ReviewDto;
 import data.service.CheckListService;
 import data.service.ReviewService;
+import jakarta.servlet.http.HttpSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -79,7 +80,6 @@ public class ReviewListController {
 
         ReviewDto reviewDto = new ReviewDto();
         model.addAttribute("reviewDto", reviewDto);
-        // Add reviews to the model
         model.addAttribute("reviewlist", reviewlist);
         model.addAttribute("reviewAvg", reviewService.getAvgStar());
         model.addAttribute("starRangePercentageMap", sortedStarRangePercentageMap);
@@ -122,9 +122,9 @@ public class ReviewListController {
 
         List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name,num);
 
-       //  model.addAttribute("selectlist", selectreviewlist);
 
         return selectreviewlist;
     }
+
 
 }

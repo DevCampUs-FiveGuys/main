@@ -32,11 +32,10 @@
                             <option th:each="courselist : ${courselist}" th:value="${courselist.name}"
                                     th:text="${courselist.name}"></option>
                         </select>
-                        <select id="courseNum" style="width: 150px; height: 25px; border-radius: 20px">
+                        <select id="courseNum" style="width: 150px; height: 25px; border-radius: 20px; margin-right: 20px">
                             <option value="">기수를 선택해주세요</option>
                         </select>
-                        <button type="button" onclick="search()">조회</button>
-                        <!-- 과정명 선택 script 시작 -->
+                        <button type="button" onclick="search()" class="search-btn">조회하기</button>
                         <!-- 과정명 선택 script 시작 -->
                         <script type="text/javascript">
                             function loadCourseNums() {
@@ -79,6 +78,7 @@
                                         if (response.length > 0) {
                                             response.forEach(function (item) {
                                                 let reviewHTML = `
+                        <div class="reviews">
                         <div class="reviews-box">
                             <div class="reviews-box-1">
                                 <div class="reviews-box-2">
@@ -86,8 +86,11 @@
                                     <fieldset class="rate2">
                                         ${generateStars(item.star)}
                                     </fieldset>
-                                    <div class="review-gender">${item.gender}</div>
+                                    <div class="review-gender" th:text="${item.gender === 0 ? '남자' : '여자'}"></div>
                                 </div>
+                                <div>
+                                <div >${item.like}</div>
+</div>
                             </div>
                             <div class="review-content">${item.content}</div>
                             <div class="reviews-box-3">
@@ -96,11 +99,13 @@
                                     <i class="icon-delete"></i>
                                 </a>
                             </div>
-                        </div>`;
+                        </div>
+                        </div>
+`;
                                                 reviewListDiv.append(reviewHTML);
                                             });
                                         } else {
-                                            reviewListDiv.append("<p>후기가 없습니다.</p>");
+                                            reviewListDiv.append("<p class='non-list'>등록된 후기가 없습니다.</p>");
                                         }
                                     },
                                     error: function (xhr, status, error) {
@@ -231,7 +236,6 @@
                             <input type="text" class="form-control" th:field="*{content}" required="required"
                                    placeholder="후기 입력" style="float:left; width: 80%;">
                             <input type="hidden" id="star" name="star" th:field="*{star}">
-                            <button type="submit" class="btn btn-primary" style="margin: auto">등록</button>
                         </div>
                     </form>
                 </div>
@@ -269,7 +273,13 @@
                                 <input type="radio" value="0.5" th:checked="${reviewlist.star == 0.5}">
                                 <label class="half" title="0.5점"></label>
                             </fieldset>
-                            <div class="review-gender" th:text="${reviewlist.gender}"></div>
+                            <div class="review-gender" style="padding-bottom: 10px" th:text="${reviewlist.gender == 0 ? '남자' : '여자'}"></div>
+                        </div>
+                        <div>
+                            <!-- 좋아요 버튼 -->
+                            <span class="icon-heart" onclick="updateLikes()"><span style="color: black">  좋아요 : </span></span>
+                            <!-- 좋아요 수 -->
+                            <span class="like-count" th:text="${reviewlist.like}">0</span>
                         </div>
                     </div>
                     <div class="review-content" th:text="${reviewlist.content}"></div>
@@ -289,31 +299,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script>
-        // // 과정명 & 기수 select
-        // function chooseCourse() {
-        //     let CourseNameSelect = document.getElementById("courseName");
-        //     let CourseNumSelect = document.getElementById("courseNum");
-        //     let selectedCourseName = CourseNameSelect.value;
-        //
-        //     let courseNums = {
-        //         "클라우드 기반 웹 개발자 데브옵스" : ["10기", "11기", "12기", "13기"],
-        //         "클라우드 기반 웹 AlaaS" : ["1기", "2기", "3기", "4기"],
-        //         "클라우드 기반 자바 풀스택": ["8기", "9기", "10기"]
-        //     };
-        //
-        //     // 기존 기수 옵션 제거
-        //     CourseNumSelect.innerHTML = '<option selected class="course-select" value="">기수를 선택하세요</option>';
-        //
-        //     // 선택된 과정명에 맞는 기수 옵션 추가
-        //     if (courseNums[selectedCourseName]) {
-        //         for (let i = 0; i < courseNums[selectedCourseName].length; i++) {
-        //             let option = document.createElement("option");
-        //             option.value = courseNums[selectedCourseName][i];
-        //             option.text = courseNums[selectedCourseName][i];
-        //             CourseNumSelect.appendChild(option);
-        //         }
-        //     }
-        // }
         // 평점 반영 함수
         function updateStarValue() {
             let selectedRating = document.querySelector('input[name="rating"]:checked').value;
@@ -351,7 +336,6 @@
                         "여성"
                     ]
                 },
-                // options: { responsive: false }
             });
         });
     </script>

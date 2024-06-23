@@ -57,8 +57,8 @@ public class  ReviewService {
         return courseMapperInter.getAllCourseList();
     }
 
+//    public int getSelectedGender(){return reviewMapperInter.getSelectedGender();}
 //    public List<String> getMemberName(String name, String num){
 //        return reviewMapperInter.getMemberName(name, num);
 //    }
-
 }
