@@ -1,11 +1,14 @@
 package controller.mypage;
 
 import data.dto.AttendanceDto;
+import data.dto.VacationDto;
 import data.service.AttendanceService;
+import data.service.VacationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
@@ -14,6 +17,9 @@ public class MyPageStudentController {
 
     @Autowired
     private AttendanceService attendanceService;
+
+    @Autowired
+    private VacationService vacationService;
 
     // 출석현황 페이지로 이동
     @GetMapping("/attendance")
@@ -121,5 +127,38 @@ public class MyPageStudentController {
     @ResponseBody
     public void updateHospital(@RequestParam int member_id, @RequestParam int confirm) {
         attendanceService.updateHospital(member_id, confirm);
+    }
+
+    // 휴가 신청
+    @PostMapping("/vacation/apply")
+    @ResponseBody
+    public void insertVacation(@RequestParam String date, @RequestParam String reason, @RequestParam int member_id) {
+        VacationDto vacationDto = VacationDto.builder()
+                .date(Timestamp.valueOf(date + " 00:00:00"))  // Assuming the date is in YYYY-MM-DD format
+                .reason(reason)
+                .member_id(member_id)
+                .build();
+        vacationService.insertVacation(vacationDto);
+    }
+
+    // 휴가 승인
+    @PostMapping("/vacation/approve")
+    @ResponseBody
+    public void updateVacation(@RequestParam int member_id) {
+        vacationService.updateVacation(member_id);
+    }
+
+    // 휴가 취소
+    @DeleteMapping("/vacation/cancel")
+    @ResponseBody
+    public void deleteVacation(@RequestParam int member_id) {
+        vacationService.deleteVacation(member_id);
+    }
+
+    // 모든 휴가 조회
+    @GetMapping("/vacation/all")
+    @ResponseBody
+    public List<VacationDto> getAllVacation(@RequestParam int member_id) {
+        return vacationService.getAllVacation(member_id);
     }
 }

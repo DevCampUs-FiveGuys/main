@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        events: [], // Placeholder for events
-        eventOrder: 'statusOrder,start,-title', // Custom event order
-        eventClick: function (info) {
-            if (info.event.title.startsWith('휴가')) {
+    // FullCalendar 라이브러리를 사용하여 캘린더 생성
+    var calendarEl = document.getElementById('calendar'); // 캘린더를 표시할 엘리먼트
+    var calendar = new FullCalendar.Calendar(calendarEl, { // 캘린더 객체 생성
+        initialView: 'dayGridMonth', // 월 단위로 표시
+        events: [], // 이벤트 데이터의 자리 표시자
+        eventOrder: 'statusOrder,start,-title', // 사용자 지정 이벤트 순서
+        eventClick: function (info) { // 이벤트 클릭 시 동작 정의
+            if (info.event.title.startsWith('휴가')) { // 휴가 이벤트일 경우
                 Swal.fire({
                     title: '휴가 취소',
                     text: '해당 날짜의 휴가를 취소 하시겠습니까?',
@@ -16,10 +17,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
                 }).then((result) => {
-                    if (result.isConfirmed) {
-                        info.event.remove();
-                        removeAttendanceMarks(info.event.startStr);
-                        deleteVacation(info.event.startStr); // AJAX call to delete vacation
+                    if (result.isConfirmed) { // 확인 버튼 클릭 시
+                        info.event.remove(); // 이벤트 삭제
+                        deleteVacation(info.event.startStr); // 휴가 데이터 삭제 AJAX 호출
                         Swal.fire({
                             title: '취소 완료',
                             text: '휴가가 취소되었습니다.',
@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                     }
                 });
-            } else if (info.event.title.startsWith('입실')) {
+            } else if (info.event.title.startsWith('입실')) { // 입실 이벤트일 경우
                 var checkOutEvent = calendar.getEvents().find(event => event.title.startsWith('퇴실') && event.startStr === info.event.startStr);
-                if (checkOutEvent) {
+                if (checkOutEvent) { // 이미 퇴실이 완료된 경우
                     Swal.fire({
                         title: '취소 오류',
                         text: '이미 퇴실을 완료하여 입실을 취소할 수 없습니다.',
@@ -49,10 +49,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
                 }).then((result) => {
-                    if (result.isConfirmed) {
-                        info.event.remove();
-                        removeAttendanceMarks(info.event.startStr);
-                        deleteCheckIn(); // AJAX call to delete check-in
+                    if (result.isConfirmed) { // 확인 버튼 클릭 시
+                        info.event.remove(); // 이벤트 삭제
+                        deleteCheckIn(); // 입실 데이터 삭제 AJAX 호출
                         Swal.fire({
                             title: '취소 완료',
                             text: '입실이 취소되었습니다.',
@@ -67,15 +66,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    calendar.render();
+    calendar.render(); // 캘린더 렌더링
 
-    loadAttendanceData();
+    loadAttendanceData(); // 출결 데이터 로드
 
-    function formatDate(date) {
+    function formatDate(date) { // 날짜 형식을 'YYYY-MM-DD'로 포맷하는 함수
         return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
     }
 
-    function addEvent(title, date, color, statusOrder) {
+    function addEvent(title, date, color, statusOrder) { // 이벤트를 캘린더에 추가하는 함수
         calendar.addEvent({
             title: title,
             start: date,
@@ -86,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function removeAttendanceMarks(date) {
+    function removeAttendanceMarks(date) { // 출석, 지각, 결석 마크를 제거하는 함수
         calendar.getEvents().forEach(event => {
             if (event.startStr === date && (event.title === '출석' || event.title === '지각' || event.title === '결석')) {
                 event.remove();
@@ -99,14 +98,14 @@ document.addEventListener('DOMContentLoaded', function () {
     var checkInTime = null;
     var checkOutTime = null;
 
-    function resetCheckStatus() {
+    function resetCheckStatus() { // 입실 및 퇴실 상태 초기화
         checkInDone = false;
         checkOutDone = false;
         checkInTime = null;
         checkOutTime = null;
     }
 
-    function loadAttendanceData() {
+    function loadAttendanceData() { // 출결 데이터를 로드하는 함수
         $.ajax({
             url: '/student_mypage/attendance/all',
             method: 'GET',
@@ -117,12 +116,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 data.forEach(function (attendance) {
                     var date = formatDate(new Date(attendance.check_in || attendance.check_out));
 
-                    if (attendance.check_in) {
+                    if (attendance.check_in) { // 입실 데이터가 있을 경우
                         addEvent('입실: ' + new Date(attendance.check_in).toLocaleTimeString(), date, '#4287f5', 2);
                         checkInDone = true;
                         checkInTime = new Date(attendance.check_in);
                     }
-                    if (attendance.check_out) {
+                    if (attendance.check_out) { // 퇴실 데이터가 있을 경우
                         addEvent('퇴실: ' + new Date(attendance.check_out).toLocaleTimeString(), date, '#4287f5', 2);
                         checkOutDone = true;
                         checkOutTime = new Date(attendance.check_out);
@@ -132,10 +131,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         var checkInHour = checkInTime.getHours();
                         var checkInMinute = checkInTime.getMinutes();
 
-                        if (checkInHour > 9 || (checkInHour == 9 && checkInMinute > 40)) {
+                        if (checkInHour > 9 || (checkInHour == 9 && checkInMinute > 40)) { // 지각 조건
                             status = '지각';
                             statusColor = '#fab70f';
-                            if (checkInHour >= 14 || checkOutTime < 18) {
+                            if (checkInHour >= 14 || checkOutTime.getHours() < 18) { // 결석 조건
                                 status = '결석';
                                 statusColor = '#e62e2e';
                             }
@@ -143,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         addEvent(status, date, statusColor, 1);
                     }
                 });
-                updateAttendanceCounts();
+                loadVacationData(); // 휴가 데이터 로드
             },
             error: function (xhr, status, error) {
                 console.error('Error loading attendance data:', error);
@@ -151,10 +150,30 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    document.getElementById('check-in-btn').addEventListener('click', function () {
+    function loadVacationData() { // 휴가 데이터를 로드하는 함수
+        $.ajax({
+            url: '/student_mypage/vacation/all',
+            method: 'GET',
+            data: {
+                member_id: 1
+            },
+            success: function (data) {
+                data.forEach(function (vacation) {
+                    var date = formatDate(new Date(vacation.date));
+                    addEvent('휴가', date, '#934bd6', 1);
+                });
+                updateAttendanceCounts(); // 모든 데이터 로드 후 카운트 업데이트
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading vacation data:', error);
+            }
+        });
+    }
+
+    document.getElementById('check-in-btn').addEventListener('click', function () { // 입실 버튼 클릭 시 동작
         var currentDate = formatDate(new Date());
 
-        if (checkInDone && checkInTime && formatDate(checkInTime) === currentDate) {
+        if (checkInDone && checkInTime && formatDate(checkInTime) === currentDate) { // 이미 입실한 경우
             Swal.fire({
                 title: '입실 오류',
                 text: '오늘 이미 입실했습니다.',
@@ -177,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
         }).then((result) => {
-            if (result.isConfirmed) {
+            if (result.isConfirmed) { // 확인 버튼 클릭 시
                 $.ajax({
                     url: '/student_mypage/attendance/checkin',
                     method: 'POST',
@@ -203,10 +222,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    document.getElementById('check-out-btn').addEventListener('click', function () {
+    document.getElementById('check-out-btn').addEventListener('click', function () { // 퇴실 버튼 클릭 시 동작
         var currentDate = formatDate(new Date());
 
-        if (!checkInDone) {
+        if (!checkInDone) { // 입실하지 않은 경우
             Swal.fire({
                 title: '퇴실 오류',
                 text: '아직 입실하지 않았습니다.',
@@ -215,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
-        if (checkOutDone && checkOutTime && formatDate(checkOutTime) === currentDate) {
+        if (checkOutDone && checkOutTime && formatDate(checkOutTime) === currentDate) { // 이미 퇴실한 경우
             Swal.fire({
                 title: '퇴실 오류',
                 text: '오늘 이미 퇴실했습니다.',
@@ -238,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
         }).then((result) => {
-            if (result.isConfirmed) {
+            if (result.isConfirmed) { // 확인 버튼 클릭 시
                 $.ajax({
                     url: '/student_mypage/attendance/checkout',
                     method: 'POST',
@@ -261,17 +280,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         var checkInHour = checkInTime.getHours();
                         var checkInMinute = checkInTime.getMinutes();
 
-                        if (checkInHour > 9 || (checkInHour == 9 && checkInMinute > 40)) {
+                        if (checkInHour > 9 || (checkInHour == 9 && checkInMinute > 40)) { // 지각 조건
                             status = '지각';
                             statusColor = '#fab70f';
-                            if (checkInHour >= 14 || currentTime.getHours() < 18) {
+                            if (checkInHour >= 14 || currentTime.getHours() < 18) { // 결석 조건
                                 status = '결석';
                                 statusColor = '#e62e2e';
                             }
                         }
 
                         addEvent(status, currentDate, statusColor, 1);
-                        updateAttendanceStatus(status);
+                        updateAttendanceStatus(status); // 출결 상태 업데이트
                     },
                     error: function (xhr, status, error) {
                         console.error('Error checking out:', error);
@@ -281,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    function deleteCheckIn() {
+    function deleteCheckIn() { // 입실 데이터를 삭제하는 함수
         $.ajax({
             url: '/student_mypage/attendance/checkin',
             method: 'DELETE',
@@ -297,18 +316,31 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function deleteVacation(date) {
-        console.log('Vacation data deleted for date:', date);
+    function deleteVacation(date) { // 휴가 데이터를 삭제하는 함수
+        $.ajax({
+            url: '/student_mypage/vacation/cancel',
+            method: 'DELETE',
+            data: {
+                member_id: 1,
+                date: date
+            },
+            success: function () {
+                console.log('Vacation data deleted for date:', date);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error deleting vacation data:', error);
+            }
+        });
     }
 
-    document.getElementById('vacation-form').addEventListener('submit', function (event) {
+    document.getElementById('vacation-form').addEventListener('submit', function (event) { // 휴가 신청 폼 제출 시 동작
         event.preventDefault();
         var date = document.getElementById('vacation-date').value;
         var reason = document.getElementById('vacation-reason').value;
         var currentDate = new Date();
         var formattedCurrentDate = formatDate(currentDate);
 
-        if (date <= formattedCurrentDate) {
+        if (date <= formattedCurrentDate) { // 과거 또는 현재 날짜에 휴가 신청 불가
             Swal.fire({
                 title: '휴가 신청 오류',
                 text: '오늘 날짜 및 지난 날짜에는 휴가를 신청할 수 없습니다.',
@@ -324,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var existingVacation = calendar.getEvents().some(event => event.startStr === date && event.title === '휴가');
         var vacationsLastSixMonths = calendar.getEvents().filter(event => event.title === '휴가' && event.startStr >= formattedCourseStartDate).length;
 
-        if (existingVacation) {
+        if (existingVacation) { // 이미 해당 날짜에 휴가가 신청된 경우
             Swal.fire({
                 title: '휴가 신청 오류',
                 text: '이미 해당 날짜에 휴가를 신청했습니다.',
@@ -333,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
-        if (vacationsLastSixMonths >= 6) {
+        if (vacationsLastSixMonths >= 6) { // 휴가 일수가 6일을 초과한 경우
             Swal.fire({
                 title: '휴가 신청 오류',
                 text: '과정 기간 중 사용하신 휴가일수가 이미 6일을 달성했습니다.',
@@ -353,16 +385,15 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
         }).then((result) => {
-            if (result.isConfirmed) {
+            if (result.isConfirmed) { // 확인 버튼 클릭 시
                 $.ajax({
-                    url: '/student_mypage/attendance/vacation',
+                    url: '/student_mypage/vacation/apply',
                     method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        check_in: date,
-                        vacation: 1,
+                    data: {
+                        date: date,
+                        reason: reason,
                         member_id: 1
-                    }),
+                    },
                     success: function () {
                         Swal.fire({
                             title: '휴가 신청 완료',
@@ -372,6 +403,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                         addEvent('휴가', date, '#934bd6', 1);
                         $('#vacationModal').modal('hide');
+                        updateAttendanceCounts(); // 출결 카운트 업데이트
                     },
                     error: function (xhr, status, error) {
                         console.error('Error applying for vacation:', error);
@@ -381,25 +413,25 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    function finalizeAttendance() {
+    function finalizeAttendance() { // 출결 상태를 최종 확정하는 함수
         var currentTime = new Date();
         var currentDate = formatDate(currentTime);
         var events = calendar.getEvents();
         var checkInEvent = events.find(event => event.title.startsWith('입실') && event.startStr === currentDate);
         var checkOutEvent = events.find(event => event.title.startsWith('퇴실') && event.startStr === currentDate);
 
-        if (!checkInEvent && !checkOutEvent) {
+        if (!checkInEvent && !checkOutEvent) { // 입실 및 퇴실이 없는 경우 결석 처리
             addEvent('결석', currentDate, '#e62e2e', 1);
             updateAttendanceStatus('결석');
-        } else if (checkInEvent && !checkOutEvent) {
+        } else if (checkInEvent && !checkOutEvent) { // 입실만 있고 퇴실이 없는 경우 결석 처리
             addEvent('결석', currentDate, '#e62e2e', 1);
             updateAttendanceStatus('결석');
         }
 
-        resetCheckStatus();
+        resetCheckStatus(); // 상태 초기화
     }
 
-    function updateAttendanceStatus(status) {
+    function updateAttendanceStatus(status) { // 출결 상태를 업데이트하는 함수
         if (status === '출석') {
             $.ajax({
                 url: '/student_mypage/attendance/days',
@@ -457,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function updateAttendanceCounts() {
+    function updateAttendanceCounts() { // 출결 카운트를 업데이트하는 함수
         $.ajax({
             url: '/student_mypage/attendance/days',
             method: 'GET',
@@ -499,9 +531,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error fetching absent days:', error);
             }
         });
+
+        $.ajax({
+            url: '/student_mypage/vacation/all',
+            method: 'GET',
+            data: {
+                member_id: 1
+            },
+            success: function (vacationDays) {
+                document.getElementById('vacation-count').innerText = vacationDays.length;
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching vacation days:', error);
+            }
+        });
     }
 
-    setInterval(function () {
+    setInterval(function () { // 1분마다 상태 체크 및 초기화
         var now = new Date();
         if (now.getHours() === 0 && now.getMinutes() === 0) { // 자정이 되면 상태 초기화
             resetCheckStatus();
