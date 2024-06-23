@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (checkInHour > 9 || (checkInHour == 9 && checkInMinute > 40)) {
                             status = '지각';
                             statusColor = '#fab70f';
-                            if (checkInHour >= 14) {
+                            if (checkInHour >= 14 || checkOutTime < 18) {
                                 status = '결석';
                                 statusColor = '#e62e2e';
                             }
@@ -152,7 +152,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('check-in-btn').addEventListener('click', function () {
-        if (checkInDone) {
+        var currentDate = formatDate(new Date());
+
+        if (checkInDone && checkInTime && formatDate(checkInTime) === currentDate) {
             Swal.fire({
                 title: '입실 오류',
                 text: '오늘 이미 입실했습니다.',
@@ -163,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         var currentTime = new Date();
-        var currentDate = formatDate(currentTime);
         checkInTime = currentTime;
 
         Swal.fire({
@@ -203,6 +204,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('check-out-btn').addEventListener('click', function () {
+        var currentDate = formatDate(new Date());
+
         if (!checkInDone) {
             Swal.fire({
                 title: '퇴실 오류',
@@ -212,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
-        if (checkOutDone) {
+        if (checkOutDone && checkOutTime && formatDate(checkOutTime) === currentDate) {
             Swal.fire({
                 title: '퇴실 오류',
                 text: '오늘 이미 퇴실했습니다.',
@@ -223,7 +226,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         var currentTime = new Date();
-        var currentDate = formatDate(currentTime);
         checkOutTime = currentTime;
 
         Swal.fire({
@@ -262,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (checkInHour > 9 || (checkInHour == 9 && checkInMinute > 40)) {
                             status = '지각';
                             statusColor = '#fab70f';
-                            if (checkInHour >= 14) {
+                            if (checkInHour >= 14 || currentTime.getHours() < 18) {
                                 status = '결석';
                                 statusColor = '#e62e2e';
                             }
@@ -420,7 +422,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     member_id: 1
                 },
                 success: function () {
-                    updateAttendanceCounts();
+                    $.ajax({
+                        url: '/student_mypage/attendance/updateAbsentBasedOnLate',
+                        method: 'POST',
+                        data: {
+                            member_id: 1
+                        },
+                        success: function () {
+                            updateAttendanceCounts();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error updating absent based on late status:', error);
+                        }
+                    });
                 },
                 error: function (xhr, status, error) {
                     console.error('Error updating late status:', error);
@@ -489,8 +503,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setInterval(function () {
         var now = new Date();
-        if (now.getHours() === 23 && now.getMinutes() === 59) {
-            finalizeAttendance();
+        if (now.getHours() === 0 && now.getMinutes() === 0) { // 자정이 되면 상태 초기화
+            resetCheckStatus();
         }
-    }, 60000);
+    }, 60000); // 1분마다 체크
 });

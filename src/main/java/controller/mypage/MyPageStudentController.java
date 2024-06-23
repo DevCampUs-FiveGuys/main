@@ -95,6 +95,13 @@ public class MyPageStudentController {
         attendanceService.updateAbsent(member_id);
     }
 
+    // 지각을 결석으로 업데이트
+    @PostMapping("/attendance/updateAbsentBasedOnLate")
+    @ResponseBody
+    public void updateAbsentBasedOnLate(@RequestParam int member_id) {
+        attendanceService.updateAbsentBasedOnLate(member_id);
+    }
+
     // 결석일수 최댓값 조회
     @GetMapping("/attendance/absent/max")
     @ResponseBody

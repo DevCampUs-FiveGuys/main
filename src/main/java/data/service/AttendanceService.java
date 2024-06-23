@@ -53,6 +53,11 @@ public class AttendanceService {
         attendanceMapper.updateAbsent(member_id);
     }
 
+    // 지각을 결석으로 업데이트
+    public void updateAbsentBasedOnLate(int member_id) {
+        attendanceMapper.updateAbsentBasedOnLate(member_id);
+    }
+
     // 결석일수 최댓값 조회
     public int getAbsentDays(int member_id) {
         return attendanceMapper.getAbsentDays(member_id);

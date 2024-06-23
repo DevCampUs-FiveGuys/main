@@ -27,7 +27,7 @@ public interface AttendanceMapperInter {
     @Select("select count(*) from attendance where member_id = 1 and check_in is not null and check_out is not null and absent = 0 and vacation = 0 and hospital = 0")
     public int getAttendanceDays(int member_id);
 
-    // 당일에 지각을 하면 지각 데이터가 업데이트 되어야함 (단, 지각을 3번 하면 1회 결석으로 처리)
+    // 당일에 지각을 하면 지각 데이터가 업데이트 되어야함
     @Update("update attendance set late = late + 1 where DATE(check_in) = DATE(now()) and member_id = 1")
     public void updateLate(int member_id);
 
@@ -38,6 +38,10 @@ public interface AttendanceMapperInter {
     // 당일에 결석을 하면 결석 데이터가 업데이트 되어야함
     @Update("update attendance set absent = absent + 1 where DATE(check_in) = DATE(now()) and member_id = 1")
     public void updateAbsent(int member_id);
+
+    // 지각일수에 따른 결석 업데이트 (지각 3회 당 결석 1회)
+    @Update("update attendance set absent = absent + (late / 3) where member_id = 1")
+    public void updateAbsentBasedOnLate(int member_id);
 
     // 결석일수 최댓값 조회
     @Select("select max(absent) from attendance where member_id = 1")
