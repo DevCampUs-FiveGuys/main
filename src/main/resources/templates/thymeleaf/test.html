@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/layout}">
+<div layout:fragment="content">
+    test ...
+    <table>
+        <tr>
+            <td>Username</td>
+            <td><span sec:authentication="name"></span></td>
+        </tr>
+        <tr>
+            <td>Authorities</td>
+            <td><span sec:authentication="principal"></span></td>
+        </tr>
+        <tr>
+            <td>Roles</td>
+            <td><span th:text="${#authentication.principal.authorities}"></span></td>
+        </tr>
+    </table>
+</div>
+</html>

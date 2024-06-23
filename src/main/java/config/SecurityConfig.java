@@ -1,6 +1,8 @@
 package config;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jwt.JWTFilter;
 import jwt.JWTUtil;
 import jwt.LoginFilter;
@@ -13,12 +15,15 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.io.IOException;
 import java.util.Collections;
 
 @Configuration
@@ -41,6 +46,7 @@ public class SecurityConfig {
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        /*
         //csrf disable -> JWT 를 발급 받아 stateless 상태로 사용할거기 때문에 csrf 를 disable 해줘도 된다.
         http
                 .csrf((auth) -> auth.disable());
@@ -54,14 +60,14 @@ public class SecurityConfig {
                 .httpBasic((auth) -> auth.disable());
 
         http
-                .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+                .cors((cors -> cors.configurationSource(new CorsConfigurationSource() {
 
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
@@ -73,14 +79,28 @@ public class SecurityConfig {
                     }
                 })));
         //경로별 인가 작업
+
+         */
         http
                 .authorizeHttpRequests((auth)-> auth
-                        .requestMatchers("/login", "/","join").permitAll()
-                        .requestMatchers("/student").hasRole("STUDENT")
-                        .requestMatchers("/teacher").hasRole("TEACHER")
+                        // Spring Security 실행시 static(css, js, image 등) 파일도 권한을 주지 않으면 layout 실행시 오류가 발생
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**","/error").permitAll()
+                        // 로그인, 기본, 회원가입, 리뷰, 포트폴리오, 질문 게시판은 로그인을 하지 않아도 보여야 하기 때문에 권한을 준다.
+                        .requestMatchers("/login", "/","/signup","/review/list","/portfolio/list","/qna/list").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .anyRequest().permitAll());
-
+                        .requestMatchers("/student/**").hasAnyRole("STUDENT")
+                        .requestMatchers("/teacher/**").hasAnyRole("TEACHER")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        .anyRequest().authenticated()
+                );
+        // csrf (사이트 위조변경 security) -> post 를 보내줄 때 csrf 토큰도 같이 보내줘야 하기 때문에 disable 시켜준다. 토큰을 보내주지 않으면 오류발생 !
+        http
+                .csrf((auth) -> auth.disable());
+        // 권한이 없는 상태에서 권한이 필요한 페이지로 이동하려고 하면 오류가 뜨는것을 방지하기 위해 넣어줌.
+        http
+                .formLogin((auth) -> auth.loginPage("/login")
+                        .loginProcessingUrl("/api/user/login").permitAll());
+        /*
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
         http
@@ -98,6 +118,31 @@ public class SecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/"));
+
+
+         */
         return http.build();
+    }
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                String role = authentication.getAuthorities().stream()
+                        .map(grantedAuthority -> grantedAuthority.getAuthority())
+                        .findFirst()
+                        .orElse("");
+
+                if (role.equals("ROLE_STUDENT")) {
+                    response.sendRedirect("/student/**");
+                } else if (role.equals("ROLE_TEACHER")) {
+                    response.sendRedirect("/teacher/**");
+                } else if (role.equals("ROLE_ADMIN")) {
+                    response.sendRedirect("/admin/**");
+                } else {
+                    response.sendRedirect("/default");
+                }
+            }
+        };
     }
 }
