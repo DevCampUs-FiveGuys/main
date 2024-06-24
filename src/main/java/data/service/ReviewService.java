@@ -64,5 +64,8 @@ public class  ReviewService {
     public List<CourseDto> getAllCourseList(){
         return courseMapperInter.getAllCourseList();
     }
+    public double getSelectedAvgStar(String name, String num){
+        return reviewMapperInter.getSelectedAvgStar(name, num);
+    }
 
 }
