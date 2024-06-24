@@ -12,7 +12,6 @@ public interface ReviewMapperInter {
     @Insert("insert into review (content, star, created_at) values (#{content}, #{star}, now())")
     public void insertReview(ReviewDto reviewDto);
 
-
     //    @Select("select content, created_at, star, `like` like_count,name,gender, review_id from review join(select member_id,name,gender from member where course_name=#{name} and course_num=#{num} as mem on mem.member_id = review.member_id)")
 //    public List<ReviewDto> selectAllReview(String name, String num);
     @Select("select content, created_at, star, `like`, name, gender, review_id, review.member_id, name from review join (select member_id, name, gender from member where course_name=#{name} and course_num=#{num}) as mem on mem.member_id = review.member_id")
@@ -38,4 +37,7 @@ public interface ReviewMapperInter {
     @Select("select count(*) from member")
     public int getTotalGender();
 
+    //해당 후기의 작성자 이름 불러오기
+//    @Select("select m.name from member m JOIN review r ON m.member_id = r.member_id JOIN course c ON c.name = m.course_name AND c.num = m.course_num WHERE c.name=#{name} AND c.num = #{num}")
+//    public List<String> getMemberName(String name, String num);
 }

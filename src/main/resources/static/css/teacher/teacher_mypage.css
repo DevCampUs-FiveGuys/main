@@ -1,0 +1,13 @@
+/* Components는 전체 페이지에 공통으로 들어갈 css*/
+/* Pagescreens는 우리가 직접 보는 페이지 하나하나에 따른 css*/
+
+
+/* Components */
+@import "components/nav-bar.css";
+
+
+/* Pagescreens */
+/*@import "pagescreens/attendancelist.css";*/
+/*@import "pagescreens/attendancedetail.css";*/
+/*@import "pagescreens/roleapprove.css";*/
+/*@import "pagescreens/updateprofile.css";*/

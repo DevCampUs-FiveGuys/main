@@ -13,15 +13,5 @@ public class CheckListService {
 
     public void insertLike(int rev_id) {
         checkLikeMapperInter.insertLike(rev_id);
-
-    public int ShowCountLike(int rev_id){
-        return checkLikeMapperInter.getCountLike(rev_id);
-
     }
-
-
-    public void deleteLike(int like_id) {
-        checkLikeMapperInter.deleteLike(like_id);
-    }
-
 }

@@ -107,6 +107,7 @@ public class ReviewListController {
         return "redirect:/review/list";
     }
 
+
 //과정명 선택시 get mapping으로 과정명에 해당하는 기수명을 course db에서 불러오기
     @GetMapping("/review/names")
     @ResponseBody
@@ -121,18 +122,6 @@ public class ReviewListController {
             @RequestParam("num") String num) {
 
         List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name, num);
-
-
         return selectreviewlist;
     }
-
-    // 평균 별점을 가져오는 매핑
-//    @GetMapping("/review/avgStar")
-//    @ResponseBody
-//    public double getAvgStar(@RequestParam("name") String courseName, @RequestParam("num") String courseNum) {
-//        // 선택한 과목과 기수에 따른 평균 별점을 가져오는 서비스 메소드 호출
-//        return reviewService.getAvgStarByCourse(courseName, courseNum);
-//    }
-
-
 }

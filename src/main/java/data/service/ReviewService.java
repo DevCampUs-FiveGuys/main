@@ -16,30 +16,25 @@ public class  ReviewService {
 
     @Autowired
     private CourseMapperInter courseMapperInter;
-
     // review db에서 작성한 후기 등록
     public void insertReview(ReviewDto reviewDto) {
         reviewMapperInter.insertReview(reviewDto);
     }
 
-
     public List<ReviewDto> selectAllReview(String name, String num){
         return reviewMapperInter.selectAllReview(name, num);
     }
-
 
     // review db에서 입력한 순서대로 후기 나열(오름차순)
     public List<ReviewDto> getAllReview(){
         return reviewMapperInter.getAllReview();
     }
 
-
     // review db에서 선택한 review_id를 검색하여 해당하는 후기 삭제
 
     public void deleteReview(int review_id) {
         reviewMapperInter.deleteReview(review_id);
     }
-
 
     // review db에 있는 전체 평균 평점 구하기
 
@@ -75,5 +70,25 @@ public class  ReviewService {
         return courseMapperInter.getAllCourseList();
     }
 
+
+    public int countByGender(int gender){
+        return reviewMapperInter.countByGender(gender);
+    }
+
+    public int getTotalGender(){
+        return reviewMapperInter.getTotalGender();
+    }
+
+    public List<String> getNumOfCourse(String name){
+        return courseMapperInter.getNumOfCourse(name);
+    }
+
+    public List<CourseDto> getAllCourseList(){
+        return courseMapperInter.getAllCourseList();
+    }
+
+//    public List<String> getMemberName(String name, String num){
+//        return reviewMapperInter.getMemberName(name, num);
+//    }
 
 }
