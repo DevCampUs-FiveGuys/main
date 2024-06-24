@@ -66,11 +66,4 @@ public class MyPageTeacherController {
     public String updateProfile() {
         return "thymeleaf/teacher/updateProfile";
     }
-
-    // 출석 기록을 조회하는 [GET] Endpoint
-    @GetMapping("/attendance/{member_id}")
-    @ResponseBody
-    public List<AttendanceDto> getAttendance(@PathVariable int member_id) {
-        return attendanceService.getAttendanceByMemberId(member_id);
-    }
 }
