@@ -119,7 +119,7 @@ public class ReviewListController {
     @ResponseBody
     public List<ReviewDto> selectAllReview(
             @RequestParam("name") String name,
-            @RequestParam("num") String num) {
+            @RequestParam("num") String num, Model model) {
 
         List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name, num);
 
