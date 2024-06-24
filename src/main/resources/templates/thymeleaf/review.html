@@ -281,7 +281,7 @@
                             <div class="review-gender" style="padding-bottom: 10px" th:text="${reviewlist.gender == 0 ? '남자' : '여자'}"></div>
                         </div>
                         <div>
-                            <button class="icon-heart" id="reviewID-${reviewlist.index}" onclick="updateLike('${reviewlist.review_id}','${reviewlist.index}')" th:value="${reviewlist.review_id}">좋아요 : <span id="likeCount" th:text="${reviewlist.like}"></span></button>
+                            <button class="icon-heart" id="reviewID-"+${reviewlist.index} onclick="updateLike([[${reviewlist.review_id}]],[[${reviewlist.index}]])" th:value="${reviewlist.review_id}">좋아요 : <span id="likeCount" th:text="${reviewlist.like}"></span></button>
                         </div>
                     </div>
                     <div class="review-content" th:text="${reviewlist.content}"></div>
@@ -341,7 +341,8 @@
             });
         });
         function updateLike(review_id,index) {
-            let reviewid = $("#reviewID-"+index).val();
+            let buf = "#reviewID-"+index;
+            let reviewid = $(buf).val();
             console.log(reviewid);
             // console.log(31);
             // console.log(reviewID);
@@ -349,7 +350,7 @@
             $.ajax({
                 type: "POST",
                 url: "/review/like",
-                data: {reviewid: review_id},
+                data: {"reviewid": review_id},
                 dataType: "json",
                 success: function (response) {
                     // review_id.empty();
