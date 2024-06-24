@@ -2,6 +2,7 @@ package jwt;
 
 import data.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,13 +13,20 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
-@RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
+
+    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+        setFilterProcessesUrl("/api/user/login");
+    }
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         //클라이언트 요청(request) 에서 USERNAME, PASSWORD 를 가로챈다.
@@ -31,7 +39,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
     //로그인 성공시에 실행하는 메소드 (여기서 JWT 를 발급해준다.)
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) throws AuthenticationException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) throws AuthenticationException, IOException, ServletException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         // 유저명을 가지고 오는 방법
         String username = customUserDetails.getUsername();
@@ -48,7 +56,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         * 예시 --
         * Authorization: Bearer 인증토큰 String */
         response.addHeader("Authorization", "Bearer " + token);
-
+        response.sendRedirect("/");
     }
     //로그인 실패시에 실행하는 메소드
     @Override

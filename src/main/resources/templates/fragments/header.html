@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="header">
 
     <div class="lines-wrap">
@@ -24,13 +24,19 @@
                 <a href="/" class="logo m-0">DevCampUs <span class="text-primary">.</span></a>
 
                 <ul class="js-clone-nav d-none d-lg-inline-block text-left float-right site-menu">
-                    <li><a  href="/">Home</a></li>
-                    <li><a href="/review/list">Review</a></li>
-                    <li><a href="/portfolio/list">Portfolio</a></li>
-                    <li><a href="/qna/list">QnA</a></li>
-                    <li><a href="/student_mypage/attendance">Mypage</a></li>
-                    <li><a href="/signup">Sign up</a></li>
-                    <li class="cta-button active"><a href="/login">Login</a></li>
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/review/list}">Review</a></li>
+                    <li><a th:href="@{/portfolio/list}">Portfolio</a></li>
+                    <li><a th:href="@{/qna/list}">QnA</a></li>
+                    <li th:if="${#authorization.expression('isAuthenticated()')}"><a th:href="|/mypage|">
+                        <img th:src="@{${photo}}"
+                             style="width: 40px; height: 40px; display: inline-block; border-radius: 50%;">
+                        <p th:text="${userName}" style="display: inline-block"></p></a></li>
+                    <li sec:authorize="!isAuthenticated()"><a th:href="@{/signup}">Sign up</a></li>
+                    <li sec:authorize="!isAuthenticated()" class="cta-button active"><a th:href="@{/login}">Login</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="cta-button active"><a th:href="@{/logout}">logout</a>
+                    </li>
                 </ul>
 
                 <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none"

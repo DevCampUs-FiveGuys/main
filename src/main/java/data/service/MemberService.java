@@ -21,4 +21,7 @@ public class MemberService {
     public int checkID(String email) {
         return memberMapperInter.checkID(email);
     }
+    public MemberDto findByUsername(String email) {
+        return memberMapperInter.findByUsername(email);
+    }
 }
