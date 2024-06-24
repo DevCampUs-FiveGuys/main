@@ -4,13 +4,14 @@ import data.dto.PortfolioDto;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PortfolioMapperInter {
 
     @Insert("""
-            insert into portfolio (title,description,created_at)
-            values (#{title},#{description},now())
+            insert into portfolio (title,description,file_name,created_at)
+            values (#{title},#{description},#{file_name},now())
             """)
     public void insertPortfolio(PortfolioDto dto);
 
@@ -26,4 +27,10 @@ public interface PortfolioMapperInter {
     @Select("select count(*) from portfolio")
     public int getTotalCount();
 
+    @Select("select * from portfolio")
+    public List<PortfolioDto> getPorfolioData();
+
+
+    @Select("select * from portfolio order by regroup desc,restep asc limit #{start},#{perpage}")
+    public List<PortfolioDto> getPagingList(Map<String, Integer> map);
 }

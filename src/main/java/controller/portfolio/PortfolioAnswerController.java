@@ -12,20 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/portfolio")
 public class PortfolioAnswerController {
-
-    @Autowired
-    private PortfolioService portfolioService;
-    @Autowired
-    private PortfolioAnswerService portfolioAnswerService;
-
-    @GetMapping("/alist")
-    public List<PortfolioDto> alist()
-    {
-        return portfolioAnswerService.getAnswerData();
-    }
-
-
 
 }
