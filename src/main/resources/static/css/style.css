@@ -33,7 +33,7 @@ body.offcanvas-menu:before {
   color: #000000 !important; }
 
 .text-secondary {
-  color: #009ECE !important; }
+  color: #00C300 !important; }
 
 .bg-primary-light {
   background-color: rgba(0, 158, 206, 0.05); }
@@ -84,12 +84,12 @@ body.offcanvas-menu:before {
 }
 
 a {
-  color: #009ECE;
+  color: #00C300;
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
   transition: .3s all ease; }
 a:hover {
-  color: #009ECE;
+  color: #00A300;
   text-decoration: none; }
 
 ::-moz-selection {
@@ -124,18 +124,18 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
   -webkit-box-shadow: none;
   box-shadow: none; }
 .btn.btn-primary {
-  background: #009ECE;
-  border-color: #009ECE; }
+  background: #00C300;
+  border-color: #00C300; }
 .btn.btn-primary:hover {
-  border-color: #00aee2;
-  background: #00aee2; }
+  border-color: #00B300;
+  background: #00B300; }
 
 .form-control, .custom-select {
   border: 2px solid #e9ecef;
   font-size: 16px;
   height: 45px; }
 .form-control:active, .form-control:focus, .custom-select:active, .custom-select:focus {
-  border-color: #009ECE;
+  border-color: #00B300;
   -webkit-box-shadow: none;
   box-shadow: none; }
 
@@ -191,7 +191,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
     padding-left: 15px; } }
 
 .spinner-border {
-  color: #009ECE; }
+  color: #00C300; }
 
 /*PRELOADING------------ */
 #overlayer {
@@ -678,7 +678,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
   border-radius: 50%;
   text-align: center;
   position: absolute;
-  background: #009ECE;
+  background: #00B300;
   color: #ffffff; }
 .untree_co_slider-wrap .nav-direction .nav-left > span,
 .untree_co_slider-wrap .nav-direction .nav-right > span {
@@ -790,7 +790,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
   font-size: 20px; }
 .untree_co-section .heading-2 {
   font-size: 30px;
-  color: #009ECE; }
+  color: #00c300; }
 @media (max-width: 991.98px) {
   .untree_co-section .heading-2 {
     font-size: 30px; } }
@@ -855,7 +855,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
   display: inline-block;
   width: 45px;
   height: 40px;
-  background: #009ECE;
+  background: #00B300;
   border-radius: 4px; }
 .property-entry .more > a span {
   color: #ffffff;
@@ -944,7 +944,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
   width: 40px;
   height: 40px;
   border-radius: 4px;
-  background: #009ECE;
+  background: #00B300;
   color: #ffffff;
   position: relative; }
 .properties-nav-direction > a > span {
@@ -1246,7 +1246,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.2); }
 .owl-single .owl-dots .owl-dot.active span, .owl-carousel .owl-dots .owl-dot.active span {
-  background: #009ECE; }
+  background: #00B300; }
 
 .owl-single.no-dots .owl-dots, .owl-carousel.no-dots .owl-dots {
   display: none; }

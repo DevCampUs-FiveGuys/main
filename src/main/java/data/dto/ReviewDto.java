@@ -18,7 +18,8 @@ public class ReviewDto {
     private double star;
     private int like;
     private int review_id;
-//    private int member_id;
     private String name;
     private int gender;
+
 }
+

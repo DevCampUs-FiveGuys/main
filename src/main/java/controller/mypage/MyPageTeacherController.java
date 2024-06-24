@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import data.service.AttendanceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +39,6 @@ public class MyPageTeacherController {
         List<AttendanceDto> attendancelist = teacherService.getStudentAttendaceList();
 
         model.addAttribute("attendancelist",attendancelist);
-
         return "thymeleaf/teacher/attendanceDetail";
     }
 

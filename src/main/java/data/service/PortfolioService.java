@@ -6,20 +6,27 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
-@RequiredArgsConstructor
 public class PortfolioService {
 
-    @NonNull
+    @Autowired
     private PortfolioMapperInter portfolioMapper;
 
     public void insertPortfolio(PortfolioDto dto)
     {
-        int portfolio_id = dto.getPortfolio_id();
-
         portfolioMapper.insertPortfolio(dto);
+    }
+
+    public List<PortfolioDto> getPortfolioData()
+    {
+        return portfolioMapper.getPorfolioData();
     }
 
     public int getTotalCount()
@@ -27,14 +34,9 @@ public class PortfolioService {
         return portfolioMapper.getTotalCount();
     }
 
-    public void updateReadcount(int portfolio_id)
+    public PortfolioDto getData()
     {
-        portfolioMapper.updateReadcount(portfolio_id);
-    }
-
-    public PortfolioDto getData(int portfolio_id)
-    {
-        return portfolioMapper.getData(portfolio_id);
+        return portfolioMapper.getData();
     }
 
     public void updatePortfolio(PortfolioDto dto)
@@ -45,6 +47,15 @@ public class PortfolioService {
     public void deletePortfolio(int portfolio_id)
     {
         portfolioMapper.deletePortfolio(portfolio_id);
+    }
+
+    public List<PortfolioDto> getPagingList(int start, int perpage)
+    {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("start", start);
+        map.put("perpage", perpage);
+
+        return portfolioMapper.getPagingList(map);
     }
 
 }

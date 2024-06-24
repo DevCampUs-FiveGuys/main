@@ -4,8 +4,11 @@ import data.dto.CourseDto;
 import data.dto.ReviewDto;
 import data.service.CheckListService;
 import data.service.ReviewService;
+import jakarta.servlet.http.HttpSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +21,14 @@ import java.util.stream.Collectors;
 public class ReviewListController {
     @NonNull
     private ReviewService reviewService;
-    @NonNull
-    private CheckListService checkListService;
-
 
     @GetMapping("/review/list")
     public String getReviews(
             Model model) {
-        // Fetch reviews from the database
-
+        // 모든 리뷰를 reviewlist에 추가
         List<ReviewDto> reviewlist = reviewService.getAllReview();
 
+        // 모든 과정명,기수명을 courselist에 추가
         List<CourseDto> courselist = reviewService.getAllCourseList();
 
         // 멤버 전체 명수
@@ -42,7 +42,7 @@ public class ReviewListController {
         String malePercentage = String.format("%.1f", ((double) maleCount / totalGender * 100));
         String femalePercentage = String.format("%.1f", ((double) femaleCount / totalGender * 100));
 
-        // Count the number of reviews in each star range
+        // 평균 평점 계산 영역
         Map<String, Long> starRangeCountMap = reviewlist.stream()
                 .collect(Collectors.groupingBy(
                         review -> {
@@ -63,14 +63,12 @@ public class ReviewListController {
                         }, Collectors.counting()
                 ));
 
-        // Calculate the percentages for each range
         Map<String, String> starRangePercentageMap = starRangeCountMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         entry -> String.format("%.1f", ((double) entry.getValue() / reviewlist.size()) * 100)
                 ));
 
-        // Create a LinkedHashMap to maintain the order
         Map<String, String> sortedStarRangePercentageMap = new LinkedHashMap<>();
         List<String> sortedKeys = Arrays.asList("4.5-5", "3.5-4", "2.5-3", "1.5-2", "0.5-1");
         for (String key : sortedKeys) {
@@ -79,7 +77,6 @@ public class ReviewListController {
 
         ReviewDto reviewDto = new ReviewDto();
         model.addAttribute("reviewDto", reviewDto);
-        // Add reviews to the model
         model.addAttribute("reviewlist", reviewlist);
         model.addAttribute("reviewAvg", reviewService.getAvgStar());
         model.addAttribute("starRangePercentageMap", sortedStarRangePercentageMap);
@@ -93,6 +90,7 @@ public class ReviewListController {
         return "thymeleaf/review"; // Return the name of the Thymeleaf template
     }
 
+    // 후기 추가
     @PostMapping("/review/insert")
     public String insertReview(@ModelAttribute ReviewDto reviewDto) {
         System.out.println(reviewDto);
@@ -101,6 +99,7 @@ public class ReviewListController {
         return "redirect:/review/list";
     }
 
+    // 후기 삭제
     @GetMapping("/review/delete")
     public String deleteReview(int review_id) {
         reviewService.deleteReview(review_id);
@@ -108,6 +107,8 @@ public class ReviewListController {
         return "redirect:/review/list";
     }
 
+
+//과정명 선택시 get mapping으로 과정명에 해당하는 기수명을 course db에서 불러오기
     @GetMapping("/review/names")
     @ResponseBody
     public List<String> getCourseNums(@RequestParam("name") String name){
@@ -118,13 +119,9 @@ public class ReviewListController {
     @ResponseBody
     public List<ReviewDto> selectAllReview(
             @RequestParam("name") String name,
-            @RequestParam("num") String num){
+            @RequestParam("num") String num) {
 
-        List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name,num);
-
-       //  model.addAttribute("selectlist", selectreviewlist);
-
+        List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name, num);
         return selectreviewlist;
     }
-
 }
