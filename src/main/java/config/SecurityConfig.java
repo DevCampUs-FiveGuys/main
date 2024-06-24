@@ -1,5 +1,6 @@
 package config;
 
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +25,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.io.IOException;
-import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -66,7 +66,7 @@ public class SecurityConfig {
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
                         CorsConfiguration configuration = new CorsConfiguration();
-
+                        
                         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
@@ -118,8 +118,6 @@ public class SecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/"));
-
-
          */
         return http.build();
     }
