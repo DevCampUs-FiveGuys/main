@@ -1,20 +1,29 @@
 package controller.portfolio;
 
+import data.dto.MemberDto;
 import data.dto.PortfolioDto;
+import data.mapper.MemberMapperInter;
 import data.mapper.PortfolioMapperInter;
+import data.naver.cloud.NcpObjectStorageService;
+import data.service.MemberService;
 import data.service.PortfolioService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,21 +35,14 @@ public class PortfolioUpdateController {
     @NonNull
     private PortfolioMapperInter portfolioMapperInter;
 
-    @PostMapping("/portfolio/update")
-    public String updatePortfolio(@ModelAttribute PortfolioDto dto,
-                                  @RequestParam("upload") MultipartFile upload,
-                                  HttpServletRequest request,
-                                  RedirectAttributes redirectAttributes) {
+    @Autowired
+    private MemberMapperInter memberMapperInter;
 
-                // PortfolioDto에 파일 경로 설정 (필요시)
-                dto.setFile_name(dto.getFile_name());
+    private String bucketName = "bitcamp-bucket-149";
+    private String folderName = "semiproject";
 
-            // 포트폴리오 서비스 호출
-            portfolioService.updatePortfolio(dto);
-
-        // 포트폴리오 상세 페이지로 리디렉션
-        return "redirect:/portfolioDetail?portfolio_id=" + dto.getPortfolio_id();
-    }
+    @Autowired
+    private NcpObjectStorageService storageService;
 
     @GetMapping("/portfolio/write")
     public String portfolioWrite(Model model)
@@ -53,11 +55,18 @@ public class PortfolioUpdateController {
 
     @PostMapping("/portfolio/insert")
     public String insertPortfolio(
-            @ModelAttribute PortfolioDto dto)
+            @ModelAttribute PortfolioDto dto,
+            @RequestParam("upload") MultipartFile upload,
+            @RequestParam int currentPage
+    )
+
     {
+        String photo = storageService.uploadFile(bucketName, folderName, upload);
+        dto.setFile_name(photo);
+
         portfolioService.insertPortfolio(dto);
 
-        return "redirect:/portfolioDetail";
+        return "redirect:/portfolio/Detail?portfolio_id=" + dto.getPortfolio_id() + "&current_Page=" + currentPage;
     }
 
 }

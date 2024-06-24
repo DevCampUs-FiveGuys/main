@@ -16,14 +16,11 @@ public class PortfolioListController {
     @Autowired
     private PortfolioService portfolioService;
 
-    @Autowired
-    private PortfolioAnswerService answerService;
-
     @GetMapping("/portfolio/list")
     public String list(Model model)
     {
-        answerService.getAnswerData();
-        List<PortfolioDto> list = answerService.getAnswerData();
+        portfolioService.getPortfolioData();
+        List<PortfolioDto> list = portfolioService.getPortfolioData();
         model.addAttribute("list", list);
 
         return "thymeleaf/portfolio";

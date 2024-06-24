@@ -9,10 +9,7 @@ import java.util.List;
 public interface QnaMapperInter {
 
     //후기 작성 기능 : title(제목)과 content(내용) 입력 하면 created_at(작성 시간)과 함께 qna DB에 저장
-    @Insert("""
-            insert into qna (title, content, created_at)
-            VALUES (#{title},#{content},now())
-            """)
+    @Insert("insert into qna (title, content, created_at) VALUES (#{title},#{content},now())")
     public void insertQna(QnaDto qnadto);
     
     //전체 후기 개수 가져오기 : qna DB에 있는 전체 값의 개수를 count(숫자 세기)를 통해 후기 개수 불러옴

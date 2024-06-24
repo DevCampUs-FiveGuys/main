@@ -33,11 +33,6 @@ public class AttendanceService {
         attendanceMapper.deleteCheckIn(member_id);
     }
 
-    // 퇴실 데이터 삭제 (업데이트)
-    public void deleteCheckOut(int member_id) {
-        attendanceMapper.deleteCheckOut(member_id);
-    }
-
     // 출석일수 조회
     public int getAttendanceDays(int member_id) {
         return attendanceMapper.getAttendanceDays(member_id);
@@ -56,6 +51,11 @@ public class AttendanceService {
     // 결석 데이터 업데이트
     public void updateAbsent(int member_id) {
         attendanceMapper.updateAbsent(member_id);
+    }
+
+    // 지각을 결석으로 업데이트
+    public void updateAbsentBasedOnLate(int member_id) {
+        attendanceMapper.updateAbsentBasedOnLate(member_id);
     }
 
     // 결석일수 최댓값 조회
