@@ -122,6 +122,41 @@ public class ReviewListController {
             @RequestParam("num") String num) {
 
         List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name, num);
+
+        Map<String, Long> selectedAvgMap = selectreviewlist.stream()
+                .collect(Collectors.groupingBy(
+                        review -> {
+                            double selectedStar = review.getStar();
+                            if (selectedStar == 0.5 || selectedStar == 1.0) {
+                                return "0.5-1";
+                            } else if (selectedStar == 1.5 || selectedStar == 2.0) {
+                                return "1.5-2";
+                            } else if (selectedStar == 2.5 || selectedStar == 3.0) {
+                                return "2.5-3";
+                            } else if (selectedStar == 3.5 || selectedStar == 4.0) {
+                                return "3.5-4";
+                            } else if (selectedStar == 4.5 || selectedStar == 5.0) {
+                                return "4.5-5";
+                            } else {
+                                return "Other";
+                            }
+                        }, Collectors.counting()
+                ));
+        Map<String, String> starRangePercentageMap = selectedAvgMap.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> String.format("%.1f", ((double) entry.getValue() / selectreviewlist.size()) * 100)
+                ));
+
+        Map<String, String> selectedAvgPercentageMap = new LinkedHashMap<>();
+        List<String> sortedKeys = Arrays.asList("4.5-5", "3.5-4", "2.5-3", "1.5-2", "0.5-1");
+        for (String key : sortedKeys) {
+            selectedAvgPercentageMap.put(key, starRangePercentageMap.getOrDefault(key, "0.0"));
+        }
+
+        model.addAttribute("selectedAvgPercentageMap", selectedAvgPercentageMap);
+
+
         return selectreviewlist;
     }
 }
