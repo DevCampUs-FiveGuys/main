@@ -21,4 +21,8 @@ public class PortfolioDto {
     private Timestamp updated_at;
     private String file_name;
     private String readcount;
+    private int regroup;
+    private int restep;
+    private int relevel;
+
 }

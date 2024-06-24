@@ -10,8 +10,13 @@ public class CheckListService {
     @Autowired
     private CheckLikeMapperInter checkLikeMapperInter;
 
+
     public void insertLike(int rev_id) {
         checkLikeMapperInter.insertLike(rev_id);
+
+    public int ShowCountLike(int rev_id){
+        return checkLikeMapperInter.getCountLike(rev_id);
+
     }
 
 

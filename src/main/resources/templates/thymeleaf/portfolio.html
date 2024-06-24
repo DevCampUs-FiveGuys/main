@@ -5,7 +5,6 @@
 <head>
     <link rel="stylesheet" th:href="@{/css/portfolio.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <script>
         // Function to toggle favorite (like) status
         function toggleFavorite(button) {
@@ -27,9 +26,9 @@
         }
     </script>
 </head>
-<body>
 <div layout:fragment="content">
-    <h1 class="portfolio_h1">PortFolio</h1>
+    <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
+        <h1 class="portfolio_h1">PortFolio</h1>
         <div class="filters1">
             <button class="active">전체</button>
             <button>강남센터</button>
@@ -44,22 +43,44 @@
         </div>
 
         <div class="course1-list">
-            <div class="course1">
-                <img th:src="@{images/devops.png}" th:onclick="|location.href='@{/portfolioDetail}'|"
-                     alt="네이버클라우드캠프 15기"/>
-                <div class="course1-details">
-                    <p class="title" th:onclick="|location.href='@{/portfolioDetail}'|">
-                        [강남센터] [N캠프] 클라우드 기반 웹 개발자 & 데브옵스 과정_15기
-                    </p>
-                    <p class="date">개강일: 2024-07-02</p>
-                    <p class="date">교육기간: 2024-07-02 ~ 2025-01-08</p>
+            <tr th:each="dto : ${list}">
+                <div class="course1" style="border: 1px solid">
+                    <img class="stpathimg" th:src="@{${stpath}+'/'+${dto.file_name}}" th:onclick="|location.href='@{/portfolio/Detail}'|">
+                    <div>
+                        <span class="title1" th:text="${dto.title}"></span>
+                        <p class="gisu">[강남센터] [N캠프] 클라우드 기반 웹 개발자 & 데브옵스 과정_15기</p>
+                    </div>
+                    <div class="bo_v_info_label">
+                        <span class="bo_v_label inline-block">개강일</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;
+                        <span class="normal coral">2024-06-23</span>
+                    </div>
+                    <div class="bo_v_info_label">
+                        <span class="bo_v_lavel inline-block">교육기간</span>
+                        &nbsp;|&nbsp;2024-06-23 ~ 2024-09-16
+                    </div>
+                    <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}" />
+                    <button class="look" th:onclick="|location.href='@{/portfolio/Detail}'|">자세히보기 +</button>
                     <button type="button" class="favorite-button" onclick="toggleFavorite(this)">
                         <i class="far fa-heart"></i>
                     </button>
                 </div>
-            </div>
+            </tr>
         </div>
     </div>
-
-</body>
+    <div class="pfpage" style="width: 600px; text-align: center; font-size: 20px;">
+        <div th:if="${startPage != null and startPage > 1}">
+            <a th:href="@{/portfolio/pagingList/page(currentPage=${startPage - 1})}" style="text-decoration: none; color: black;">&lt;</a>
+        </div>
+        &nbsp;
+        <span th:each="pp : ${#numbers.sequence(startPage != null ? startPage : 1, endPage != null ? endPage : 5)}">
+            <a th:href="@{/portfolio/pagingList/page(currentPage=${pp})}" th:style="'text-decoration: none; color:' + (${currentPage} == ${pp} ? 'red' : 'black')"
+               th:text="${pp}"></a>&nbsp;
+        </span>
+        &nbsp;
+        <div th:if="${endPage != null and endPage < totalPage}">
+            <a th:href="@{/portfolio/pagingList/page(currentPage=${endPage + 1})}" style="text-decoration: none; color: black;">&gt;</a>
+        </div>
+    </div>
+</div>
 </html>

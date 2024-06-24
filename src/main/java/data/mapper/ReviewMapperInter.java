@@ -8,8 +8,10 @@ import java.util.List;
 @Mapper
 public interface ReviewMapperInter {
 
+    // review db에서 작성한 후기 등록
     @Insert("insert into review (content, star, created_at) values (#{content}, #{star}, now())")
     public void insertReview(ReviewDto reviewDto);
+
 
     //    @Select("select content, created_at, star, `like` like_count,name,gender, review_id from review join(select member_id,name,gender from member where course_name=#{name} and course_num=#{num} as mem on mem.member_id = review.member_id)")
 //    public List<ReviewDto> selectAllReview(String name, String num);
@@ -31,6 +33,7 @@ public interface ReviewMapperInter {
     // 성별 개수 count 하기
     @Select("select count(*) from member where gender=#{gender}")
     public int countByGender(int gender);
+
 
     @Select("select count(*) from member")
     public int getTotalGender();

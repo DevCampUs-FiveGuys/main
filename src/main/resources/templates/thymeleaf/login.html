@@ -8,8 +8,7 @@
             <div class="row justify-content-center text-center mb-5">
                 <div class="col-lg-6">
                     <h2 class="text-secondary heading-2">Log in</h2>
-                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
-                        live the blind texts.</p>
+                    <p>비트캠프에 오신것을 환영합니다.</p>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -17,8 +16,8 @@
                     <form th:action="@{/api/user/login}" method="post" class="contact-form" data-aos="fade-up" data-aos-delay="200">
 
                         <div class="form-group">
-                            <label class="text-black" for="email">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email">
+                            <label class="text-black" for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="username">
                         </div>
 
                         <div class="form-group">
@@ -29,7 +28,7 @@
                         <button type="submit" class="btn btn-primary mb-4">Log in</button>
 
                         <div class="form-group">
-                            <p><small>No account yet? <a href="/signup">Sign up</a></small></p>
+                            <p><small>아직 계정이 없나요? <a th:href="@{/signup}">&nbsp;&nbsp; Sign up</a></small></p>
                         </div>
                     </form>
                 </div> <!-- /.col-lg-7 -->

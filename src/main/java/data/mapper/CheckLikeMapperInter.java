@@ -7,6 +7,7 @@ public interface CheckLikeMapperInter {
     //화이탱~~~~
     //힘이들땐 하늘을봐
 
+
     @Select("select count(*) from likes where rev_id = #{rev_id}")
     public int getCountLike(int rev_id);
 

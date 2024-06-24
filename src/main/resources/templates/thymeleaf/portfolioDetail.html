@@ -1,8 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/portfolio.css}">
+</head>
 <div layout:fragment="content">
-
+    <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
+        <h1 align="center">Portfolio Detail</h1>
+        <button class="animate2-button" th:onclick="|location.href='@{/portfolio/portfoliolist}'|">
+            <i class="fas fa-list"></i>목록
+        </button>
+        <div class="detailfull">
+            <tr th:each="dto : ${list}">
+                <div class="deshead2">
+                    <img class="stpathimg2" th:src="@{${stpath}+'/'+${dto.file_name}}">
+                        <p class="title3" th:text="${dto.title}">
+                        <p class="date2" th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}">
+                </div>
+                <div class="description2">
+                <div th:utext="${dto.description}"></div>
+                </div>
+            </tr>
+        </div>
+    </div>
 </div>
 </html>
