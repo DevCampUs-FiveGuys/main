@@ -24,9 +24,6 @@ public class MyPageTeacherController {
     @NonNull
     private TeacherService teacherService;
 
-    @NonNull
-    private AttendanceService attendanceService;
-
     @GetMapping("/attendancelist")
     public String attendancelist() {
         return "thymeleaf/teacher/attendanceList";
