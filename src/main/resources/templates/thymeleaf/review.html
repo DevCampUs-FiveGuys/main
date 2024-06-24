@@ -88,9 +88,9 @@
                                     </fieldset>
                                     <div class="review-gender" th:text="${item.gender === 0 ? '남자' : '여자'}"></div>
                                 </div>
-                                <div>
-                                <div >${item.like}</div>
-</div>
+                                 <div>
+                            <button class="icon-heart" onclick="updateLike()">${item.like}</button>
+                        </div>
                             </div>
                             <div class="review-content">${item.content}</div>
                             <div class="reviews-box-3">
@@ -236,6 +236,7 @@
                             <input type="text" class="form-control" th:field="*{content}" required="required"
                                    placeholder="후기 입력" style="float:left; width: 80%;">
                             <input type="hidden" id="star" name="star" th:field="*{star}">
+                            <button type="submit" class="btn btn-primary" style="margin: auto; font-weight: bold">등록</button>
                         </div>
                     </form>
                 </div>
@@ -275,11 +276,14 @@
                             </fieldset>
                             <div class="review-gender" style="padding-bottom: 10px" th:text="${reviewlist.gender == 0 ? '남자' : '여자'}"></div>
                         </div>
+<!--                        <div>-->
+<!--                            &lt;!&ndash; 좋아요 버튼 &ndash;&gt;-->
+<!--                            <span class="icon-heart" onclick="updateLikes()"><span style="color: black">  좋아요 : </span></span>-->
+<!--                            &lt;!&ndash; 좋아요 수 &ndash;&gt;-->
+<!--                            <span class="like-count" th:text="${reviewlist.like}">0</span>-->
+<!--                        </div>-->
                         <div>
-                            <!-- 좋아요 버튼 -->
-                            <span class="icon-heart" onclick="updateLikes()"><span style="color: black">  좋아요 : </span></span>
-                            <!-- 좋아요 수 -->
-                            <span class="like-count" th:text="${reviewlist.like}">0</span>
+                            <button class="icon-heart" onclick="updateLike()" th:text="${reviewlist.like}">좋아요</button>
                         </div>
                     </div>
                     <div class="review-content" th:text="${reviewlist.content}"></div>
@@ -338,6 +342,9 @@
                 },
             });
         });
+        function updateLike() {
+            console.log();
+        }
     </script>
 </div> <!-- layout:fragment = content-->
 

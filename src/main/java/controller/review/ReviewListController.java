@@ -7,6 +7,8 @@ import data.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -118,13 +120,21 @@ public class ReviewListController {
     @ResponseBody
     public List<ReviewDto> selectAllReview(
             @RequestParam("name") String name,
-            @RequestParam("num") String num){
+            @RequestParam("num") String num) {
 
-        List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name,num);
+        List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name, num);
 
 
         return selectreviewlist;
     }
+
+    // 평균 별점을 가져오는 매핑
+//    @GetMapping("/review/avgStar")
+//    @ResponseBody
+//    public double getAvgStar(@RequestParam("name") String courseName, @RequestParam("num") String courseNum) {
+//        // 선택한 과목과 기수에 따른 평균 별점을 가져오는 서비스 메소드 호출
+//        return reviewService.getAvgStarByCourse(courseName, courseNum);
+//    }
 
 
 }

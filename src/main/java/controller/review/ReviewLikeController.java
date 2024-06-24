@@ -20,7 +20,6 @@ public class ReviewLikeController {
 
 
     @PostMapping("/like/insert")
-    @ResponseBody
     public String insertLike(int rev_id) {
         checkListService.insertLike(rev_id);
 

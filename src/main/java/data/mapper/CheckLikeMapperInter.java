@@ -10,8 +10,6 @@ public interface CheckLikeMapperInter {
     @Select("select count(*) from likes where rev_id = #{rev_id}")
     public int getCountLike(int rev_id);
 
-//    @Insert("insert into likes (mem_id, rev_id) values (#{mem_id}, #{rev_id})")
-//    public void insertLike(int mem_id, int rev_id);
     @Update("update likes SET count = count +1 where rev_id = #{rev_id}")
     public void insertLike(int rev_id);
 

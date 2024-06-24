@@ -37,9 +37,7 @@ public class  ReviewService {
     public  double getAvgStar() {
         return reviewMapperInter.getAvgStar();
     }
-//    public int getLikeCount(int review_id) {
-//        return reviewMapperInter.getLikeCount(review_id);
-//    }
+
 
     public int countByGender(int gender){
         return reviewMapperInter.countByGender(gender);
@@ -57,8 +55,5 @@ public class  ReviewService {
         return courseMapperInter.getAllCourseList();
     }
 
-//    public int getSelectedGender(){return reviewMapperInter.getSelectedGender();}
-//    public List<String> getMemberName(String name, String num){
-//        return reviewMapperInter.getMemberName(name, num);
-//    }
+
 }
