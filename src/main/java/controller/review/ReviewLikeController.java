@@ -25,11 +25,4 @@ public class ReviewLikeController {
 
         return "redirect:/review/list";
     }
-
-    @GetMapping("/like/delete")
-    public String deleteLike(int like_id) {
-        checkListService.deleteLike(like_id);
-
-        return "redirect:/review/list";
-    }
 }
