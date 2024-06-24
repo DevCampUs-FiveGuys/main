@@ -1,5 +1,5 @@
 // <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-// <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+ // <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 function loadCourseNums() {
     let selectedCourseName = $("#courseName").val();
@@ -43,13 +43,13 @@ function search() {
             if (response.length > 0) {
                 response.forEach(function (item) {
                     let reviewHTML = `
-                        <div class="reviews">
+                    <div class="reviews">
                         <div class="reviews-box">
                             <div class="reviews-box-1">
                                 <div class="reviews-box-2">
                                     <div class="review-name">${item.name}</div>
                                     <fieldset class="rate2">
-                                        ${generateStars(item.star)}
+                                        ${generateStars(item.shgtar)}
                                     </fieldset>
                                     <div class="review-gender" th:text="${item.gender === 0 ? '남자' : '여자'}"></div>
                                 </div>
@@ -66,7 +66,7 @@ function search() {
                             </div>
                         </div>
                         </div>
-`;
+                       `;
                     reviewListDiv.append(reviewHTML);
                 });
             } else {
