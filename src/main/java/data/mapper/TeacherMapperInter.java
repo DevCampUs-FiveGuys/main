@@ -17,5 +17,8 @@ public interface TeacherMapperInter {
     public List<AttendanceDto> getStudentAttendaceList();
 
     @Update("update member set roles='ROLE_STUDENT' where member_id=#{member_id}")
-    public void updateTeacher(int member_id);
+    public void updateStudent(int member_id);
+
+    @Update("update member set roles='ROLE_GUEST' where member_id=#{member_id}")
+    public void updateGuest(int member_id);
 }
