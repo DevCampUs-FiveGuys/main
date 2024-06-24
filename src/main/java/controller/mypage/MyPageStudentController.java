@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
-@RequestMapping("/student_mypage")
+@RequestMapping("/student/mypage")
 public class MyPageStudentController {
 
     @Autowired

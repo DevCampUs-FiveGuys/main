@@ -31,21 +31,21 @@ public interface AttendanceMapperInter {
     @Update("update attendance set late = late + 1 where DATE(check_in) = DATE(now()) and member_id = 1")
     public void updateLate(int member_id);
 
-    // 지각일수 최댓값 조회
-    @Select("select max(late) from attendance where member_id = 1")
+    // 지각일수 조회
+    @Select("select count(late) from attendance where late = 1")
     public int getLateDays(int member_id);
 
     // 당일에 결석을 하면 결석 데이터가 업데이트 되어야함
     @Update("update attendance set absent = absent + 1 where DATE(check_in) = DATE(now()) and member_id = 1")
     public void updateAbsent(int member_id);
 
+    // 결석일수 조회
+    @Select("select count(absent) from attendance where absent = 1")
+    public int getAbsentDays(int member_id);
+
     // 지각일수에 따른 결석 업데이트 (지각 3회 당 결석 1회)
     @Update("update attendance set absent = absent + (late / 3) where member_id = 1")
     public void updateAbsentBasedOnLate(int member_id);
-
-    // 결석일수 최댓값 조회
-    @Select("select max(absent) from attendance where member_id = 1")
-    public int getAbsentDays(int member_id);
 
     // 휴가를 신청하면 휴가 데이터가 추가되어야 함
     @Insert("insert into attendance values (null, null, null, default, +1, default, default, 1)")
