@@ -9,6 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class PortfolioService {
 
@@ -20,15 +24,15 @@ public class PortfolioService {
         portfolioMapper.insertPortfolio(dto);
     }
 
+    public List<PortfolioDto> getPortfolioData()
+    {
+        return portfolioMapper.getPorfolioData();
+    }
+
     public int getTotalCount()
     {
         return portfolioMapper.getTotalCount();
     }
-
-    /*public void updateReadcount(int portfolio_id)
-    {
-        portfolioMapper.updateReadcount(portfolio_id);
-    }*/
 
     public PortfolioDto getData()
     {
@@ -43,6 +47,15 @@ public class PortfolioService {
     public void deletePortfolio(int portfolio_id)
     {
         portfolioMapper.deletePortfolio(portfolio_id);
+    }
+
+    public List<PortfolioDto> getPagingList(int start, int perpage)
+    {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("start", start);
+        map.put("perpage", perpage);
+
+        return portfolioMapper.getPagingList(map);
     }
 
 }

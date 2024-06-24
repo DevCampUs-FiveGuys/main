@@ -39,7 +39,7 @@
 
 .favorite-button {
     position: absolute; /* 절대 위치 지정 */
-    top: 83%; /* 상단에서 수직 중앙으로 이동 */
+    top: 75%; /* 상단에서 수직 중앙으로 이동 */
     left: 86%; /* 좌측에서 수평 중앙으로 이동 */
     background: none;
     border: none;
@@ -156,14 +156,14 @@
 }
 .course1 {
     border: 1px solid #ddd;
-    padding: 20px;
+    padding: 10px 10px;
     width: 20%;
     box-sizing: border-box;
     position: relative;
 }
 .course1 img {
     width: 100%;
-    height: auto;
+    height: 200px;
 }
 .course1 .badge {
     position: absolute;
@@ -247,4 +247,121 @@
 .file-upload-container {
     position: relative;
     left: 400px;
+}
+
+#showimg{
+    position: absolute;
+    width: 500px;
+    height: 200px;
+    top:60px;
+    border: 2px solid gray;
+}
+
+.show {
+    width: 500px;
+    position: relative;
+    left: 700px;
+    height: 300px;
+}
+
+.gisu {
+    font-weight: bold;
+    display: block;
+    line-height: 30px;
+    height: 60px;
+    color: #000;
+    word-break: keep-all;
+}
+
+.stpathimg {
+    cursor: pointer;
+}
+
+.look {
+    position: relative;
+    left: 180px;
+    display: inline-block;
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+    margin-top: 0;
+    cursor: pointer;
+}
+
+.coral {
+    color: #da5c5f;
+}
+
+.bo_v_info_label {
+    font-size: 13px;
+}
+
+.title1 {
+    display: flex;
+    font-weight: bold;
+    font-size: 20px;
+    color: #1b1e21;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.stpathimg2 {
+    position: relative;
+    width: 350px;
+    height: 200px;
+    margin-bottom: 30px;
+    right: 200px;
+}
+
+.title3 {
+    position: relative;
+    right: 180px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #1b1e21;
+}
+
+.deshead2 {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f1f1f1;
+    color: #666;
+
+}
+
+.date2 {
+    position: relative;
+    right: 230px;
+    top: 50px;
+}
+
+.description2 {
+    display: flex;
+    justify-content: center;
+}
+
+.animate2-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: white;
+    font-size: 16px;
+    border: 1px solid #333; /* 테두리 추가 */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    bottom: 500px; /* 화면 아래에서의 거리 */
+    right: 20px;  /* 화면 오른쪽에서의 거리 */
+}
+
+.animate2-button:hover {
+    background-color: #2980b9; /* 호버 시 배경색 변경 */
+}
+
+.pfpage {
+    position: relative;
+    left: 700px;
+    margin-bottom: 30px;
 }
