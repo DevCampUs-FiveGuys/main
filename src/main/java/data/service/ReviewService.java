@@ -50,11 +50,6 @@ public class  ReviewService {
         return reviewMapperInter.getTotalGender();
     }
 
-    // 선택된 과정, 기수의 총 인원
-    public int getSelectedTotalCnt() {
-        return reviewMapperInter.getSelectedTotalCnt();
-    }
-
     //과정명 선택시 과정명에 해당하는 기수명을 course db에서 불러오기
     public List<String> getNumOfCourse(String name){
         return courseMapperInter.getNumOfCourse(name);
@@ -63,9 +58,6 @@ public class  ReviewService {
     //중복처리한 과정명을 course db에서 불러오기
     public List<CourseDto> getAllCourseList(){
         return courseMapperInter.getAllCourseList();
-    }
-    public double getSelectedAvgStar(String name, String num){
-        return reviewMapperInter.getSelectedAvgStar(name, num);
     }
 
 }
