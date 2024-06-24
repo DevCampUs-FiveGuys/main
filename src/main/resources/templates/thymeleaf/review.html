@@ -18,8 +18,6 @@
             </div>
         </div>
     </div> <!-- 제목 end -->
-
-
     <div class="untree_co-section bg-light" style="border-bottom: 1px solid gray">
         <div class="container">
             <!--  과정명, 기수 검색 -->
@@ -30,25 +28,29 @@
                         <select id="courseName" onchange="loadCourseNums()"
                                 style="width: 250px;height: 25px;margin-right: 20px; border-radius: 20px;">
                             <option value="">과정명을 선택하세요</option>
-                            <!-- Thymeleaf를 이용해 서버에서 받은 과정명을 출력 -->
+                            <!-- Thymeleaf를 이용해 서버에서 받은 과정명 옵션을 반복 -->
                             <option th:each="courselist : ${courselist}" th:value="${courselist.name}"
                                     th:text="${courselist.name}"></option>
                         </select>
-                        <select id="courseNum" style="width: 150px; height: 25px; border-radius: 20px">
+                        <select id="courseNum" style="width: 150px; height: 25px; border-radius: 20px; margin-right: 20px">
                             <option value="">기수를 선택해주세요</option>
                         </select>
-
-                        <!-- 과정명 선택시 기수명 불러오는 기능 script -->
+                        <button type="button" onclick="search()" class="search-btn">조회하기</button>
+                        <!-- 과정명 선택 script 시작 -->
+                      
                         <script type="text/javascript">
                             function loadCourseNums() {
                                 let selectedCourseName = $("#courseName").val();
 
                                 $.ajax({
                                     type: "GET",
-                                    url: "/review/nums",
+
+                                    url: "/review/names",
                                     data: {name: selectedCourseName},
                                     dataType: "json",
                                     success: function (ele) {
+                                        console.log(ele);
+                                  
                                         let courseNumSelect = $("#courseNum");
                                         courseNumSelect.empty();
                                         courseNumSelect.append('<option value="">기수를 선택해주세요</option>');
@@ -61,6 +63,88 @@
                                     }
                                 });
                             }
+
+                            function search() {
+                                let courseName = $("#courseName").val();
+                                let courseNum = $("#courseNum").val();
+                                console.log(courseName, courseNum);
+
+                                $.ajax({
+                                    type: "GET",
+                                    url: "/review/nums",
+                                    data: {name: courseName, num: courseNum},
+                                    dataType: "json",
+                                    success: function (response) {
+                                        let reviewListDiv = $("#reviewList");
+                                        console.log(response);
+                                        reviewListDiv.empty(); // Clear the existing reviews
+
+                                        if (response.length > 0) {
+                                            response.forEach(function (item) {
+                                                let reviewHTML = `
+                        <div class="reviews">
+                        <div class="reviews-box">
+                            <div class="reviews-box-1">
+                                <div class="reviews-box-2">
+                                    <div class="review-name">${item.name}</div>
+                                    <fieldset class="rate2">
+                                        ${generateStars(item.star)}
+                                    </fieldset>
+                                    <div class="review-gender" th:text="${item.gender === 0 ? '남자' : '여자'}"></div>
+                                </div>
+                                 <div>
+                            <button class="icon-heart" onclick="updateLike()">${item.like}</button>
+                        </div>
+                            </div>
+                            <div class="review-content">${item.content}</div>
+                            <div class="reviews-box-3">
+                                <div class="review-writetime">${formatDate(item.created_at)}</div>
+                                <a href="/review/delete?review_id=${item.review_id}">
+                                    <i class="icon-delete"></i>
+                                </a>
+                            </div>
+                        </div>
+                        </div>
+`;
+                                                reviewListDiv.append(reviewHTML);
+                                            });
+                                        } else {
+                                            reviewListDiv.append("<p class='non-list'>등록된 후기가 없습니다.</p>");
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error('Ajax Error : ', status, error);
+                                        alert('후기 목록을 불러오는 중 오류가 발생했습니다.');
+                                    }
+                                });
+                            }
+
+                            function generateStars(starRating) {
+                                let starsHTML = "";
+                                const totalStar = 5;
+                                const starVal = totalStar - starRating;
+
+
+                                for (let i = 1; i<=totalStar; i++) {
+                                    const starVal = totalStar-i +1;
+
+                                    if(starVal <= starRating) {
+                                        starsHTML += `<input type="radio" value="${starVal}" checked><label title="${starVal}점"></label>`
+                                    } else if (starVal - 0.5 === starRating) {
+                                        starsHTML += `<input type="radio" value="${starVal}"><label title="${starVal}점"></label>`;
+                                        starsHTML += `<input type="radio" value="${starVal}.5" checked><label class="half" title="${starVal - 0.5}점"></label>`;
+                                    }else {
+                                        // 그 외의 경우 비어 있는 별을 추가하여 표시
+                                        starsHTML += `<input type="radio" value="${starVal}"><label title="${starVal}점"></label>`;
+                                    }
+                                }
+                                return starsHTML;
+                            }
+
+                            function formatDate(dateString) {
+                                let date = new Date(dateString);
+                                return date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
+                            }
                         </script>
                     </div>
                 </div>
@@ -70,11 +154,10 @@
             <div class="row align-items-stretch">
                 <div class="col-md-6 col-lg-4">
                     <div class="untree_co-testimonial h-100" style="text-align: center">
-                        <!--                        <span class="quote" style="display: block">평점</span>-->
                         <div class="averageRating">
                             <h5 class="rating-avg-title">수강생 평점</h5>
-                            <h2 class="rating-avg"><span th:text="${reviewAvg}" style="color: black; font-weight:bold"></span>
-                                / 5.0</h2>
+                            <h2 class="rating-avg"><span th:text="${reviewAvg}"
+                                                         style="color: black; font-weight:bold"></span>/ 5.0</h2>
                             <fieldset class="rate3">
                                 <input type="radio" value="5.0" th:checked="${reviewAvg <= 5.0 && reviewAvg > 4.5}">
                                 <label title="5점"></label>
@@ -98,7 +181,6 @@
                                 <label class="half" title="0.5점"></label>
                             </fieldset>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
@@ -127,77 +209,97 @@
             <div class="row justify-content-center text-center">
                 <div class="col-lg-6">
                     <h6 class="choose-rate-title">별점을 선택해주세요!</h6>
-
                     <div class="choose-rate-box">
                         <!-- 별점을 표시할 영역 -->
                         <fieldset class="rate" onchange="updateStarValue()">
-                            <input type="radio" id="rating10" name="rating" value="5.0"><label for="rating10" title="5점"></label>
-                            <input type="radio" id="rating9" name="rating" value="4.5"><label class="half" for="rating9" title="4.5점"></label>
-                            <input type="radio" id="rating8" name="rating" value="4.0"><label for="rating8" title="4점"></label>
-                            <input type="radio" id="rating7" name="rating" value="3.5"><label class="half" for="rating7" title="3.5점"></label>
-                            <input type="radio" id="rating6" name="rating" value="3.0"><label for="rating6" title="3점"></label>
-                            <input type="radio" id="rating5" name="rating" value="2.5"><label class="half" for="rating5" title="2.5점"></label>
-                            <input type="radio" id="rating4" name="rating" value="2.0"><label for="rating4" title="2점"></label>
-                            <input type="radio" id="rating3" name="rating" value="1.5"><label class="half" for="rating3" title="1.5점"></label>
-                            <input type="radio" id="rating2" name="rating" value="1.0"><label for="rating2" title="1점"></label>
-                            <input type="radio" id="rating1" name="rating" value="0.5"><label class="half" for="rating1" title="0.5점"></label>
+                            <input type="radio" id="rating10" name="rating" value="5.0"><label for="rating10"
+                                                                                               title="5점"></label>
+                            <input type="radio" id="rating9" name="rating" value="4.5"><label class="half" for="rating9"
+                                                                                              title="4.5점"></label>
+                            <input type="radio" id="rating8" name="rating" value="4.0"><label for="rating8"
+                                                                                              title="4점"></label>
+                            <input type="radio" id="rating7" name="rating" value="3.5"><label class="half" for="rating7"
+                                                                                              title="3.5점"></label>
+                            <input type="radio" id="rating6" name="rating" value="3.0"><label for="rating6"
+                                                                                              title="3점"></label>
+                            <input type="radio" id="rating5" name="rating" value="2.5"><label class="half" for="rating5"
+                                                                                              title="2.5점"></label>
+                            <input type="radio" id="rating4" name="rating" value="2.0"><label for="rating4"
+                                                                                              title="2점"></label>
+                            <input type="radio" id="rating3" name="rating" value="1.5"><label class="half" for="rating3"
+                                                                                              title="1.5점"></label>
+                            <input type="radio" id="rating2" name="rating" value="1.0"><label for="rating2"
+                                                                                              title="1점"></label>
+                            <input type="radio" id="rating1" name="rating" value="0.5"><label class="half" for="rating1"
+                                                                                              title="0.5점"></label>
                         </fieldset>
                     </div>
+                    <!-- 리뷰 입력-->
                     <form th:action="@{/review/insert}" method="post" th:object="${reviewDto}">
                         <div style="display: flex">
                             <input type="text" class="form-control" th:field="*{content}" required="required"
                                    placeholder="후기 입력" style="float:left; width: 80%;">
                             <input type="hidden" id="star" name="star" th:field="*{star}">
-                            <button type="submit" class="btn btn-primary" style="margin: auto">등록</button>
+                            <button type="submit" class="btn btn-primary" style="margin: auto; font-weight: bold">등록</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
     <!--    입력된 후기 목록 -->
-    <div class="reviews" th:each="reviewlist : ${reviewlist}">
-        <div class="reviews-box">
-            <div class="reviews-box-1">
-                <div class="reviews-box-2">
-                    <div class="review-name">박민지</div>
-                    <fieldset class="rate2">
-                        <input type="radio" value="5.0" th:checked="${reviewlist.star == 5.0}">
-                        <label title="5점"></label>
-                        <input type="radio" value="4.5" th:checked="${reviewlist.star == 4.5}">
-                        <label class="half" title="4.5점"></label>
-                        <input type="radio" value="4.0" th:checked="${reviewlist.star == 4.0}">
-                        <label title="4점"></label>
-                        <input type="radio" value="3.5" th:checked="${reviewlist.star == 3.5}">
-                        <label class="half" title="3.5점"></label>
-                        <input type="radio" value="3.0" th:checked="${reviewlist.star == 3.0}">
-                        <label title="3점"></label>
-                        <input type="radio" value="2.5" th:checked="${reviewlist.star == 2.5}">
-                        <label class="half" title="2.5점"></label>
-                        <input type="radio" value="2.0" th:checked="${reviewlist.star == 2.0}">
-                        <label title="2점"></label>
-                        <input type="radio" value="1.5" th:checked="${reviewlist.star == 1.5}">
-                        <label class="half" title="1.5점"></label>
-                        <input type="radio" value="1.0" th:checked="${reviewlist.star == 1.0}">
-                        <label title="1점"></label>
-                        <input type="radio" value="0.5" th:checked="${reviewlist.star == 0.5}">
-                        <label class="half" title="0.5점"></label>
-                    </fieldset>
-                    <div class="review-gender">남자</div>
+    <div id="reviewList">
+        <div th:fragment="reviewListFrgment">
+            <div class="reviews" th:each="reviewlist : ${reviewlist}">
+                <div class="reviews-box">
+                    <div class="reviews-box-1">
+                        <div class="reviews-box-2">
+                            <div class="review-name" th:text="${reviewlist.name}"></div>
+                            <fieldset class="rate2">
+                                <input type="radio" value="5.0" th:checked="${reviewlist.star == 5.0}">
+                                <label title="5점"></label>
+                                <input type="radio" value="4.5" th:checked="${reviewlist.star == 4.5}">
+                                <label class="half" title="4.5점"></label>
+                                <input type="radio" value="4.0" th:checked="${reviewlist.star == 4.0}">
+                                <label title="4점"></label>
+                                <input type="radio" value="3.5" th:checked="${reviewlist.star == 3.5}">
+                                <label class="half" title="3.5점"></label>
+                                <input type="radio" value="3.0" th:checked="${reviewlist.star == 3.0}">
+                                <label title="3점"></label>
+                                <input type="radio" value="2.5" th:checked="${reviewlist.star == 2.5}">
+                                <label class="half" title="2.5점"></label>
+                                <input type="radio" value="2.0" th:checked="${reviewlist.star == 2.0}">
+                                <label title="2점"></label>
+                                <input type="radio" value="1.5" th:checked="${reviewlist.star == 1.5}">
+                                <label class="half" title="1.5점"></label>
+                                <input type="radio" value="1.0" th:checked="${reviewlist.star == 1.0}">
+                                <label title="1점"></label>
+                                <input type="radio" value="0.5" th:checked="${reviewlist.star == 0.5}">
+                                <label class="half" title="0.5점"></label>
+                            </fieldset>
+                            <div class="review-gender" style="padding-bottom: 10px" th:text="${reviewlist.gender == 0 ? '남자' : '여자'}"></div>
+                        </div>
+<!--                        <div>-->
+<!--                            &lt;!&ndash; 좋아요 버튼 &ndash;&gt;-->
+<!--                            <span class="icon-heart" onclick="updateLikes()"><span style="color: black">  좋아요 : </span></span>-->
+<!--                            &lt;!&ndash; 좋아요 수 &ndash;&gt;-->
+<!--                            <span class="like-count" th:text="${reviewlist.like}">0</span>-->
+<!--                        </div>-->
+                        <div>
+                            <button class="icon-heart" onclick="updateLike()" th:text="${reviewlist.like}">좋아요</button>
+                        </div>
+                    </div>
+                    <div class="review-content" th:text="${reviewlist.content}"></div>
+                    <div class="reviews-box-3">
+                        <div class="review-writetime"
+                             th:text="${#dates.format(reviewlist.created_at, 'yyyy-MM-dd')}"></div>
+                        <a th:href="@{/review/delete(review_id=${reviewlist.review_id})}">
+                            <i class="icon-delete"></i>
+                        </a>
+                    </div>
                 </div>
 
-                <div id="reviewLike-[[${reviewlist.index}]]">
-                    <i class="icon-heart"></i>
-                    <span>좋아요 :</span>
-                    <span class="like-count" th:text="${reviewlist.like}">0</span>
-                </div>
-            </div>
-            <div class="review-content" th:text="${reviewlist.content}"></div>
-            <div class="reviews-box-3">
-                <div class="review-writetime" th:text="${#dates.format(reviewlist.created_at, 'yyyy-MM-dd')}"></div>
-                <a th:href="@{/review/delete(review_id=${reviewlist.review_id})}">
-                    <i class="icon-delete"></i>
-                </a>
             </div>
         </div>
     </div>
@@ -206,7 +308,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script>
-        // 과정명 & 기수 select
         // 평점 반영 함수
         function updateStarValue() {
             let selectedRating = document.querySelector('input[name="rating"]:checked').value;
@@ -215,8 +316,8 @@
             }
         }
 
-        // 성별 비율 Doughnut Chart
-        $(function(){
+        // Doughnut Chart
+        $(function () {
             let malePercentage = [[${malePercentage}]];
             let femalePercentage = [[${femalePercentage}]];
 
@@ -246,6 +347,10 @@
                 },
             });
         });
+        function updateLike() {
+            console.log();
+        }
     </script>
 </div> <!-- layout:fragment = content-->
+
 </html>
