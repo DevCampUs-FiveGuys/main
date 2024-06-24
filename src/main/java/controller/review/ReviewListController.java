@@ -106,6 +106,15 @@ public class ReviewListController {
 
         return "redirect:/review/list";
     }
+    @PostMapping("/review/like")
+    public String updateLike(@RequestParam("reviewid") int review_id) {
+
+        reviewService.updateLike(review_id);
+
+//        int updatedLikeCount = reviewService.getLikeCount(review_id);
+
+        return "redirect:/review/list";
+    }
 
 
 //과정명 선택시 get mapping으로 과정명에 해당하는 기수명을 course db에서 불러오기

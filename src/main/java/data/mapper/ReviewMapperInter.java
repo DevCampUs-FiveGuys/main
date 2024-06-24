@@ -44,6 +44,13 @@ public interface ReviewMapperInter {
     @Select("select round(avg(star),1) from review join (select * from member where course_name=#{name}and course_num=#{num) as mem on mem.member_id = review.member_id")
     public double getSelectedAvgStar(String name, String num);
 
+    // 좋아요 +1
+    @Update("update review SET `like` = `like` +1 where review_id =#{review_id}")
+    public void updateLike(long review_id);
+
+    @Select("SELECT `like` FROM review WHERE review_id = #{review_id}")
+    public int getLikeCount(int review_id);
+
     //해당 후기의 작성자 이름 불러오기
 //    @Select("select m.name from member m JOIN review r ON m.member_id = r.member_id JOIN course c ON c.name = m.course_name AND c.num = m.course_num WHERE c.name=#{name} AND c.num = #{num}")
 //    public List<String> getMemberName(String name, String num);
