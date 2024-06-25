@@ -25,6 +25,10 @@
                             <input type="password" class="form-control" id="password" name="password">
                         </div>
 
+                        <div th:if="error">
+                            <p id="valid" style="color: red; font-size: 12px;"><a th:text="${exception}"></a></p>
+                        </div>
+
                         <button type="submit" class="btn btn-primary mb-4">Log in</button>
 
                         <div class="form-group">
