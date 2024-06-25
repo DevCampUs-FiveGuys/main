@@ -34,7 +34,9 @@ public class MyPageStudentController {
         if (authentication != null) {
             String email = authentication.getName(); // 인증된 사용자의 이메일
             int member_id = memberService.findByUsername(email).getMember_id(); // 인증된 사용자의 이메일이 가지고 있는 member_id
+            String userName = memberService.findByUsername(email).getName(); // 인증된 사용자의 이름
             model.addAttribute("member_id", member_id);
+            model.addAttribute("userName", userName);
         }
         return "thymeleaf/student/attendance";
     }

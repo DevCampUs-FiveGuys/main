@@ -31,7 +31,7 @@
                 </ul>
             </div>
             <div class="col-md-9">
-                <h2 class="text-center my-4">출석현황</h2>
+                <h2 class="text-center my-4" th:text="${userName} + ' 님의 출석현황'"/>
                 <div class="attendance-buttons">
                     <button id="check-in-btn" class="btn btn-primary">입실</button>
                     <button id="check-out-btn" class="btn btn-primary">퇴실</button>
