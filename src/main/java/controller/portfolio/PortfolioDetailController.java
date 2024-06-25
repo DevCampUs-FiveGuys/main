@@ -18,11 +18,15 @@ public class PortfolioDetailController {
     PortfolioService portfolioService;
 
     @GetMapping("portfolio/Detail")
-    public String detail(Model model)
+    public String detail(Model model,@RequestParam(required = false) Integer portfolio_id)
     {
-        portfolioService.getPortfolioData();
-        List<PortfolioDto> list = portfolioService.getPortfolioData();
-        model.addAttribute("list", list);
+        if (portfolio_id != null) {
+            portfolioService.updateReadcount(portfolio_id);
+            List<PortfolioDto> list = portfolioService.getPortfolioData(portfolio_id);
+            model.addAttribute("list", list);
+        } else {
+            model.addAttribute("error", "Portfolio ID is required");
+        }
 
         return "thymeleaf/portfolioDetail";
     }

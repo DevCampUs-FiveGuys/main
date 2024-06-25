@@ -17,17 +17,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/teacher")
+@RequestMapping("/teacher/mypage")
 @RequiredArgsConstructor
 public class MyPageTeacherController {
 
     @NonNull
     private TeacherService teacherService;
 
-    @NonNull
-    private AttendanceService attendanceService;
-
-    @GetMapping("/attendancelist")
+    @GetMapping("")
     public String attendancelist() {
         return "thymeleaf/teacher/attendanceList";
     }
@@ -53,13 +50,22 @@ public class MyPageTeacherController {
         return "thymeleaf/teacher/roleapprove";
     }
 
-    @PostMapping("/roleupdate")
-    public String roleupdate(
+    @PostMapping("/rolestudent")
+    public String rolestudent(
             @RequestParam int member_id
     ){
-        teacherService.updateTeacher(member_id);
+        teacherService.updateStudent(member_id);
 
-        return "redirect:/teacher/roleapprove";
+        return "redirect:/teacher/mypage/roleapprove";
+    }
+
+    @PostMapping("/roleguest")
+    public String roleguest(
+            @RequestParam int member_id
+    ){
+        teacherService.updateGuest(member_id);
+
+        return "redirect:/teacher/mypage/roleapprove";
     }
 
     @GetMapping("/updateProfile")

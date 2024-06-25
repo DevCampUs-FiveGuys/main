@@ -3,6 +3,7 @@
         lang="en"
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         layout:decorate="~{layouts/layout}"
 >
 
@@ -15,15 +16,12 @@
 <body>
 <div layout:fragment="content">
 
-
-  <a href="/teacher/attendancelist">teacher mypage</a>
-
   <!-- ***** FAQ 작성 버튼 ***** -->
 
   <section class="faq-section">
     <div class="faq-insert">
       <div class="faq-insert_button">
-        <button
+        <button sec:authorize="hasRole('ROLE_ADMIN')"
                 type="button"
                 class="custom-btn btn-12"
                 onclick="location.href='/qna/write'"
@@ -73,7 +71,7 @@
                     <p th:text="${qna.content}"></p>
 
                     <!-- ***** FAQ 수정/삭제 버튼 ***** -->
-                    <div class="btn-set">
+                    <div class="btn-set" sec:authorize="hasRole('ROLE_ADMIN')">
                       <a th:href="@{/qna/updateform(qna_id=${qna.qna_id})}">수정</a>
                       <p class="seperate">|</p>
                       <a th:href="@{/qna/delete(qna_id=${qna.qna_id})}">삭제</a>

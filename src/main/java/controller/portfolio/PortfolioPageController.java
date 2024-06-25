@@ -1,6 +1,7 @@
 package controller.portfolio;
 
 import data.dto.PortfolioDto;
+import data.service.PortfolioAnswerService;
 import data.service.PortfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,11 +19,14 @@ public class PortfolioPageController {
     @Autowired
     private PortfolioService portfolioService;
 
-    @GetMapping("/pagingList/page")
+    @Autowired
+    private PortfolioAnswerService portfolioAnswerService;
+
+    @GetMapping("/list")
     public String list(
             @RequestParam(defaultValue = "1") int currentPage,
-            Model model
-    ) {
+            Model model)
+    {
         int totalCount = portfolioService.getTotalCount();
         int perPage = 8;
         int perBlock = 5;
@@ -44,6 +48,11 @@ public class PortfolioPageController {
 
         List<PortfolioDto> list = portfolioService.getPagingList(start, perPage);
 
+        /*for(PortfolioDto dto : list)
+        {
+            dto.setRecount(portfolioAnswerService.getAnswerData(dto.getPortfolio_id()).size());
+        }*/
+
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("list", list);
         model.addAttribute("currentPage", currentPage);
@@ -51,6 +60,7 @@ public class PortfolioPageController {
         model.addAttribute("endPage", endPage);
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("no", no);
+
 
         return "thymeleaf/portfolio";
     }

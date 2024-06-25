@@ -20,16 +20,16 @@
                 <ul class="list-group mt-4">
                     <li class="list-group-item">
 
-                        <a th:href="@{/teacher/attendancelist}"><i class="icon icon-attendance"></i>출석현황</a>
+                        <a th:href="@{/teacher/mypage}"><i class="icon icon-attendance"></i>출석현황</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/attendancedetail}"><i class="icon icon-heart"></i>출석현황</a>
+                        <a th:href="@{/teacher/mypage/attendancedetail}"><i class="icon icon-heart"></i>출석현황</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/roleapprove}"><i class="icon icon-file-text"></i>학생승인</a>
+                        <a th:href="@{/teacher/mypage/roleapprove}"><i class="icon icon-file-text"></i>학생승인</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/updateProfile}"><i class="icon icon-edit"></i>정보수정</a>
+                        <a th:href="@{/teacher/mypage/updateProfile}"><i class="icon icon-edit"></i>정보수정</a>
                     </li>
                 </ul>
             </div>
@@ -39,9 +39,9 @@
                     <thead>
                     <tr>
                         <th><h1>학생이름</h1></th>
-                        <th><h1>입실</h1></th>
-                        <th><h1>퇴실</h1></th>
-                        <th><h1>휴가</h1></th>
+                        <th><h1>생년월일</h1></th>
+                        <th><h1>성별</h1></th>
+                        <th><h1>과정명</h1></th>
                         <th><h1>기수명</h1></th>
                         <th><h1>승인버튼</h1></th>
                         <th><h1>거절버튼</h1></th>
@@ -50,17 +50,22 @@
                     <tbody>
                     <tr th:each="member : ${memberlist}">
                         <td th:text="${member.name}"></td>
-                        <td th:text="${member.birth}"></td>
-                        <td th:text="${member.gender}"></td>
+                        <td th:text="${#dates.format(member.birth, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${member.gender == 0 ? '남자' : '여자'}"></td>
                         <td th:text="${member.course_name}"></td>
                         <td th:text="${member.course_num}"></td>
                         <td>
-                            <form th:action="@{/teacher/roleupdate}" method="post">
+                            <form th:action="@{/teacher/mypage/rolestudent}" method="post">
                                 <input type="hidden" name="member_id" th:value="${member.member_id}" />
                                 <button class="updaterole" type="submit">승인</button>
                             </form>
                         </td>
-                        <td th:text="${member.roles}"></td>
+                        <td>
+                            <form th:action="@{/teacher/mypage/roleguest}" method="post">
+                                <input type="hidden" name="member_id" th:value="${member.member_id}" />
+                                <button class="updaterole" type="submit">거부</button>
+                            </form>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
