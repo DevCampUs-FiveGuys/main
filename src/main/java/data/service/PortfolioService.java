@@ -24,9 +24,9 @@ public class PortfolioService {
         portfolioMapper.insertPortfolio(dto);
     }
 
-    public List<PortfolioDto> getPortfolioData()
+    public List<PortfolioDto> getPortfolioData(int portfolio_id)
     {
-        return portfolioMapper.getPorfolioData();
+        return portfolioMapper.getPortfolioData(portfolio_id);
     }
 
     public int getTotalCount()
@@ -34,9 +34,9 @@ public class PortfolioService {
         return portfolioMapper.getTotalCount();
     }
 
-    public PortfolioDto getData()
+    public PortfolioDto getData(/*int portfolio_id*/)
     {
-        return portfolioMapper.getData();
+        return portfolioMapper.getData(/*portfolio_id*/);
     }
 
     public void updatePortfolio(PortfolioDto dto)
@@ -56,6 +56,11 @@ public class PortfolioService {
         map.put("perpage", perpage);
 
         return portfolioMapper.getPagingList(map);
+    }
+
+    public void updateReadcount(int portfolio_id)
+    {
+        portfolioMapper.updateReadcount(portfolio_id);
     }
 
 }
