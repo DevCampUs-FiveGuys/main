@@ -23,8 +23,12 @@ public class TeacherService {
         return teacherMapperInter.getStudentAttendaceList();
     }
 
-    public void updateTeacher(int member_id) {
-        teacherMapperInter.updateTeacher(member_id);
+    public void updateStudent(int member_id) {
+        teacherMapperInter.updateStudent(member_id);
+    }
+
+    public void updateGuest(int member_id) {
+        teacherMapperInter.updateGuest(member_id);
     }
 
 }
