@@ -47,7 +47,7 @@ public class MyPageTeacherController {
 
         model.addAttribute("memberlist", memberlist);
 
-        return "thymeleaf/teacher/roleApprove";
+        return "thymeleaf/teacher/roleapprove";
     }
 
     @PostMapping("/rolestudent")
@@ -56,7 +56,7 @@ public class MyPageTeacherController {
     ){
         teacherService.updateStudent(member_id);
 
-        return "redirect:/teacher/roleApprove";
+        return "redirect:/teacher/mypage/roleapprove";
     }
 
     @PostMapping("/roleguest")
@@ -65,7 +65,7 @@ public class MyPageTeacherController {
     ){
         teacherService.updateGuest(member_id);
 
-        return "redirect:/teacher/roleApprove";
+        return "redirect:/teacher/mypage/roleapprove";
     }
 
     @GetMapping("/updateProfile")
