@@ -3,12 +3,14 @@ package controller.review;
 import data.dto.CourseDto;
 import data.dto.ReviewDto;
 import data.service.CheckListService;
+import data.service.MemberService;
 import data.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 public class ReviewListController {
     @NonNull
     private ReviewService reviewService;
+    @NonNull
+    private MemberService memberService;
 
     @GetMapping("/review/list")
     public String getReviews(
@@ -84,16 +88,13 @@ public class ReviewListController {
         model.addAttribute("femalePercentage", femalePercentage);
         model.addAttribute("courselist", courselist);
 
-//        model.addAttribute("likeCount", checkListService.ShowCountLike(reviewService.getid()));
-//        model.addAttribute("reviewLikeCount", reviewService.getLikeCount(review_id));
-
         return "thymeleaf/review"; // Return the name of the Thymeleaf template
     }
 
     // 후기 추가
     @PostMapping("/review/insert")
-    public String insertReview(@ModelAttribute ReviewDto reviewDto) {
-        System.out.println(reviewDto);
+    public String insertReview(@ModelAttribute ReviewDto reviewDto,@ModelAttribute("member_id") int member_id) {
+        reviewDto.setMember_id(member_id);
         reviewService.insertReview(reviewDto);
 
         return "redirect:/review/list";
@@ -107,21 +108,77 @@ public class ReviewListController {
         return "redirect:/review/list";
     }
 
+    // 후기 좋아요
+    @PostMapping("/review/like")
+    public String updateLike(@RequestParam("reviewid") int review_id) {
 
-//과정명 선택시 get mapping으로 과정명에 해당하는 기수명을 course db에서 불러오기
+        reviewService.updateLike(review_id);
+
+        return "redirect:/review/list";
+    }
+
+
+    //과정명 선택시 get mapping으로 과정명에 해당하는 기수명을 course db에서 불러오기
     @GetMapping("/review/names")
     @ResponseBody
     public List<String> getCourseNums(@RequestParam("name") String name){
         return reviewService.getNumOfCourse(name);
     }
-
     @GetMapping("/review/nums")
     @ResponseBody
     public List<ReviewDto> selectAllReview(
             @RequestParam("name") String name,
-            @RequestParam("num") String num) {
+            @RequestParam("num") String num, Model model) {
 
         List<ReviewDto> selectreviewlist = reviewService.selectAllReview(name, num);
+
+        Map<String, Long> selectedAvgMap = selectreviewlist.stream()
+                .collect(Collectors.groupingBy(
+                        review -> {
+                            double selectedStar = review.getStar();
+                            if (selectedStar == 0.5 || selectedStar == 1.0) {
+                                return "0.5-1";
+                            } else if (selectedStar == 1.5 || selectedStar == 2.0) {
+                                return "1.5-2";
+                            } else if (selectedStar == 2.5 || selectedStar == 3.0) {
+                                return "2.5-3";
+                            } else if (selectedStar == 3.5 || selectedStar == 4.0) {
+                                return "3.5-4";
+                            } else if (selectedStar == 4.5 || selectedStar == 5.0) {
+                                return "4.5-5";
+                            } else {
+                                return "Other";
+                            }
+                        }, Collectors.counting()
+                ));
+        Map<String, String> starRangePercentageMap = selectedAvgMap.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> String.format("%.1f", ((double) entry.getValue() / selectreviewlist.size()) * 100)
+                ));
+
+        Map<String, String> selectedAvgPercentageMap = new LinkedHashMap<>();
+        List<String> sortedKeys = Arrays.asList("4.5-5", "3.5-4", "2.5-3", "1.5-2", "0.5-1");
+        for (String key : sortedKeys) {
+            selectedAvgPercentageMap.put(key, starRangePercentageMap.getOrDefault(key, "0.0"));
+        }
+
+        model.addAttribute("selectedAvgPercentageMap", selectedAvgPercentageMap);
+
+
         return selectreviewlist;
+    }
+
+    // 사용자 이메일로부터 멤버 아이디 받아오기
+    @ModelAttribute
+    public void member_id (Authentication authentication, Model model) {
+
+        if(authentication != null) {
+            String email = authentication.getName(); // 인증된 사용자의 이메일
+
+            int member_id = memberService.findByUsername(email).getMember_id();// 인증된 사용자의 이메일이 가지고 있는 member_id
+            System.out.println(member_id);
+            model.addAttribute("member_id", member_id);
+        }
     }
 }

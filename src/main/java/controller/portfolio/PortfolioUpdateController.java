@@ -31,6 +31,8 @@ public class PortfolioUpdateController {
 
     @NonNull
     private PortfolioService portfolioService;
+    @Autowired
+    private MemberService memberService;
 
     @NonNull
     private PortfolioMapperInter portfolioMapperInter;
@@ -45,10 +47,28 @@ public class PortfolioUpdateController {
     private NcpObjectStorageService storageService;
 
     @GetMapping("/portfolio/write")
-    public String portfolioWrite(Model model)
+    public String portfolioWrite(
+            /*@RequestParam(defaultValue = "0") int portfolio_id,
+            @RequestParam(defaultValue = "0") int regroup,
+            @RequestParam(defaultValue = "0") int restep,
+            @RequestParam(defaultValue = "0") int relevel,
+            @RequestParam(defaultValue = "1") int currentPage,*/
+            Model model
+    )
+
     {
+        /*String title = "";
+        if(portfolio_id>0) {
+            title = "[답글]"+portfolioService.getData(portfolio_id).getTitle();
+        }*/
         PortfolioDto dto = new PortfolioDto();
         model.addAttribute("PortfolioDto", dto);
+        /*model.addAttribute("portfolio_id", portfolio_id);
+        model.addAttribute("regroup", regroup);
+        model.addAttribute("restep", restep);
+        model.addAttribute("relevel", relevel);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("title", title);*/
 
         return "thymeleaf/portfolioWrite";
     }
@@ -57,7 +77,7 @@ public class PortfolioUpdateController {
     public String insertPortfolio(
             @ModelAttribute PortfolioDto dto,
             @RequestParam("upload") MultipartFile upload,
-            @RequestParam int currentPage
+            HttpServletRequest request
     )
 
     {
@@ -66,7 +86,7 @@ public class PortfolioUpdateController {
 
         portfolioService.insertPortfolio(dto);
 
-        return "redirect:/portfolio/Detail?portfolio_id=" + dto.getPortfolio_id() + "&current_Page=" + currentPage;
+        return "redirect:/portfolio/list";
     }
 
 }
