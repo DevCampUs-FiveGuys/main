@@ -34,8 +34,13 @@ public class MemberListController {
     }
 
     @GetMapping("/api/user/login")
-    public String login() {
-        return "redirect:/";
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "exception", required = false) String exception,
+                        Model model) {
+        /* 에러와 예외를 모델에 담아 view resolve */
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
+        return "thymeleaf/login";
     }
 
     @GetMapping("/student/mypage")
