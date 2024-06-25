@@ -45,7 +45,9 @@
         <div class="course1-list">
             <tr th:each="dto : ${list}">
                 <div class="course1" style="border: 1px solid">
-                    <img class="stpathimg" th:src="@{${stpath}+'/'+${dto.file_name}}" th:onclick="|location.href='@{/portfolio/Detail}'|">
+                    <img class="stpathimg" th:src="@{${stpath}+'/'+${dto.file_name}}"
+                         th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${dto.portfolio_id})}'|">
+                    <span class="readcount1" th:text="${dto.readcount}"></span>
                     <div>
                         <span class="title1" th:text="${dto.title}"></span>
                         <p class="gisu">[강남센터] [N캠프] 클라우드 기반 웹 개발자 & 데브옵스 과정_15기</p>
@@ -60,7 +62,7 @@
                         &nbsp;|&nbsp;2024-06-23 ~ 2024-09-16
                     </div>
                     <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}" />
-                    <button class="look" th:onclick="|location.href='@{/portfolio/Detail}'|">자세히보기 +</button>
+                    <button class="look" th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${dto.portfolio_id})}'|">자세히보기 +</button>
                     <button type="button" class="favorite-button" onclick="toggleFavorite(this)">
                         <i class="far fa-heart"></i>
                     </button>
@@ -70,16 +72,16 @@
     </div>
     <div class="pfpage" style="width: 600px; text-align: center; font-size: 20px;">
         <div th:if="${startPage != null and startPage > 1}">
-            <a th:href="@{/portfolio/pagingList/page(currentPage=${startPage - 1})}" style="text-decoration: none; color: black;">&lt;</a>
+            <a th:href="@{/portfolio/list(currentPage=${startPage - 1})}" style="text-decoration: none; color: black;">&lt;</a>
         </div>
         &nbsp;
         <span th:each="pp : ${#numbers.sequence(startPage != null ? startPage : 1, endPage != null ? endPage : 5)}">
-            <a th:href="@{/portfolio/pagingList/page(currentPage=${pp})}" th:style="'text-decoration: none; color:' + (${currentPage} == ${pp} ? 'red' : 'black')"
+            <a th:href="@{/portfolio/list(currentPage=${pp})}" th:style="'text-decoration: none; color:' + (${currentPage} == ${pp} ? 'red' : 'black')"
                th:text="${pp}"></a>&nbsp;
         </span>
         &nbsp;
         <div th:if="${endPage != null and endPage < totalPage}">
-            <a th:href="@{/portfolio/pagingList/page(currentPage=${endPage + 1})}" style="text-decoration: none; color: black;">&gt;</a>
+            <a th:href="@{/portfolio/list(currentPage=${endPage + 1})}" style="text-decoration: none; color: black;">&gt;</a>
         </div>
     </div>
 </div>
