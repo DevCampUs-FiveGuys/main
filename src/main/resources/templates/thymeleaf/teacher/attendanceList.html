@@ -20,51 +20,22 @@
                 <ul class="list-group mt-4">
                     <li class="list-group-item">
 
-                        <a th:href="@{/teacher/attendancelist}"><i class="icon icon-attendance"></i>출석현황</a>
+                        <a th:href="@{/teacher/mypage}"><i class="icon icon-attendance"></i>출석현황</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/attendancedetail}"><i class="icon icon-heart"></i>출석현황</a>
+                        <a th:href="@{/teacher/mypage/attendancedetail}"><i class="icon icon-heart"></i>출석현황</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/roleapprove}"><i class="icon icon-file-text"></i>학생승인</a>
+                        <a th:href="@{/teacher/mypage/roleapprove}"><i class="icon icon-file-text"></i>학생승인</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/updateProfile}"><i class="icon icon-edit"></i>정보수정</a>
+                        <a th:href="@{/teacher/mypage/updateProfile}"><i class="icon icon-edit"></i>정보수정</a>
                     </li>
                 </ul>
             </div>
             <div class="col-md-9">
                 <h2 class="text-center my-4">출석현황</h2>
-                <div class="attendance-buttons">
-                    <button class="btn btn-primary" id="check-in-btn">입실</button>
-                    <button class="btn btn-primary" id="check-out-btn">퇴실</button>
-                    <button class="btn btn-primary" data-target="#vacationModal" data-toggle="modal" id="vacation-btn">
-                        휴가신청
-                    </button>
-                </div>
                 <div id="calendar"></div>
-                <div class="attendance-result">
-                    <div class="attendance-item">
-                        <span id="attendance-count">0</span>
-                        <div>출석</div>
-                    </div>
-                    <div class="attendance-item">
-                        <span id="late-count">0</span>
-                        <div>지각</div>
-                    </div>
-                    <div class="attendance-item">
-                        <span id="absent-count">0</span>
-                        <div>결석</div>
-                    </div>
-                    <div class="attendance-item">
-                        <span id="vacation-count">0</span>
-                        <div>휴가</div>
-                    </div>
-                    <div class="attendance-item">
-                        <span id="sick-leave-count">0</span>
-                        <div>병가</div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

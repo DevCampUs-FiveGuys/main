@@ -20,7 +20,7 @@ public class MemberDto {
     private int gender;
     private String email;
     private String tel;
-    private String birth;
+    private Timestamp birth;
     private Timestamp created_at;
     private Timestamp updated_at;
     private String photo;
