@@ -60,4 +60,11 @@ public class  ReviewService {
         return courseMapperInter.getAllCourseList();
     }
 
+    public void updateLike(int review_id) {
+        reviewMapperInter.updateLike(review_id);
+    }
+    public int getLikeCount(int review_id){
+        return reviewMapperInter.getLikeCount(review_id);
+    }
+
 }
