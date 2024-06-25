@@ -35,7 +35,34 @@
             </div>
             <div class="col-md-9">
                 <h2 class="text-center my-4">출석현황</h2>
+                <div class="attendance-buttons">
+                    <button id="check-in-btn" class="btn btn-primary">입실</button>
+                    <button id="check-out-btn" class="btn btn-primary">퇴실</button>
+                    <button id="vacation-btn" class="btn btn-primary" data-toggle="modal" data-target="#vacationModal">휴가신청</button>
+                </div>
                 <div id="calendar"></div>
+                <div class="attendance-result">
+                    <div class="attendance-item">
+                        <span id="attendance-count">0</span>
+                        <div>출석</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="late-count">0</span>
+                        <div>지각</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="absent-count">0</span>
+                        <div>결석</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="vacation-count">0</span>
+                        <div>휴가</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="sick-leave-count">0</span>
+                        <div>병가</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
