@@ -32,7 +32,7 @@ public interface AttendanceMapperInter {
     public void updateLate(int member_id);
 
     // 지각일수 조회
-    @Select("select count(late) from attendance where late = 1")
+    @Select("select count(late) from attendance where late = 1 and member_id = #{member_id}")
     public int getLateDays(int member_id);
 
     // 당일에 결석을 하면 결석 데이터가 업데이트 되어야함
@@ -40,7 +40,7 @@ public interface AttendanceMapperInter {
     public void updateAbsent(int member_id);
 
     // 결석일수 조회
-    @Select("select count(absent) from attendance where absent = 1")
+    @Select("select count(absent) from attendance where absent = 1 and member_id = #{member_id}")
     public int getAbsentDays(int member_id);
 
     // 지각일수에 따른 결석 업데이트 (지각 3회 당 결석 1회)
