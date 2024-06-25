@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // HTML 에서 사용자 ID를 가져와서 변수에 저장
+    var memberId = document.getElementById('member-id').getAttribute('data-member-id');
+
     // FullCalendar 라이브러리를 사용하여 캘린더 생성
     var calendarEl = document.getElementById('calendar'); // 캘린더를 표시할 엘리먼트
     var calendar = new FullCalendar.Calendar(calendarEl, { // 캘린더 객체 생성
@@ -110,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url: '/student/mypage/attendance/all',
             method: 'GET',
             data: {
-                member_id: 1
+                member_id: memberId
             },
             success: function (data) {
                 data.forEach(function (attendance) {
@@ -155,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url: '/student/mypage/vacation/all',
             method: 'GET',
             data: {
-                member_id: 1
+                member_id: memberId
             },
             success: function (data) {
                 data.forEach(function (vacation) {
@@ -202,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     method: 'POST',
                     data: {
                         check_in: currentDate,
-                        member_id: 1
+                        member_id: memberId
                     },
                     success: function () {
                         Swal.fire({
@@ -263,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     method: 'POST',
                     data: {
                         check_out: currentDate,
-                        member_id: 1
+                        member_id: memberId
                     },
                     success: function () {
                         Swal.fire({
@@ -305,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url: '/student/mypage/attendance/checkin',
             method: 'DELETE',
             data: {
-                member_id: 1
+                member_id: memberId
             },
             success: function () {
                 console.log('Check-in data deleted');
@@ -321,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url: '/student/mypage/vacation/cancel',
             method: 'DELETE',
             data: {
-                member_id: 1,
+                member_id: memberId,
                 date: date
             },
             success: function () {
@@ -392,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     data: {
                         date: date,
                         reason: reason,
-                        member_id: 1
+                        member_id: memberId
                     },
                     success: function () {
                         Swal.fire({
@@ -437,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 url: '/student/mypage/attendance/days',
                 method: 'GET',
                 data: {
-                    member_id: 1
+                    member_id: memberId
                 },
                 success: function (attendanceDays) {
                     updateAttendanceCounts();
@@ -451,14 +454,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 url: '/student/mypage/attendance/late',
                 method: 'POST',
                 data: {
-                    member_id: 1
+                    member_id: memberId
                 },
                 success: function () {
                     $.ajax({
                         url: '/student/mypage/attendance/updateAbsentBasedOnLate',
                         method: 'POST',
                         data: {
-                            member_id: 1
+                            member_id: memberId
                         },
                         success: function () {
                             updateAttendanceCounts();
@@ -477,7 +480,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 url: '/student/mypage/attendance/absent',
                 method: 'POST',
                 data: {
-                    member_id: 1
+                    member_id: memberId
                 },
                 success: function () {
                     updateAttendanceCounts();
@@ -494,7 +497,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url: '/student/mypage/attendance/days',
             method: 'GET',
             data: {
-                member_id: 1
+                member_id: memberId
             },
             success: function (attendanceDays) {
                 document.getElementById('attendance-count').innerText = attendanceDays;
@@ -508,7 +511,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url: '/student/mypage/attendance/late/max',
             method: 'GET',
             data: {
-                member_id: 1
+                member_id: memberId
             },
             success: function (lateDays) {
                 document.getElementById('late-count').innerText = lateDays;
@@ -522,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url: '/student/mypage/attendance/absent/max',
             method: 'GET',
             data: {
-                member_id: 1
+                member_id: memberId
             },
             success: function (absentDays) {
                 document.getElementById('absent-count').innerText = absentDays;
@@ -536,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url: '/student/mypage/vacation/all',
             method: 'GET',
             data: {
-                member_id: 1
+                member_id: memberId
             },
             success: function (vacationDays) {
                 document.getElementById('vacation-count').innerText = vacationDays.length;

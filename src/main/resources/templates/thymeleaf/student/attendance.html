@@ -17,7 +17,7 @@
             <div class="col-md-3">
                 <ul class="list-group mt-4">
                     <li class="list-group-item">
-                        <a th:href="@{/student/mypage/attendance}"><i class="icon icon-attendance"></i> 출석현황</a>
+                        <a th:href="@{/student/mypage}"><i class="icon icon-attendance"></i> 출석현황</a>
                     </li>
                     <li class="list-group-item">
                         <a th:href="@{/student/mypage/portfolio_favorites}"><i class="icon icon-heart"></i> 찜목록</a>
@@ -63,6 +63,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Include "member_id" as a Thymeleaf attribute -->
+    <div id="member-id" th:data-member-id="${member_id}"></div>
 
     <!-- Modal -->
     <div class="modal fade" id="vacationModal" tabindex="-1" aria-labelledby="vacationModalLabel" aria-hidden="true">

@@ -3,9 +3,12 @@ package controller.mypage;
 import data.dto.AttendanceDto;
 import data.dto.VacationDto;
 import data.service.AttendanceService;
+import data.service.MemberService;
 import data.service.VacationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -16,14 +19,23 @@ import java.util.List;
 public class MyPageStudentController {
 
     @Autowired
+    private MemberService memberService;
+
+    @Autowired
     private AttendanceService attendanceService;
 
     @Autowired
     private VacationService vacationService;
 
     // 출석현황 페이지로 이동
+    @ModelAttribute
     @GetMapping("/attendance")
-    public String attendance() {
+    public String attendance(Authentication authentication, Model model) {
+        if (authentication != null) {
+            String email = authentication.getName(); // 인증된 사용자의 이메일
+            int member_id = memberService.findByUsername(email).getMember_id(); // 인증된 사용자의 이메일이 가지고 있는 member_id
+            model.addAttribute("member_id", member_id);
+        }
         return "thymeleaf/student/attendance";
     }
 
@@ -48,117 +60,187 @@ public class MyPageStudentController {
     // 입실 데이터 추가
     @PostMapping("/attendance/checkin")
     @ResponseBody
-    public void insertCheckIn(@RequestParam String check_in, @RequestParam int member_id) {
-        attendanceService.insertCheckIn(check_in, member_id);
+    public void insertCheckIn(@RequestParam String check_in, Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            attendanceService.insertCheckIn(check_in, member_id);
+        }
     }
 
     // 퇴실 데이터 추가 (업데이트)
     @PostMapping("/attendance/checkout")
     @ResponseBody
-    public void updateCheckOut(@RequestParam String check_out, @RequestParam int member_id) {
-        attendanceService.updateCheckOut(check_out, member_id);
+    public void updateCheckOut(@RequestParam String check_out, Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            attendanceService.updateCheckOut(check_out, member_id);
+        }
     }
 
     // 전체 출석 데이터 조회
     @GetMapping("/attendance/all")
     @ResponseBody
-    public List<AttendanceDto> getAllAttendance(@RequestParam int member_id) {
-        return attendanceService.getAllAttendance(member_id);
+    public List<AttendanceDto> getAllAttendance(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            return attendanceService.getAllAttendance(member_id);
+        }
+        return null;
     }
 
     // 입실 데이터 삭제
     @DeleteMapping("/attendance/checkin")
     @ResponseBody
-    public void deleteCheckIn(@RequestParam int member_id) {
-        attendanceService.deleteCheckIn(member_id);
+    public void deleteCheckIn(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            attendanceService.deleteCheckIn(member_id);
+        }
     }
 
     // 출석일수 조회
     @GetMapping("/attendance/days")
     @ResponseBody
-    public int getAttendanceDays(@RequestParam int member_id) {
-        return attendanceService.getAttendanceDays(member_id);
+    public int getAttendanceDays(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            return attendanceService.getAttendanceDays(member_id);
+        }
+        return 0;
     }
 
     // 지각 데이터 업데이트
     @PostMapping("/attendance/late")
     @ResponseBody
-    public void updateLate(@RequestParam int member_id) {
-        attendanceService.updateLate(member_id);
+    public void updateLate(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            attendanceService.updateLate(member_id);
+        }
     }
 
     // 지각일수 최댓값 조회
     @GetMapping("/attendance/late/max")
     @ResponseBody
-    public int getLateDays(@RequestParam int member_id) {
-        return attendanceService.getLateDays(member_id);
+    public int getLateDays(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            return attendanceService.getLateDays(member_id);
+        }
+        return 0;
     }
 
     // 결석 데이터 업데이트
     @PostMapping("/attendance/absent")
     @ResponseBody
-    public void updateAbsent(@RequestParam int member_id) {
-        attendanceService.updateAbsent(member_id);
+    public void updateAbsent(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            attendanceService.updateAbsent(member_id);
+        }
     }
 
     // 지각을 결석으로 업데이트
     @PostMapping("/attendance/updateAbsentBasedOnLate")
     @ResponseBody
-    public void updateAbsentBasedOnLate(@RequestParam int member_id) {
-        attendanceService.updateAbsentBasedOnLate(member_id);
+    public void updateAbsentBasedOnLate(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            attendanceService.updateAbsentBasedOnLate(member_id);
+        }
     }
 
     // 결석일수 최댓값 조회
     @GetMapping("/attendance/absent/max")
     @ResponseBody
-    public int getAbsentDays(@RequestParam int member_id) {
-        return attendanceService.getAbsentDays(member_id);
+    public int getAbsentDays(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            return attendanceService.getAbsentDays(member_id);
+        }
+        return 0;
     }
 
     // 휴가 데이터 추가
     @PostMapping("/attendance/vacation")
     @ResponseBody
-    public void insertVacation(@RequestBody AttendanceDto attendanceDto) {
-        attendanceService.insertVacation(attendanceDto);
+    public void insertVacation(@RequestBody AttendanceDto attendanceDto, Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            attendanceDto.setMember_id(member_id);
+            attendanceService.insertVacation(attendanceDto);
+        }
     }
 
     // 병가 데이터 업데이트
     @PostMapping("/attendance/hospital")
     @ResponseBody
-    public void updateHospital(@RequestParam int member_id, @RequestParam int confirm) {
-        attendanceService.updateHospital(member_id, confirm);
+    public void updateHospital(@RequestParam int confirm, Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            attendanceService.updateHospital(member_id, confirm);
+        }
     }
 
     // 휴가 신청
     @PostMapping("/vacation/apply")
     @ResponseBody
-    public void insertVacation(@RequestParam String date, @RequestParam String reason, @RequestParam int member_id) {
-        VacationDto vacationDto = VacationDto.builder()
-                .date(Timestamp.valueOf(date + " 00:00:00"))  // Assuming the date is in YYYY-MM-DD format
-                .reason(reason)
-                .member_id(member_id)
-                .build();
-        vacationService.insertVacation(vacationDto);
+    public void insertVacation(@RequestParam String date, @RequestParam String reason, Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            VacationDto vacationDto = VacationDto.builder()
+                    .date(Timestamp.valueOf(date + " 00:00:00"))  // Assuming the date is in YYYY-MM-DD format
+                    .reason(reason)
+                    .member_id(member_id)
+                    .build();
+            vacationService.insertVacation(vacationDto);
+        }
     }
 
     // 휴가 승인
     @PostMapping("/vacation/approve")
     @ResponseBody
-    public void updateVacation(@RequestParam int member_id) {
-        vacationService.updateVacation(member_id);
+    public void updateVacation(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            vacationService.updateVacation(member_id);
+        }
     }
 
     // 휴가 취소
     @DeleteMapping("/vacation/cancel")
     @ResponseBody
-    public void deleteVacation(@RequestParam int member_id) {
-        vacationService.deleteVacation(member_id);
+    public void deleteVacation(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            vacationService.deleteVacation(member_id);
+        }
     }
 
     // 모든 휴가 조회
     @GetMapping("/vacation/all")
     @ResponseBody
-    public List<VacationDto> getAllVacation(@RequestParam int member_id) {
-        return vacationService.getAllVacation(member_id);
+    public List<VacationDto> getAllVacation(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            return vacationService.getAllVacation(member_id);
+        }
+        return null;
     }
 }
