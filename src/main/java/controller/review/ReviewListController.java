@@ -93,8 +93,8 @@ public class ReviewListController {
 
     // 후기 추가
     @PostMapping("/review/insert")
-    public String insertReview(@ModelAttribute ReviewDto reviewDto) {
-        System.out.println(reviewDto);
+    public String insertReview(@ModelAttribute ReviewDto reviewDto,@ModelAttribute("member_id") int member_id) {
+        reviewDto.setMember_id(member_id);
         reviewService.insertReview(reviewDto);
 
         return "redirect:/review/list";

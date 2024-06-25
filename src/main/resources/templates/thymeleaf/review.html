@@ -241,6 +241,7 @@
                     </div>
                     <!-- 리뷰 입력-->
                     <form th:action="@{/review/insert}" method="post" th:object="${reviewDto}">
+                        <input type="hidden" name="member_id" th:value="${member_id}"/>
                         <div style="display: flex">
                             <input type="text" class="form-control" th:field="*{content}" required="required"
                                    placeholder="후기 입력" style="float:left; width: 80%;">
