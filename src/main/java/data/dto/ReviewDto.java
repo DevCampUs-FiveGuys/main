@@ -13,10 +13,13 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 public class ReviewDto {
-    private int review_id;
     private String content;
     private Timestamp created_at;
     private double star;
     private int like;
-    private int member_id;
+    private int review_id;
+    private String name;
+    private int gender;
+
 }
+

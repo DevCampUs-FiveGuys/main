@@ -20,6 +20,10 @@ $(function () {
                     isExist = false;
                     $("#email").val("");
                 }
+            },
+            error: function (request, response, error) {
+                console.log(response)
+                console.log(error)
             }
         })
     })

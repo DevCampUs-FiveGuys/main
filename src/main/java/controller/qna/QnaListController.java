@@ -28,7 +28,7 @@ public class QnaListController {
         model.addAttribute("qnalist", qnalist);
         model.addAttribute("qnatotalCount", qnatotalCount);
 
-        return "thymeleaf/qnalist";
+        return "thymeleaf/qna/qnaList";
     }
 
     //후기 메인 페이지에서 작성 페이지 이동 : 지금 보아하니 model필요 없이 바로 return 값으로 작성페이지로 이동하면 끝났을 거 같네요
@@ -38,7 +38,7 @@ public class QnaListController {
         QnaDto qnadto=new QnaDto();
         model.addAttribute("qnadto",qnadto);
 
-        return "thymeleaf/qnawrite";
+        return "thymeleaf/qna/qnaWrite";
     }
 
     //후기 작성 기능과 작성 후 메인 페이지로 이동
@@ -62,7 +62,7 @@ public class QnaListController {
         QnaDto qnadto=qnaService.getQnaData(qna_id);
         model.addAttribute("qnadto", qnadto);
 
-        return "thymeleaf/qnaupdateform";
+        return "thymeleaf/qna/qnaUpdate";
     }
 
     //후기 수정 기능 과 수정 후 메인 페이지 이동

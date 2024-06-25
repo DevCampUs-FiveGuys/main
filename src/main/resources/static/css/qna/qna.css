@@ -1,0 +1,6 @@
+/* Pagescreens는 우리가 직접 보는 페이지 하나하나에 따른 css*/
+
+
+/* Pagescreens */
+@import "pagescreens/qnalist.css";
+@import "pagescreens/qnaupdate.css";

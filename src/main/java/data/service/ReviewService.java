@@ -16,10 +16,13 @@ public class  ReviewService {
 
     @Autowired
     private CourseMapperInter courseMapperInter;
-
     // review db에서 작성한 후기 등록
     public void insertReview(ReviewDto reviewDto) {
         reviewMapperInter.insertReview(reviewDto);
+    }
+
+    public List<ReviewDto> selectAllReview(String name, String num){
+        return reviewMapperInter.selectAllReview(name, num);
     }
 
     // review db에서 입력한 순서대로 후기 나열(오름차순)
@@ -57,11 +60,4 @@ public class  ReviewService {
         return courseMapperInter.getAllCourseList();
     }
 
-
-
-    //    미구현 또는 오류 해결 실패
-
-    //    public int getLikeCount(int review_id) {
-//        return reviewMapperInter.getLikeCount(review_id);
-//    }
 }

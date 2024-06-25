@@ -3,10 +3,13 @@ package controller.review;
 import data.service.CheckListService;
 import data.service.ReviewService;
 import lombok.NonNull;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ReviewLikeController {
@@ -17,15 +20,8 @@ public class ReviewLikeController {
 
 
     @PostMapping("/like/insert")
-    public String insertLike(int mem_id, int rev_id) {
-        checkListService.insertLike(mem_id, rev_id);
-
-        return "redirect:/review/list";
-    }
-
-    @GetMapping("/like/delete")
-    public String deleteLike(int like_id) {
-        checkListService.deleteLike(like_id);
+    public String insertLike(int rev_id) {
+        checkListService.insertLike(rev_id);
 
         return "redirect:/review/list";
     }

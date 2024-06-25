@@ -12,7 +12,7 @@
 .rate input:checked ~ .rate label:hover ~ label,
 .rate label:hover ~ input:checked ~ label { color: #f73c32 !important;  }
 
-.rate2 { display: inline-block;border: 0;margin-right: 15px; cursor: none}
+.rate2 { display: inline-block;border: 0;margin-right: 5px; cursor: none;}
 .rate2 > input {display: none;}
 .rate2 > label {float: right;color: #ddd}
 .rate2 > label:before {display: inline-block;font-size: 1rem;padding: .3rem .2rem;margin: 0;cursor: default;font-family: FontAwesome;content: "\f005 ";}
@@ -84,7 +84,8 @@
 }
 .reviews{
     display: flex;
-    padding-top: 30px;
+    padding-top: 15px;
+    padding-bottom: 30px;
 }
 .reviews-box {
     margin: auto;
@@ -104,7 +105,8 @@
 }
 .review-name {
     font-size: 15px;
-    color: black;"
+    color: black;
+    padding-bottom: 10px;
 }
 .review-content {
     color: black;
@@ -131,4 +133,18 @@
 canvas {
     margin: 0 auto;
     display: block;
+}
+
+.non-list {
+    font-size: 20px;
+    margin: 40px;
+    text-align: center;
+}
+.search-btn {
+    border-radius: 20px;
+    background-color: #00C300;
+    border: 1px solid #00C300;
+    color: white;
+    font-weight: bold;
+    width: 75px;
 }
