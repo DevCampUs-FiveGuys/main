@@ -149,7 +149,7 @@ public class SecurityConfig {
                 } else if (role.equals("ROLE_ADMIN")) {
                     response.sendRedirect("/");
                 } else {
-                    response.sendRedirect("/default");
+                    response.sendRedirect("/");
                 }
             }
         };
