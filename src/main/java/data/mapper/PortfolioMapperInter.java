@@ -10,8 +10,8 @@ import java.util.Map;
 public interface PortfolioMapperInter {
 
     @Insert("""
-            insert into portfolio (title,description,file_name,created_at)
-            values (#{title},#{description},#{file_name},now())
+            insert into portfolio (title,description,file_name,regroup,restep,relevel,readcount,recount,created_at)
+            values (#{title},#{description},#{file_name},#{regroup},#{restep},#{relevel},#{readcount},#{recount},now())
             """)
     public void insertPortfolio(PortfolioDto dto);
 
@@ -21,16 +21,19 @@ public interface PortfolioMapperInter {
     @Delete("delete from portfolio where portfolio_id=#{portfolio_id}")
     public void deletePortfolio(int portfolio_id);
 
-    @Select("select * from portfolio")
-    public PortfolioDto getData();
+    @Select("select * from portfolio /*where portfolio_id=#{portfolio_id}*/")
+    public PortfolioDto getData(/*int portfolio_id*/);
 
     @Select("select count(*) from portfolio")
     public int getTotalCount();
 
-    @Select("select * from portfolio")
-    public List<PortfolioDto> getPorfolioData();
+    @Select("select * from portfolio where portfolio_id=#{portfolio_id}")
+    public List<PortfolioDto> getPortfolioData(int portfolio_id);
 
 
     @Select("select * from portfolio order by regroup desc,restep asc limit #{start},#{perpage}")
     public List<PortfolioDto> getPagingList(Map<String, Integer> map);
+
+    @Update("update portfolio set readcount=readcount+1 where portfolio_id=#{portfolio_id}")
+    public void updateReadcount(int portfolio_id);
 }

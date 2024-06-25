@@ -12,16 +12,14 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 @Data
-@Alias("ReplyDto")
+@Alias("replyDto")
 public class replyDto {
     private int reply_id;
     private int member_id;
     private int portfolio_id;
     private String comment;
     private Timestamp created_at;
-    private int readcount;
-    private int regroup;
-    private int restep;
-    private int relevel;
-    private int recount;
+    private String email;
+    private String name;
+    private int num;
 }

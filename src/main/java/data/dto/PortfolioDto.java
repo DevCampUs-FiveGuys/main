@@ -24,5 +24,6 @@ public class PortfolioDto {
     private int regroup;
     private int restep;
     private int relevel;
+    private int recount;
 
 }
