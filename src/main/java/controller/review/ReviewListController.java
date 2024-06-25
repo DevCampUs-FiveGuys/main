@@ -88,9 +88,6 @@ public class ReviewListController {
         model.addAttribute("femalePercentage", femalePercentage);
         model.addAttribute("courselist", courselist);
 
-//        model.addAttribute("likeCount", checkListService.ShowCountLike(reviewService.getid()));
-//        model.addAttribute("reviewLikeCount", reviewService.getLikeCount(review_id));
-
         return "thymeleaf/review"; // Return the name of the Thymeleaf template
     }
 
@@ -110,6 +107,8 @@ public class ReviewListController {
 
         return "redirect:/review/list";
     }
+
+    // 후기 좋아요
     @PostMapping("/review/like")
     public String updateLike(@RequestParam("reviewid") int review_id) {
 
@@ -125,7 +124,6 @@ public class ReviewListController {
     public List<String> getCourseNums(@RequestParam("name") String name){
         return reviewService.getNumOfCourse(name);
     }
-
     @GetMapping("/review/nums")
     @ResponseBody
     public List<ReviewDto> selectAllReview(
@@ -171,13 +169,14 @@ public class ReviewListController {
         return selectreviewlist;
     }
 
+    // 사용자 이메일로부터 멤버 아이디 받아오기
     @ModelAttribute
     public void member_id (Authentication authentication, Model model) {
 
         if(authentication != null) {
             String email = authentication.getName(); // 인증된 사용자의 이메일
 
-            int member_id = memberService.findByUsername(email).getMember_id();// 인증된 사용자의 이메일이 가지고 있는 name
+            int member_id = memberService.findByUsername(email).getMember_id();// 인증된 사용자의 이메일이 가지고 있는 member_id
             System.out.println(member_id);
             model.addAttribute("member_id", member_id);
         }
