@@ -25,4 +25,5 @@ public class ReviewLikeController {
 
         return "redirect:/review/list";
     }
+
 }
