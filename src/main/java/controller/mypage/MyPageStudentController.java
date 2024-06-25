@@ -37,25 +37,29 @@ public class MyPageStudentController {
             String userName = memberService.findByUsername(email).getName(); // 인증된 사용자의 이름
             model.addAttribute("member_id", member_id);
             model.addAttribute("userName", userName);
+            model.addAttribute("page", "attendance");
         }
         return "thymeleaf/student/attendance";
     }
 
     // 찜목록 페이지로 이동
     @GetMapping("/portfolio_favorites")
-    public String portfolio_favorites() {
+    public String portfolio_favorites(Model model) {
+        model.addAttribute("page", "favorites");
         return "thymeleaf/student/portfolio_favorites";
     }
 
     // 게시글 페이지로 이동
     @GetMapping("/portfolio_posts")
-    public String portfolio_posts() {
+    public String portfolio_posts(Model model) {
+        model.addAttribute("page", "posts");
         return "thymeleaf/student/portfolio_posts";
     }
 
     // 정보수정 페이지로 이동
     @GetMapping("/updateProfile")
-    public String updateProfile() {
+    public String updateProfile(Model model) {
+        model.addAttribute("page", "updateProfile");
         return "thymeleaf/student/updateProfile";
     }
 

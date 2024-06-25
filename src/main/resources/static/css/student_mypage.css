@@ -14,7 +14,13 @@
 }
 
 .list-group-item a:hover {
-    color: #007bff;
+    color: #00C300;
+    font-weight: bold;
+}
+
+.list-group-item a.active {
+    color: #00C300;
+    font-weight: bold;
 }
 
 /* 나의 출결 (출석,지각,결석,휴가,병가) 디자인 */
