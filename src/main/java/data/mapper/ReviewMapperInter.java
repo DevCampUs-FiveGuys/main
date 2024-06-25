@@ -9,7 +9,7 @@ import java.util.List;
 public interface ReviewMapperInter {
 
     // review db에서 작성한 후기 등록
-    @Insert("insert into review (content, star, created_at) values (#{content}, #{star}, now())")
+    @Insert("insert into review (content, star, created_at, member_id) values (#{content}, #{star}, now(), #{member_id})")
     public void insertReview(ReviewDto reviewDto);
 
     //    @Select("select content, created_at, star, `like` like_count,name,gender, review_id from review join(select member_id,name,gender from member where course_name=#{name} and course_num=#{num} as mem on mem.member_id = review.member_id)")

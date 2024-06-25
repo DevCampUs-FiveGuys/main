@@ -3,12 +3,14 @@ package controller.review;
 import data.dto.CourseDto;
 import data.dto.ReviewDto;
 import data.service.CheckListService;
+import data.service.MemberService;
 import data.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 public class ReviewListController {
     @NonNull
     private ReviewService reviewService;
+    @NonNull
+    private MemberService memberService;
 
     @GetMapping("/review/list")
     public String getReviews(
@@ -111,13 +115,11 @@ public class ReviewListController {
 
         reviewService.updateLike(review_id);
 
-//        int updatedLikeCount = reviewService.getLikeCount(review_id);
-
         return "redirect:/review/list";
     }
 
 
-//과정명 선택시 get mapping으로 과정명에 해당하는 기수명을 course db에서 불러오기
+    //과정명 선택시 get mapping으로 과정명에 해당하는 기수명을 course db에서 불러오기
     @GetMapping("/review/names")
     @ResponseBody
     public List<String> getCourseNums(@RequestParam("name") String name){
@@ -167,5 +169,17 @@ public class ReviewListController {
 
 
         return selectreviewlist;
+    }
+
+    @ModelAttribute
+    public void member_id (Authentication authentication, Model model) {
+
+        if(authentication != null) {
+            String email = authentication.getName(); // 인증된 사용자의 이메일
+
+            int member_id = memberService.findByUsername(email).getMember_id();// 인증된 사용자의 이메일이 가지고 있는 name
+            System.out.println(member_id);
+            model.addAttribute("member_id", member_id);
+        }
     }
 }
