@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +47,18 @@ public class TeacherService {
                     return checkInDate.equals(dateStr);
                 })
                 .collect(Collectors.toList());
+    }
+
+    public Map<String, Integer> getAttendanceCountsByDate() {
+        List<Map<String, Object>> counts = teacherMapperInter.getAttendanceCountsByDate();
+        Map<String, Integer> attendanceCounts = new HashMap<>();
+
+        for (Map<String, Object> countMap : counts) {
+            String date = (String) countMap.get("date");
+            Integer count = ((Long) countMap.get("count")).intValue();
+            attendanceCounts.put(date, count);
+        }
+        return attendanceCounts;
     }
 
 }
