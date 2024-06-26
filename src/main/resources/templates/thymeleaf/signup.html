@@ -81,7 +81,7 @@
                         <div class="form-group" style="display: flex; justify-content: space-between; gap: 20px;">
                             <div style="width: 100%">
                                 <label for="courseName" class="text-black">과정명 & 기수</label>
-                                <select name="courseName" id="courseName" class="form-control" onchange="loadCourseNums()">
+                                <select name="course_name" id="courseName" class="form-control" onchange="loadCourseNums()">
                                     <option value="">과정명</option>
                                     <option th:each="courselist : ${courselist}" th:value="${courselist.name}"
                                             th:text="${courselist.name}"></option>
@@ -89,7 +89,8 @@
                             </div>
                             <div style="width: 100%">
                                 <label for="courseName" class="text-white">.</label>
-                                <select name="courseNum" id="courseNum" class="form-control">
+                                <select name="course_num" id="courseNum" class="form-control">
+                                    <option value="">기수</option>
                                     <option value="" class="form-control"></option>
                                 </select>
                             </div>
