@@ -25,7 +25,7 @@ public interface ReviewMapperInter {
     public double getAvgStar();
 
     // 등록된 전체 리뷰 목록들
-    @Select("select content, created_at, star, `like`, name, gender, review_id, review.member_id from review join member on member.member_id = review.member_id order by review_id desc ")
+    @Select("select content, review.created_at, star, `like`, name, gender, review_id, review.member_id from review join member on member.member_id = review.member_id order by review_id desc ")
     public List<ReviewDto> getAllReview();
 
     // 성별 개수 count 하기
