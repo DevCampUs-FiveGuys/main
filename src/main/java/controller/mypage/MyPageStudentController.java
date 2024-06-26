@@ -1,6 +1,7 @@
 package controller.mypage;
 
 import data.dto.AttendanceDto;
+import data.dto.MemberDto;
 import data.dto.VacationDto;
 import data.service.AttendanceService;
 import data.service.MemberService;
@@ -34,27 +35,50 @@ public class MyPageStudentController {
         if (authentication != null) {
             String email = authentication.getName(); // 인증된 사용자의 이메일
             int member_id = memberService.findByUsername(email).getMember_id(); // 인증된 사용자의 이메일이 가지고 있는 member_id
+            String userName = memberService.findByUsername(email).getName(); // 인증된 사용자의 이름
             model.addAttribute("member_id", member_id);
+            model.addAttribute("userName", userName);
+            model.addAttribute("page", "attendance");
         }
         return "thymeleaf/student/attendance";
     }
 
     // 찜목록 페이지로 이동
     @GetMapping("/portfolio_favorites")
-    public String portfolio_favorites() {
+    public String portfolio_favorites(Model model) {
+        model.addAttribute("page", "favorites");
         return "thymeleaf/student/portfolio_favorites";
     }
 
     // 게시글 페이지로 이동
     @GetMapping("/portfolio_posts")
-    public String portfolio_posts() {
+    public String portfolio_posts(Model model) {
+        model.addAttribute("page", "posts");
         return "thymeleaf/student/portfolio_posts";
     }
 
     // 정보수정 페이지로 이동
     @GetMapping("/updateProfile")
-    public String updateProfile() {
+    public String updateProfile(Authentication authentication, Model model) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            MemberDto member = memberService.findByUsername(email);
+            model.addAttribute("member", member);
+            model.addAttribute("page", "updateProfile");
+        }
         return "thymeleaf/student/updateProfile";
+    }
+
+    // 정보수정 업데이트
+    @PostMapping("/updateProfile")
+    public String updateInfo(@ModelAttribute MemberDto memberDto, Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            MemberDto member = memberService.findByUsername(email);
+            member.setTel(memberDto.getTel());
+            memberService.updateMember(member);
+        }
+        return "redirect:/student/mypage/updateProfile";
     }
 
     // 입실 데이터 추가
