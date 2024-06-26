@@ -1,6 +1,7 @@
 package controller.mypage;
 
 import data.dto.AttendanceDto;
+import data.dto.MemberDto;
 import data.dto.VacationDto;
 import data.service.AttendanceService;
 import data.service.MemberService;
@@ -58,9 +59,26 @@ public class MyPageStudentController {
 
     // 정보수정 페이지로 이동
     @GetMapping("/updateProfile")
-    public String updateProfile(Model model) {
-        model.addAttribute("page", "updateProfile");
+    public String updateProfile(Authentication authentication, Model model) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            MemberDto member = memberService.findByUsername(email);
+            model.addAttribute("member", member);
+            model.addAttribute("page", "updateProfile");
+        }
         return "thymeleaf/student/updateProfile";
+    }
+
+    // 정보수정 업데이트
+    @PostMapping("/updateProfile")
+    public String updateInfo(@ModelAttribute MemberDto memberDto, Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            MemberDto member = memberService.findByUsername(email);
+            member.setTel(memberDto.getTel());
+            memberService.updateMember(member);
+        }
+        return "redirect:/student/mypage/updateProfile";
     }
 
     // 입실 데이터 추가
