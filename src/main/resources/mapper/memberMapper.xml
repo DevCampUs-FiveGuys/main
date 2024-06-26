@@ -11,4 +11,9 @@
     <select id="findByUsername" resultType="MemberDto">
         select * from member where email = #{email}
     </select>
+    <update id="updateMember" parameterType="memberDto">
+        UPDATE member
+        SET tel = #{tel}, photo = #{photo}, updated_at = now()
+        WHERE member_id = #{member_id}
+    </update>
 </mapper>
