@@ -22,4 +22,5 @@ public class AttendanceDto {
     private int hospital;
     private int late;
     private int member_id;
+    private String membername;
 }

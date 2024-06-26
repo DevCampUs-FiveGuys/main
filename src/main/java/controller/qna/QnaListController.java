@@ -12,13 +12,14 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/qna/list")
 public class QnaListController {
 
     @NonNull
     private QnaService qnaService;
 
     //후기 메인 페이지 이동 : 메인 페이지에 필요한 후기 총개수와 후기 데이터들 가지고 이동
-    @GetMapping("/qna/list")
+    @GetMapping("")
     public String qnalist(
             Model model
     ) {
@@ -32,7 +33,7 @@ public class QnaListController {
     }
 
     //후기 메인 페이지에서 작성 페이지 이동 : 지금 보아하니 model필요 없이 바로 return 값으로 작성페이지로 이동하면 끝났을 거 같네요
-    @GetMapping("/qna/write")
+    @GetMapping("/write")
     public String qnawrite(Model model) {
 
         QnaDto qnadto=new QnaDto();
@@ -42,7 +43,7 @@ public class QnaListController {
     }
 
     //후기 작성 기능과 작성 후 메인 페이지로 이동
-    @PostMapping("/qna/insert")
+    @PostMapping("/insert")
     public String qnainsert(
             @ModelAttribute QnaDto qnadto
     )
@@ -53,7 +54,7 @@ public class QnaListController {
     }
 
     //후기 메인 페이지에서 수정 페이지로 이동 : 이동 할 때 선택 한 후기의 아이디를 가지고 후기의 내용과 함께 페이지로 이동
-    @GetMapping("/qna/updateform")
+    @GetMapping("/updateform")
     public String qnaupdateform(
             @RequestParam int qna_id,
             Model model
@@ -66,7 +67,7 @@ public class QnaListController {
     }
 
     //후기 수정 기능 과 수정 후 메인 페이지 이동
-    @PostMapping("/qna/update")
+    @PostMapping("/update")
     public String qnaupdate(
             @ModelAttribute QnaDto qnadto
     ){
@@ -75,7 +76,7 @@ public class QnaListController {
     }
 
     //후기 메인 페이지에서 선택한 후기 삭제 기능
-    @GetMapping("/qna/delete")
+    @GetMapping("/delete")
     public String qnadelete(
             @RequestParam int qna_id
     ){

@@ -48,11 +48,6 @@ public class MemberListController {
         return "thymeleaf/student/attendance";
     }
 
-    @GetMapping("/admin/mypage")
-    public String adminP() {
-
-        return "thymeleaf/test";
-    }
 
     @GetMapping("/mypage")
     public String myPage(Authentication authentication, Model model) {
