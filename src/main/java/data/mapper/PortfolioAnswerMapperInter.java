@@ -13,8 +13,8 @@ import java.util.List;
 public interface PortfolioAnswerMapperInter {
 
     @Insert("""
-            insert into reply (reply_id,member_id,portfolio_id,comment,created_at)
-            values (#{reply_id},#{member_id},#{portfolio_id},#{comment},now())
+            insert into reply (reply_id,member_id,portfolio_id,comment,email,name,num,regroup,restep,relevel,recount,created_at)
+            values (#{reply_id},#{member_id},#{portfolio_id},#{comment},#{email},#{name},#{num},#{regroup},#{restep},#{relevel},#{recount},now())
             """)
     public void insertAnswer(replyDto dto);
 

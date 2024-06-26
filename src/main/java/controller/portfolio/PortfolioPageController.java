@@ -48,10 +48,10 @@ public class PortfolioPageController {
 
         List<PortfolioDto> list = portfolioService.getPagingList(start, perPage);
 
-        /*for(PortfolioDto dto : list)
+        for(PortfolioDto dto : list)
         {
             dto.setRecount(portfolioAnswerService.getAnswerData(dto.getPortfolio_id()).size());
-        }*/
+        }
 
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("list", list);
