@@ -106,7 +106,7 @@ public class SecurityConfig {
                 .csrf((auth) -> auth.disable());
         // 권한이 없는 상태에서 권한이 필요한 페이지로 이동하려고 하면 오류가 뜨는것을 방지하기 위해 넣어줌.
         http
-                
+
                 .formLogin((auth) -> auth.loginPage("/login")
                         /* login 주소가 호출되면 security 가 낚아채서 대신 로그인을 진행 */
                         .loginProcessingUrl("/api/user/login")

@@ -1,5 +1,6 @@
 package data.mapper;
 
+import data.dto.AttendanceDto;
 import data.dto.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -12,6 +13,11 @@ public interface AdminMapperInter {
 //    @Select("select attendance a. * from attendance a JOIN member m ON a.member_id = m.member_id JOIN course c ON c.name = m.course_name AND c.num = m.num Where m.course_name=${c.name} and m.course_num = ${c.num}")
 //    public List<AttendanceDto> AdminShowAttendance();
 
+    // member table에 있는 (게스트, 수강생, 강사) 정보 불러오기
     @Select("select * from member where roles = 'ROLE_GUEST' or roles = 'ROLE_STUDENT' or roles = 'ROLE_TEACHER'")
     public List<MemberDto> getAllMemberList();
+
+    // attendance table 정보 불러오기
+    @Select("select * from attendance")
+    public List<AttendanceDto> getallattendance();
 }
