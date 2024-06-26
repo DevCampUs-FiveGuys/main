@@ -42,32 +42,6 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="member : ${memberlist}">
-                        <td th:text="${member.course_name}"></td>
-                        <td th:text="${member.course_num}"></td>
-                        <td th:text="${member.name}"></td>
-                        <td th:text="${member.gender == 0 ? '남자' : '여자'}"></td>
-                        <td th:text="${#dates.format(member.birth, 'yyyy-MM-dd')}"></td>
-                        <td>
-                            <select>
-                                <option>게스트</option>
-                                <option>학생</option>
-                                <option>강사</option>
-                            </select>
-                        </td>
-                        <td>
-                            <form th:action="@{/teacher/mypage/rolestudent}" method="post">
-                                <input type="hidden" name="member_id" th:value="${member.member_id}" />
-                                <button class="updaterole" type="submit">승인</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form th:action="@{/teacher/mypage/roleguest}" method="post">
-                                <input type="hidden" name="member_id" th:value="${member.member_id}" />
-                                <button class="updaterole" type="submit">거부</button>
-                            </form>
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
             </div>
