@@ -21,8 +21,8 @@ public interface PortfolioMapperInter {
     @Delete("delete from portfolio where portfolio_id=#{portfolio_id}")
     public void deletePortfolio(int portfolio_id);
 
-    @Select("select * from portfolio /*where portfolio_id=#{portfolio_id}*/")
-    public PortfolioDto getData(/*int portfolio_id*/);
+    @Select("select * from portfolio")
+    public PortfolioDto getData();
 
     @Select("select count(*) from portfolio")
     public int getTotalCount();

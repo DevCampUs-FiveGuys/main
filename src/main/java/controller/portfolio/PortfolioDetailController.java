@@ -23,7 +23,10 @@ public class PortfolioDetailController {
         if (portfolio_id != null) {
             portfolioService.updateReadcount(portfolio_id);
             List<PortfolioDto> list = portfolioService.getPortfolioData(portfolio_id);
+            PortfolioDto dto = portfolioService.getData();
+
             model.addAttribute("list", list);
+            model.addAttribute("dto",dto);
         } else {
             model.addAttribute("error", "Portfolio ID is required");
         }

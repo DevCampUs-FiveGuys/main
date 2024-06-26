@@ -22,4 +22,8 @@ public class replyDto {
     private String email;
     private String name;
     private int num;
+    private int regroup;
+    private int restep;
+    private int relevel;
+    private int recount;
 }

@@ -71,18 +71,18 @@
         </div>
     </div>
     <div class="pfpage" style="width: 600px; text-align: center; font-size: 20px;">
-        <div th:if="${startPage != null and startPage > 1}">
+        <span th:if="${startPage != null and startPage > 1}">
             <a th:href="@{/portfolio/list(currentPage=${startPage - 1})}" style="text-decoration: none; color: black;">&lt;</a>
-        </div>
+        </span>
         &nbsp;
         <span th:each="pp : ${#numbers.sequence(startPage != null ? startPage : 1, endPage != null ? endPage : 5)}">
             <a th:href="@{/portfolio/list(currentPage=${pp})}" th:style="'text-decoration: none; color:' + (${currentPage} == ${pp} ? 'red' : 'black')"
                th:text="${pp}"></a>&nbsp;
         </span>
         &nbsp;
-        <div th:if="${endPage != null and endPage < totalPage}">
+        <span th:if="${endPage != null and endPage < totalPage}">
             <a th:href="@{/portfolio/list(currentPage=${endPage + 1})}" style="text-decoration: none; color: black;">&gt;</a>
-        </div>
+        </span>
     </div>
 </div>
 </html>
