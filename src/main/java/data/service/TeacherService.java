@@ -16,15 +16,17 @@ public class TeacherService {
     @Autowired
     private TeacherMapperInter teacherMapperInter;
 
-
+    // 학생권한 승인을 위해 권한이 GUEST인 계정 불러오기
     public List<MemberDto> getStudentList() {
         return teacherMapperInter.getStudentList();
     }
 
+    // 출석현황에서 날짜 클릭시 detail페이지에서 출력할 정보들 불러오기
     public List<AttendanceDto> getStudentAttendaceList(){
         return teacherMapperInter.getStudentAttendaceList();
     }
 
+    // 학생승인에서 승인버튼 클릭시 해당 member의 권한을 STUDENT로 변경
     public void updateStudent(int member_id) {
         teacherMapperInter.updateStudent(member_id);
     }
