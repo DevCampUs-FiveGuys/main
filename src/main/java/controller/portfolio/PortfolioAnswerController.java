@@ -31,12 +31,14 @@ public class PortfolioAnswerController {
 
     @GetMapping("/alist")
     public List<replyDto> alist(@RequestParam int num)
+
     {
         return portfolioAnswerService.getAnswerData(num);
     }
 
     @GetMapping("/adelete")
     public void deleteAnswer(@RequestParam int reply_id)
+
     {
         portfolioAnswerService.deleteAnswer(reply_id);
     }
