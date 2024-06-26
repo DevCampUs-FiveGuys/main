@@ -119,12 +119,12 @@ public class ReviewListController {
 
 
     //과정명 선택시 get mapping으로 과정명에 해당하는 기수명을 course db에서 불러오기
-    @GetMapping("/review/names")
+    @GetMapping("/review/list/names")
     @ResponseBody
     public List<String> getCourseNums(@RequestParam("name") String name){
         return reviewService.getNumOfCourse(name);
     }
-    @GetMapping("/review/nums")
+    @GetMapping("/review/list/nums")
     @ResponseBody
     public List<ReviewDto> selectAllReview(
             @RequestParam("name") String name,
