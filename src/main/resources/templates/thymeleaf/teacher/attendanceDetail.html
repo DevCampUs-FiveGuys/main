@@ -30,22 +30,21 @@
                 </ul>
             </div>
             <div class="col-md-9">
-
                 <table class="container">
                     <thead>
                     <tr>
                         <th><h1>학생이름</h1></th>
-                        <th><h1>입실</h1></th>
-                        <th><h1>퇴실</h1></th>
-                        <th><h1>휴가</h1></th>
+                        <th><h1>입실시간</h1></th>
+                        <th><h1>퇴실시간</h1></th>
+                        <th><h1>휴가여부</h1></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="attendancelist : ${attendancelist}">
-                        <td th:text="${attendancelist.attendance_id}"></td>
-                        <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd')}"></td>
-                        <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd')}"></td>
-                        <td th:text="${attendancelist.vacation == 1 ? 'Yes' : 'No'}"></td>
+                        <td th:text="${attendancelist.membername}"></td>
+                        <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd hh:mm')}"></td>
+                        <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd hh:mm')}"></td>
+                        <td th:text="${attendancelist.vacation == 1 ? 'V' : 'X'}"></td>
                     </tr>
                     </tbody>
                 </table>

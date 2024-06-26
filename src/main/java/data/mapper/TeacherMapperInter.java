@@ -13,7 +13,7 @@ public interface TeacherMapperInter {
     @Select("select * from member where roles='ROLE_GUEST'")
     public List<MemberDto> getStudentList();
 
-    @Select("select a.*, m.name as memberName from attendance a join member m on a.member_id = m.member_id")
+    @Select("select a.*, m.name as membername from attendance a join member m on a.member_id = m.member_id")
     public List<AttendanceDto> getStudentAttendaceList();
 
     @Update("update member set roles='ROLE_STUDENT' where member_id=#{member_id}")
