@@ -22,9 +22,6 @@
                         <a th:href="@{/teacher/mypage}"><i class="icon icon-attendance"></i>출석현황</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/mypage/attendancedetail}"><i class="icon icon-heart"></i>출석현황</a>
-                    </li>
-                    <li class="list-group-item">
                         <a th:href="@{/teacher/mypage/roleapprove}"><i class="icon icon-file-text"></i>학생승인</a>
                     </li>
                     <li class="list-group-item">
@@ -38,33 +35,17 @@
                     <thead>
                     <tr>
                         <th><h1>학생이름</h1></th>
-                        <th><h1>생년월일</h1></th>
-                        <th><h1>성별</h1></th>
-                        <th><h1>과정명</h1></th>
-                        <th><h1>기수명</h1></th>
-                        <th><h1>승인버튼</h1></th>
-                        <th><h1>거절버튼</h1></th>
+                        <th><h1>입실</h1></th>
+                        <th><h1>퇴실</h1></th>
+                        <th><h1>휴가</h1></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="member : ${memberlist}">
-                        <td th:text="${member.name}"></td>
-                        <td th:text="${#dates.format(member.birth, 'yyyy-MM-dd')}"></td>
-                        <td th:text="${member.gender == 0 ? '남자' : '여자'}"></td>
-                        <td th:text="${member.course_name}"></td>
-                        <td th:text="${member.course_num}"></td>
-                        <td>
-                            <form th:action="@{/teacher/mypage/rolestudent}" method="post">
-                                <input type="hidden" name="member_id" th:value="${member.member_id}" />
-                                <button class="updaterole" type="submit">승인</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form th:action="@{/teacher/mypage/roleguest}" method="post">
-                                <input type="hidden" name="member_id" th:value="${member.member_id}" />
-                                <button class="updaterole" type="submit">거부</button>
-                            </form>
-                        </td>
+                    <tr th:each="attendancelist : ${attendancelist}">
+                        <td th:text="${attendancelist.attendance_id}"></td>
+                        <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${attendancelist.vacation == 1 ? 'Yes' : 'No'}"></td>
                     </tr>
                     </tbody>
                 </table>

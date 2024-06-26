@@ -31,9 +31,10 @@ public class MyPageTeacherController {
 
     @GetMapping("/attendancedetail")
     public String attendancedetail(
+            @RequestParam("date") String dateStr,
             Model model
     ) {
-        List<AttendanceDto> attendancelist = teacherService.getStudentAttendaceList();
+        List<AttendanceDto> attendancelist = teacherService.getAttendanceByDate(dateStr);
 
         model.addAttribute("attendancelist",attendancelist);
         return "thymeleaf/teacher/attendanceDetail";
@@ -71,5 +72,13 @@ public class MyPageTeacherController {
     @GetMapping("/updateProfile")
     public String updateProfile() {
         return "thymeleaf/teacher/updateProfile";
+    }
+
+    @GetMapping("/attendanceOnDate")
+    @ResponseBody
+    public List<AttendanceDto> getAttendanceByDate(
+            @RequestParam("date") String dateStr
+    ) {
+        return teacherService.getAttendanceByDate(dateStr);
     }
 }
