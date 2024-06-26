@@ -277,14 +277,18 @@
     cursor: pointer;
 }
 
+.course1 {
+    position: relative; /* 부모 요소를 기준으로 배치할 수 있도록 설정 */
+    border: 1px solid;
+}
+
 .look {
-    position: relative;
-    left: 180px;
-    display: inline-block;
+    position: absolute;
+    right: 10px;
+    bottom: 10px; /* 필요에 따라 위치를 조정하세요 */
     background: #333;
     color: #fff;
     padding: 5px 10px;
-    margin-top: 0;
     cursor: pointer;
 }
 
@@ -336,8 +340,7 @@
 }
 
 .pfpage {
-    position: relative;
-    left: 700px;
+    margin: 0 auto;
     margin-bottom: 30px;
 }
 

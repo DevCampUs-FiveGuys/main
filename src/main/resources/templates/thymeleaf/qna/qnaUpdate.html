@@ -7,7 +7,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <form th:action="@{/qna/update}" method="post" th:object="${qnadto}">
+    <form th:action="@{/qna/list/update}" method="post" th:object="${qnadto}">
         <input type="hidden" th:field="*{qna_id}" />
     <table>
         <tr><td><h2>FAQ수정</h2></td></tr>

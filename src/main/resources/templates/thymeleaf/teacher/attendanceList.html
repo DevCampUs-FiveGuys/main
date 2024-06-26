@@ -10,6 +10,26 @@
     <!-- 일반 alert 대신에 SweetAlert2 쓰기 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href='https://unpkg.com/@fullcalendar/core@5.10.2/main.min.css' rel='stylesheet' />
+    <link href='https://unpkg.com/@fullcalendar/daygrid@5.10.2/main.min.css' rel='stylesheet' />
+    <script src='https://unpkg.com/@fullcalendar/core@5.10.2/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/daygrid@5.10.2/main.min.js'></script>
+    <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                dateClick: function(info) {
+                    window.location.href = '/teacher/mypage/attendancedetail?date=' + info.dateStr;
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
 </head>
 
 <body>
@@ -23,9 +43,6 @@
                         <a th:href="@{/teacher/mypage}"><i class="icon icon-attendance"></i>출석현황</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/mypage/attendancedetail}"><i class="icon icon-heart"></i>출석현황</a>
-                    </li>
-                    <li class="list-group-item">
                         <a th:href="@{/teacher/mypage/roleapprove}"><i class="icon icon-file-text"></i>학생승인</a>
                     </li>
                     <li class="list-group-item">
@@ -36,33 +53,6 @@
             <div class="col-md-9">
                 <h2 class="text-center my-4">출석현황</h2>
                 <div id="calendar"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div aria-hidden="true" aria-labelledby="vacationModalLabel" class="modal fade" id="vacationModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="vacationModalLabel">휴가 신청</h5>
-                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="vacation-form">
-                        <div class="form-group">
-                            <label for="vacation-date">날짜</label>
-                            <input class="form-control" id="vacation-date" required type="date">
-                        </div>
-                        <div class="form-group">
-                            <label for="vacation-reason">사유</label>
-                            <textarea class="form-control" id="vacation-reason" required rows="3"></textarea>
-                        </div>
-                        <button class="btn btn-primary" type="submit">신청</button>
-                        <button class="btn btn-secondary" data-dismiss="modal" type="button">취소</button>
-                    </form>
                 </div>
             </div>
         </div>

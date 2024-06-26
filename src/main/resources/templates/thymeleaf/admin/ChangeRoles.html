@@ -23,6 +23,9 @@
                         <a th:href="@{/teacher/mypage}"><i class="icon icon-attendance"></i>출석현황</a>
                     </li>
                     <li class="list-group-item">
+                        <a th:href="@{/teacher/mypage/attendancedetail}"><i class="icon icon-heart"></i>출석현황</a>
+                    </li>
+                    <li class="list-group-item">
                         <a th:href="@{/teacher/mypage/roleapprove}"><i class="icon icon-file-text"></i>학생승인</a>
                     </li>
                     <li class="list-group-item">
@@ -47,7 +50,7 @@
                     <tbody>
                     <tr th:each="member : ${memberlist}">
                         <td th:text="${member.name}"></td>
-                        <td th:text="${member.birth}"></td>
+                        <td th:text="${#dates.format(member.birth, 'yyyy-MM-dd')}"></td>
                         <td th:text="${member.gender == 0 ? '남자' : '여자'}"></td>
                         <td th:text="${member.course_name}"></td>
                         <td th:text="${member.course_num}"></td>

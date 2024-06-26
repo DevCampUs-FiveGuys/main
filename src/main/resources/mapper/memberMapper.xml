@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="data.mapper.MemberMapperInter">
     <insert id="insertMember" parameterType="memberDto">
-        insert into member (name, password, gender, email, tel, birth, create_at, photo, roles, course_name, course_num)
+        insert into member (name, password, gender, email, tel, birth, created_at, photo, roles, course_name, course_num)
         values (#{name}, #{password}, #{gender}, #{email}, #{tel}, #{birth}, now(), #{photo}, default, #{course_name}, #{course_num})
     </insert>
     <select id="checkID" parameterType="String" resultType="int">
@@ -11,4 +11,9 @@
     <select id="findByUsername" resultType="MemberDto">
         select * from member where email = #{email}
     </select>
+    <update id="updateMember" parameterType="memberDto">
+        UPDATE member
+        SET tel = #{tel}, photo = #{photo}, updated_at = now()
+        WHERE member_id = #{member_id}
+    </update>
 </mapper>
