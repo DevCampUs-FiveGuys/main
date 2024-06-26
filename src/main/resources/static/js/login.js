@@ -60,6 +60,30 @@ $(function () {
     })
 })
 
+function loadCourseNums() {
+    let selectedCourseName = $("#courseName").val();
+
+    $.ajax({
+        type: "GET",
+        url: "/signup/list/names",
+        data: {name: selectedCourseName},
+        dataType: "json",
+        success: function (ele) {
+            console.log(ele);
+
+            let courseNumSelect = $("#courseNum");
+            courseNumSelect.empty();
+            courseNumSelect.append('<option value="">기수를 선택해주세요</option>');
+            $.each(ele, function (index, item) {
+                courseNumSelect.append('<option value="' + item + '">' + item + '</option>');
+            });
+        },
+        error: function (e) {
+            console.error("Error fetching course numbers: ", e);
+        }
+    });
+}
+
 function check() {
     if (!isExist) {
         alert("중복확인을 해주세요");

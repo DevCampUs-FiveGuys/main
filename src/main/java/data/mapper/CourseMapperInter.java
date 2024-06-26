@@ -14,7 +14,7 @@ public interface CourseMapperInter {
     @Select("select distinct name from course")
     public List<CourseDto> getAllCourseList();
 
-  //과정명 선택시 과정명에 해당하는 기수명을 course db에서 불러오기
+    //과정명 선택시 과정명에 해당하는 기수명을 course db에서 불러오기
     @Select("select num from course where name=#{name}")
     public List<String> getNumOfCourse(String name);
 
