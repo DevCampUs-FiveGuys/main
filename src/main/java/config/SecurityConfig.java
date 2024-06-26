@@ -94,7 +94,7 @@ public class SecurityConfig {
                         // Spring Security 실행시 static(css, js, image 등) 파일도 권한을 주지 않으면 layout 실행시 오류가 발생
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/scss/**","/error").permitAll()
                         // 로그인, 기본, 회원가입, 리뷰, 포트폴리오, 질문 게시판은 로그인을 하지 않아도 보여야 하기 때문에 권한을 준다.
-                        .requestMatchers("/login", "/","/signup","/review/list","/portfolio/list","/qna/list","/api/user/**").permitAll()
+                        .requestMatchers("/login", "/","/signup","/review/list/**","/portfolio/list","/qna/list","/api/user/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/student/**").hasAnyRole("STUDENT")
                         .requestMatchers("/teacher/**").hasAnyRole("TEACHER")
@@ -106,6 +106,7 @@ public class SecurityConfig {
                 .csrf((auth) -> auth.disable());
         // 권한이 없는 상태에서 권한이 필요한 페이지로 이동하려고 하면 오류가 뜨는것을 방지하기 위해 넣어줌.
         http
+                
                 .formLogin((auth) -> auth.loginPage("/login")
                         /* login 주소가 호출되면 security 가 낚아채서 대신 로그인을 진행 */
                         .loginProcessingUrl("/api/user/login")
