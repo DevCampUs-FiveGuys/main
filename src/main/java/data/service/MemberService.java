@@ -24,4 +24,8 @@ public class MemberService {
     public MemberDto findByUsername(String email) {
         return memberMapperInter.findByUsername(email);
     }
+    // 사용자 정보 업데이트
+    public void updateMember(MemberDto memberDto) {
+        memberMapperInter.updateMember(memberDto);
+    }
 }

@@ -14,16 +14,24 @@
             <div class="col-md-3">
                 <ul class="list-group mt-4">
                     <li class="list-group-item">
-                        <a th:href="@{/student/mypage}"><i class="icon icon-attendance"></i> 출석현황</a>
+                        <a th:href="@{/student/mypage}" th:classappend="${page == 'attendance' ? 'active' : ''}">
+                            <i class="icon icon-attendance"></i> 출석현황
+                        </a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/student/mypage/portfolio_favorites}"><i class="icon icon-heart"></i> 찜목록</a>
+                        <a th:href="@{/student/mypage/portfolio_favorites}" th:classappend="${page == 'favorites' ? 'active' : ''}">
+                            <i class="icon icon-heart"></i> 찜목록
+                        </a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/student/mypage/portfolio_posts}"><i class="icon icon-file-text"></i> 게시글</a>
+                        <a th:href="@{/student/mypage/portfolio_posts}" th:classappend="${page == 'posts' ? 'active' : ''}">
+                            <i class="icon icon-file-text"></i> 게시글
+                        </a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/student/mypage/updateProfile}"><i class="icon icon-edit"></i> 정보수정</a>
+                        <a th:href="@{/student/mypage/updateProfile}" th:classappend="${page == 'updateProfile' ? 'active' : ''}">
+                            <i class="icon icon-edit"></i> 정보수정
+                        </a>
                     </li>
                 </ul>
             </div>
