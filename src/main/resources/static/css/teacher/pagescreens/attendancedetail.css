@@ -15,6 +15,10 @@
     box-shadow: 0 2px 2px -2px #ffffff;
 }
 
+.container tr {
+    border-radius: 2px;
+}
+
 .container {
     text-align: left;
     overflow: hidden;

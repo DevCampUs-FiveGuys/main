@@ -59,13 +59,13 @@
                         <td>
                             <form th:action="@{/teacher/mypage/rolestudent}" method="post">
                                 <input type="hidden" name="member_id" th:value="${member.member_id}" />
-                                <button class="updaterole" type="submit">승인</button>
+                                <button class="roleapprove" type="submit">승인</button>
                             </form>
                         </td>
                         <td>
                             <form th:action="@{/teacher/mypage/roleguest}" method="post">
                                 <input type="hidden" name="member_id" th:value="${member.member_id}" />
-                                <button class="updaterole" type="submit">거부</button>
+                                <button class="roledeny" type="submit">거부</button>
                             </form>
                         </td>
                     </tr>
