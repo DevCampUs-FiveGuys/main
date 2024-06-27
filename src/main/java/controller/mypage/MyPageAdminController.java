@@ -4,6 +4,8 @@ import data.dto.AttendanceDto;
 import data.dto.CourseDto;
 import data.dto.MemberDto;
 import data.service.AdminService;
+import data.service.MemberService;
+import data.service.ReviewService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -42,6 +44,7 @@ public class MyPageAdminController {
         List<CourseDto> courselist = reviewService.getAllCourseList();
 
         model.addAttribute("memberlist", memberlist);
+        model.addAttribute("courselist", courselist);
 
         return "thymeleaf/admin/Admchangeroles";
     }
