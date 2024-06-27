@@ -19,10 +19,6 @@ public interface AdminMapperInter {
     @Select("select * from member where roles = 'ROLE_GUEST' or roles = 'ROLE_STUDENT' or roles = 'ROLE_TEACHER'")
     public List<MemberDto> getAllMemberList();
 
-    // attendance table 정보 불러오기
-    @Select("select * from attendance")
-    public List<AttendanceDto> getallattendance();
-
     // 선택한 권한으로 update
     @Update("update member set roles=#{roles} where member_id=#{member_id}")
     public void updateRole(@Param("roles") String roles, @Param("member_id") int member_id);
@@ -42,4 +38,13 @@ public interface AdminMapperInter {
     // 권한 검색으로만 전체 리스트 불러오기
     @Select("select * from member where roles = #{roles}")
     public List<MemberDto> selectRole(String roles);
+
+    // 출석현황 : 전체 목록 뽑아내기
+    @Select("select a.*, m.name as membername from attendance a join member m on a.member_id = m.member_id")
+    public List<AttendanceDto> getallattendance();
+
+    // 출석현황 : 선택한 과정명&기수 목록 뽑아내기
+    @Select("select a.*, m.name as membername from attendance a join member m on a.member_id = m.member_id where course_name = #{name} and course_num =#{num}")
+    public List<AttendanceDto> selectallattendance(String name, String num);
+
 }

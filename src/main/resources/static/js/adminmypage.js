@@ -146,3 +146,45 @@ function searchrole() {
         }
     });
 }
+
+function searchAttendance() {
+    let courseName = $("#courseName").val();
+    let courseNum = $("#courseNum").val();
+    console.log(courseName, courseNum);
+
+    $.ajax({
+        type: "get",
+        url: "/admin/mypage/list/nums/attendance",
+        data: {name: courseName, num: courseNum},
+        dataType: "json",
+        success: function (response) {
+            let AttendanceListTbody = $("#AttendanceList");
+            console.log(response);
+            AttendanceListTbody.empty();
+
+            if (response.length > 0) {
+                response.forEach(function (item) {
+                    let memberHTML =
+                        `<tr>
+                        <td>${item.membername}</td>
+                        <td>${item.check_in}</td>
+                        <td>${item.check_out}</td>
+                        <td>${item.late}</td>
+                        <td>${item.absent}</td>
+                        <td>${item.vacation}</td>
+                        <td>${item.hospital}</td>
+                        </tr>
+                        `;
+
+                    AttendanceListTbody.append(memberHTML);
+                });
+            } else {
+                AttendanceListTbody.append(`<p> 등록된 멤버가 없습니다 </p>`);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("ajax 에러 : ", status, error);
+            alert("멤버 목록을 불러오는 중 오류가 발생했습니다");
+        }
+    });
+}

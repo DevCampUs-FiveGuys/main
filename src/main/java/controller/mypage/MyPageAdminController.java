@@ -3,6 +3,7 @@ package controller.mypage;
 import data.dto.AttendanceDto;
 import data.dto.CourseDto;
 import data.dto.MemberDto;
+import data.dto.ReviewDto;
 import data.service.AdminService;
 import data.service.MemberService;
 import data.service.ReviewService;
@@ -38,7 +39,7 @@ public class MyPageAdminController {
 
     // 권한수정
     @GetMapping("/changerole")
-    public String changeRoles(Model model){
+    public String changeRoles(Model model) {
 
         List<MemberDto> memberlist = adminService.getAllMemberList();
         List<CourseDto> courselist = reviewService.getAllCourseList();
@@ -51,7 +52,7 @@ public class MyPageAdminController {
 
     // 권한수정 : 권한 update 승인
     @PostMapping("/updateroles")
-    public String updateRoles(@RequestParam("roles") String roles, @RequestParam("member_id") int member_id){
+    public String updateRoles(@RequestParam("roles") String roles, @RequestParam("member_id") int member_id) {
         System.out.println(roles);
         System.out.println(member_id);
 
@@ -66,7 +67,7 @@ public class MyPageAdminController {
     @PostMapping("/roledeny")
     public String roledeny(
             @RequestParam int member_id
-    ){
+    ) {
         adminService.roledeny(member_id);
 
         return "redirect:/admin/mypage/changerole";
@@ -75,14 +76,14 @@ public class MyPageAdminController {
     // 과정명 선택 -> 해당하는 기수명
     @GetMapping("/list/names")
     @ResponseBody
-    public List<String> getCourseNums(@RequestParam("name") String name){
+    public List<String> getCourseNums(@RequestParam("name") String name) {
         return reviewService.getNumOfCourse(name);
     }
 
     // 기수명 선택 -> 해당 맴버 출력
     @GetMapping("/list/nums")
     @ResponseBody
-    public List<MemberDto> selectAllMember( @RequestParam("name") String name, @RequestParam("num") String num,@RequestParam(required = false) String roles, Model model) {
+    public List<MemberDto> selectAllMember(@RequestParam("name") String name, @RequestParam("num") String num, @RequestParam(required = false) String roles, Model model) {
 
         if ("ALL".equals(roles)) {
             // roles가 null이면 모든 역할을 포함하는 로직
@@ -92,6 +93,7 @@ public class MyPageAdminController {
             return adminService.selectRoleMember(name, num, roles); // 모든 역할 포함
         }
     }
+
     @GetMapping("/list/role")
     @ResponseBody
     public List<MemberDto> selectRole(@RequestParam(required = false) String roles) {
@@ -125,4 +127,15 @@ public class MyPageAdminController {
         }
         return "redirect:/admin/mypage/updateprofile";
     }
+
+    // 기수명 선택 -> 해당 멤버 출석 목록
+    @GetMapping("/list/nums/attendance")
+    @ResponseBody
+    public List<AttendanceDto> selectAllMember(@RequestParam("name") String name, @RequestParam("num") String num) {
+
+        List<AttendanceDto> selectedAttendance = adminService.selectallattendance(name, num);
+
+        return selectedAttendance;
+    }
 }
+
