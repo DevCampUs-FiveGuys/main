@@ -47,8 +47,8 @@
                     <tbody>
                     <tr th:each="attendancelist : ${attendancelist}">
                         <td th:text="${attendancelist.membername}"></td>
-                        <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd hh:mm')}"></td>
-                        <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd hh:mm')}"></td>
+                        <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd HH:mm')}"></td>
                         <td th:text="${attendancelist.vacation == 1 ? 'V' : 'X'}"></td>
                     </tr>
                     </tbody>

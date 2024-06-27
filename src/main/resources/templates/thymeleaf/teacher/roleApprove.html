@@ -57,16 +57,20 @@
                         <td th:text="${member.course_name}"></td>
                         <td th:text="${member.course_num}"></td>
                         <td>
-                            <form th:action="@{/teacher/mypage/rolestudent}" method="post">
-                                <input type="hidden" name="member_id" th:value="${member.member_id}" />
-                                <button class="roleapprove" type="submit">승인</button>
-                            </form>
+                            <div class="data-container">
+                                <form th:action="@{/teacher/mypage/rolestudent}" method="post">
+                                    <input type="hidden" name="member_id" th:value="${member.member_id}" />
+                                    <button class="roleapprove" type="submit">승인</button>
+                                </form>
+                            </div>
                         </td>
                         <td>
-                            <form th:action="@{/teacher/mypage/roleguest}" method="post">
-                                <input type="hidden" name="member_id" th:value="${member.member_id}" />
-                                <button class="roledeny" type="submit">거부</button>
-                            </form>
+                            <div class="data-container">
+                                <form th:action="@{/teacher/mypage/roleguest}" method="post">
+                                    <input type="hidden" name="member_id" th:value="${member.member_id}" />
+                                    <button class="roledeny" type="submit">거절</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
