@@ -48,6 +48,11 @@ public class AdminService {
         return adminMapperInter.selectRole(roles);
     }
 
+    public List<AttendanceDto> selectallattendance(String name, String num) {
+        return adminMapperInter.selectallattendance(name,num);
+        
+    }
+
 
 
 

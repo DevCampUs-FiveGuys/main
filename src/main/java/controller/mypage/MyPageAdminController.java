@@ -5,6 +5,7 @@ import data.dto.CourseDto;
 import data.dto.MemberDto;
 import data.dto.ReviewDto;
 import data.service.AdminService;
+import data.service.AttendanceService;
 import data.service.MemberService;
 import data.service.ReviewService;
 import lombok.NonNull;
@@ -28,12 +29,16 @@ public class MyPageAdminController {
     @NonNull
     private MemberService memberService;
 
+
     // 출석현황
     @GetMapping("")
     public String attendanceList(Model model) {
         List<AttendanceDto> attendancelist = adminService.getallattendance();
+        List<CourseDto> courselist = reviewService.getAllCourseList();
 
-        model.addAttribute("attendancelist",attendancelist);
+
+        model.addAttribute("courselist", courselist);
+        model.addAttribute("attendancelist", attendancelist);
         return "thymeleaf/admin/Admattendancelist";
     }
 
