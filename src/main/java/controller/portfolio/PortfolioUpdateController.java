@@ -13,6 +13,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,12 +79,21 @@ public class PortfolioUpdateController {
     public String insertPortfolio(
             @ModelAttribute PortfolioDto dto,
             @RequestParam("upload") MultipartFile upload,
-            HttpServletRequest request
-    )
-
+            Authentication authentication,
+            Model model)
     {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            String userName = memberService.findByUsername(email).getName();
+            dto.setMember_id(member_id);
+
+            model.addAttribute("member_id", member_id);
+            model.addAttribute("userName", userName);
+        }
         String photo = storageService.uploadFile(bucketName, folderName, upload);
         dto.setFile_name(photo);
+
 
         portfolioService.insertPortfolio(dto);
 

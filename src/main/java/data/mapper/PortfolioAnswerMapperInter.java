@@ -12,10 +12,7 @@ import java.util.List;
 @Mapper
 public interface PortfolioAnswerMapperInter {
 
-    @Insert("""
-            insert into reply (reply_id,member_id,portfolio_id,comment,email,name,num,regroup,restep,relevel,recount,created_at)
-            values (#{reply_id},#{member_id},#{portfolio_id},#{comment},#{email},#{name},#{num},#{regroup},#{restep},#{relevel},#{recount},now())
-            """)
+    @Insert("insert into reply (member_id,portfolio_id,comment,created_at) values (#{member_id},#{portfolio_id},#{comment},now())")
     public void insertAnswer(replyDto dto);
 
     @Select("select * from reply where reply_id=#{reply_id} order by reply_id desc")
