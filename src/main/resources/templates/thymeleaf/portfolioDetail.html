@@ -4,18 +4,17 @@
       layout:decorate="~{layouts/layout}">
 <head>
     <link rel="stylesheet" th:href="@{/css/portfolio.css}">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script type="text/javascript">
         $(function() {
             // 처음 로딩시 댓글 목록 출력
             answer_list();
 
-            // 폼 제출 이벤트
-            $("#acomment").submit(function(event) {
-                event.preventDefault(); // 폼의 기본 제출 동작 방지
-
-                let portfolio_id = $("input[name='portfolio_id']").val();
-                let comment = $("textarea[name='comment']").val();
-                if(comment == '') {
+            // 댓글 추가 버튼
+            $("#btnansweradd").click(function() {
+                let portfolio_id = [[${dto.portfolio_id}]];
+                let comment = $("#acomment").val();
+                if (comment == '') {
                     alert("댓글을 입력후 등록해주세요");
                     return;
                 }
@@ -23,13 +22,13 @@
                 $.ajax({
                     type: 'post',
                     dataType: 'text',
-                    url: "./ainsert",
+                    url: "/ainsert",
                     data: {"portfolio_id": portfolio_id, "comment": comment},
                     success: function() {
                         // 댓글 목록 다시 출력
                         answer_list();
                         // 초기화
-                        $("textarea[name='comment']").val("");
+                        $("#acomment").val("");
                     }
                 });
             });
@@ -38,10 +37,10 @@
             $(document).on("click", ".adel", function() {
                 let reply_id = $(this).attr("reply_id");
                 let a = confirm("해당 댓글을 삭제할까요?");
-                if(a) {
+                if (a) {
                     $.ajax({
                         type: "get",
-                        dataType: "text",
+                        dataType: 'text',
                         data: {"reply_id": reply_id},
                         url: "./adelete",
                         success: function() {
@@ -54,7 +53,9 @@
         });
 
         function answer_list() {
-            let portfolio_id = $("input[name='portfolio_id']").val();
+            let portfolio_id = [[${dto.portfolio_id}]];
+            let loginok = /*[[${session.loginok}]]*/ 'no';
+            let loginid = /*[[${session.loginid}]]*/ '';
 
             $.ajax({
                 type: "get",
@@ -68,9 +69,18 @@
                     let s = "";
                     $.each(data, function(idx, ele) {
                         s += `
-                        ${ele.name}(${ele.email})
+                        ${ele.userName}(${ele.email})
                         <span class="aday">${ele.created_at}</span>
-                        <button class="adel" reply_id="${ele.reply_id}">삭제</button>
+                    `;
+                        // 로그인 중이면서 댓글 아이디와 로그인 아이디가 같을 경우 삭제 아이콘 추가
+                        if (loginok == 'yes' && loginid == ele.myid) {
+                            s += `
+                            <i class="bi bi-trash adel" reply_id="${ele.reply_id}"
+                            style="cursor:pointer;"></i>
+                        `;
+                        }
+
+                        s += `
                         <br>
                         <pre class="adata">${ele.comment}</pre>
                         <br>
@@ -104,18 +114,31 @@
                     <div th:utext="${dto.description}"></div>
                 </div>
             </div>
-        </div>
-        <div>
-            <form th:action="@{/portfolio/ainsert}" method="post" id="acomment">
-                <input type="hidden" name="reply_id" th:value="1">
-                <input type="hidden" name="portfolio_id" th:value="${portfolio_id}">
-                <textarea name="comment"></textarea>
-                <button type="submit" class="btn btn-sm btn-outline-danger" id="btnansweradd">등록</button>
-            </form>
-            <div>
-                <span class="answercount">0</span>개의 댓글
-                <div class="answerlist"></div>
-            </div>
+            <span style="float: right" th:color="gray">
+            <i class="bi bi-chat-dots"></i>
+            &nbsp;
+            댓글 <span class="answercount">0</span>
+            </span>
+            <tr>
+                <td>
+                    <pre>
+                        <span style="font-size: 20px;" th:text="${comment}"></span>
+                    </pre>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="answerlist"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><b>댓글</b><br>
+                    <textarea style="width: 80%; height: 60px;" id="acomment"></textarea>
+                    <button type="button" class="btn btn-outline-success"
+                            style="height: 60px; position: relative; top: -27px;"
+                            id="btnansweradd">등록</button>
+                </td>
+            </tr>
         </div>
     </div>
 </div>

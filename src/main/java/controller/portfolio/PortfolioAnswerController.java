@@ -29,14 +29,14 @@ public class PortfolioAnswerController {
                              Authentication authentication,
                              Model model)
     {
-        if (authentication != null) {
-            String email = authentication.getName();
-            int member_id = memberService.findByUsername(email).getMember_id();
-            String userName = memberService.findByUsername(email).getName();
+        String email = authentication.getName();
+        int member_id = memberService.findByUsername(email).getMember_id();
+        String userName = memberService.findByUsername(email).getName();
 
-            model.addAttribute("member_id", member_id);
-            model.addAttribute("userName", userName);
-        }
+        model.addAttribute("member_id", member_id);
+        model.addAttribute("userName", userName);
+        model.addAttribute("comment", comment);
+
         replyDto dto = replyDto.builder()
                 .comment(comment)
                 .portfolio_id(portfolio_id)

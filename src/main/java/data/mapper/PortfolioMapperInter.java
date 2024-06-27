@@ -9,7 +9,7 @@ import java.util.Map;
 @Mapper
 public interface PortfolioMapperInter {
 
-    @Insert("insert into portfolio (member_id,title,description,file_name,regroup,restep,relevel,readcount,recount,created_at)values (#{member_id},#{title},#{description},#{file_name},#{regroup},#{restep},#{relevel},#{readcount},#{recount},now()) ")
+    @Insert("insert into portfolio (member_id,title,description,file_name,regroup,restep,relevel,recount,created_at)values (#{member_id},#{title},#{description},#{file_name},#{regroup},#{restep},#{relevel},#{recount},now()) ")
     public void insertPortfolio(PortfolioDto dto);
 
     @Update("update portfolio set title=#{title},description=#{description},updated_at=NOW() where portfolio_id=#{portfolio_id}")
