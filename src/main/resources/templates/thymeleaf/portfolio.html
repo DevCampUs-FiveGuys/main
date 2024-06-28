@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/layout}">
 <head>
     <link rel="stylesheet" th:href="@{/css/portfolio.css}">
@@ -111,7 +112,7 @@
                     <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}" />
                     <button class="look" th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${dto.portfolio_id})}'|">자세히보기 +</button>
                     <button type="button" class="favorite-button" th:data-portfolio-id="${dto.portfolio_id}" th:onclick="toggleFavorite(this, [[${dto.portfolio_id}]])">
-                        <i class="far fa-heart"></i>
+                        <i sec:authorize="isAuthenticated()" class="far fa-heart"></i>
                     </button>
                 </div>
             </tr>
