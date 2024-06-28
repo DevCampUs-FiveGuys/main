@@ -34,9 +34,9 @@ public class PortfolioService {
         return portfolioMapper.getTotalCount();
     }
 
-    public PortfolioDto getData()
+    public PortfolioDto getData(int portfolio_id)
     {
-        return portfolioMapper.getData();
+        return portfolioMapper.getData(portfolio_id);
     }
 
     public void updatePortfolio(PortfolioDto dto)
