@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/admin/components/nav-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/screens/changeRoles.css}">
+    <!-- 일반 alert 대신에 SweetAlert2 쓰기 -->d
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group mt-4">
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage}"><i class="icon icon-attendance"></i>출석현황</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/changerole}"><i class="icon icon-file-text"></i>권한변경</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/updateprofile}"><i class="icon icon-edit"></i>정보수정</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <h2 class="text-center my-4">출석현황</h2>
+                <div>
+                    <!--  과정명 기수 검색 -->
+                    <div>
+                        <select id="courseName" onchange="loadCourseNums()" style="width: 250px;height: 25px;margin-right: 20px; border-radius: 20px;">
+                            <option value="">과정명을 선택하세요</option>
+                            <!-- Thymeleaf를 이용해 서버에서 받은 과정명 옵션을 반복 -->
+                            <option th:each="courselist : ${courselist}" th:value="${courselist.name}" th:text="${courselist.name}"></option>
+                        </select>
+                        <select id="courseNum" style="width: 150px; height: 25px; border-radius: 20px; margin-right: 20px">
+                            <option value="">기수를 선택해주세요</option>
+                        </select>
+                        <button type="button" onclick="searchAttendance()" class="search-btn">조회하기</button>
+                        <button type="button" onclick="window.location.reload()">전체보기</button>
+                    </div>
+                    <table class="container">
+                        <thead>
+                        <tr>
+                            <th><h1>학생 이름</h1></th>
+                            <th><h1>입실</h1></th>
+                            <th><h1>퇴실</h1></th>
+                            <th><h1>지각</h1></th>
+                            <th><h1>결석</h1></th>
+                            <th><h1>휴가</h1></th>
+                            <th><h1>병가</h1></th>
+                        </tr>
+                        </thead>
+                        <tbody id="AttendanceList">
+                        <tr th:each="attendance : ${attendancelist}">
+                            <td th:text="${attendance.membername}"></td>
+                            <td th:text="${attendance.check_in}"></td>
+                            <td th:text="${attendance.check_out}"></td>
+                            <td th:text="${attendance.late}"></td>
+                            <td th:text="${attendance.absent}"></td>
+                            <td th:text="${attendance.vacation}"></td>
+                            <td th:text="${attendance.hospital}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/adminmypage.js}"></script>
+</div>
+</body>
+</html>

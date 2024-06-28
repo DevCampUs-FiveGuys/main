@@ -24,7 +24,7 @@
         <button sec:authorize="hasRole('ROLE_ADMIN')"
                 type="button"
                 class="custom-btn btn-12"
-                onclick="location.href='/qna/write'"
+                onclick="location.href='/qna/list/write'"
         >
           <span>QnA Add</span>
           <span>Admin Only</span>
@@ -72,9 +72,9 @@
 
                     <!-- ***** FAQ 수정/삭제 버튼 ***** -->
                     <div class="btn-set" sec:authorize="hasRole('ROLE_ADMIN')">
-                      <a th:href="@{/qna/updateform(qna_id=${qna.qna_id})}">수정</a>
+                      <a th:href="@{/qna/list/updateform(qna_id=${qna.qna_id})}">수정</a>
                       <p class="seperate">|</p>
-                      <a th:href="@{/qna/delete(qna_id=${qna.qna_id})}">삭제</a>
+                      <a th:href="@{/qna/list/delete(qna_id=${qna.qna_id})}">삭제</a>
                     </div>
 
                   </div>

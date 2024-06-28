@@ -6,11 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
-@Data
-@AllArgsConstructor
+
 @NoArgsConstructor
-@Builder
+@Data
 @Alias("HeartDto")
+@Builder
+@AllArgsConstructor
 public class HeartDto {
     private int heart_id;
     private int member_id;
