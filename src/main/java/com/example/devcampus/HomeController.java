@@ -36,11 +36,6 @@ public class HomeController {
     public String login() {
         return "thymeleaf/login";
     }
-    @GetMapping("/student_mypage")
-    public String student_mypage(Model model) {
-        model.addAttribute("page","attendance");
-        return "thymeleaf/student/student_mypage";
-    }
     @GetMapping("/portfolioDetail")
     public String portfolioDetail() {
         return "thymeleaf/portfolioDetail";
