@@ -1,9 +1,11 @@
 package controller.mypage;
 
 import data.dto.AttendanceDto;
+import data.dto.HeartDto;
 import data.dto.MemberDto;
 import data.dto.VacationDto;
 import data.service.AttendanceService;
+import data.service.HeartService;
 import data.service.MemberService;
 import data.service.VacationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class MyPageStudentController {
     @Autowired
     private VacationService vacationService;
 
+    @Autowired
+    private HeartService heartService;
+
     // 출석현황 페이지로 이동
     @ModelAttribute
     @GetMapping("/attendance")
@@ -45,8 +50,15 @@ public class MyPageStudentController {
 
     // 찜목록 페이지로 이동
     @GetMapping("/portfolio_favorites")
-    public String portfolio_favorites(Model model) {
-        model.addAttribute("page", "favorites");
+    public String portfolio_favorites(Authentication authentication, Model model) {
+        if (authentication != null) {
+            String email = authentication.getName(); // 인증된 사용자의 이메일
+            int member_id = memberService.findByUsername(email).getMember_id(); // 인증된 사용자의 이메일이 가지고 있는 member_id
+            List<HeartDto> heartList = heartService.getHeart(member_id); // 찜한 포트폴리오 목록
+            model.addAttribute("heartList", heartList);
+            model.addAttribute("member_id", member_id);
+            model.addAttribute("page", "favorites");
+        }
         return "thymeleaf/student/portfolio_favorites";
     }
 
