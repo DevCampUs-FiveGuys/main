@@ -16,13 +16,15 @@ import java.util.List;
 public class HomeController {
     private final ReviewService reviewService;
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
+        model.addAttribute("page", "home");
         return "main";
     }
     @GetMapping("/signup")
     public String signup(Model model) {
         List<CourseDto> courselist = reviewService.getAllCourseList();
         model.addAttribute("courselist", courselist);
+        model.addAttribute("page","signup");
         return "thymeleaf/signup";
     }
     @GetMapping("/signup/list/names")

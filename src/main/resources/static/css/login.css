@@ -33,10 +33,14 @@
     border: none;
     outline: none;
 }
+
+#info__password {
+    position: relative;
+}
 #info__password i {
     position: absolute;
     right: 13px;
-    top: 127px;
+    top: 37px;
     bottom: 0;
     margin: auto 0;
     cursor: pointer;
