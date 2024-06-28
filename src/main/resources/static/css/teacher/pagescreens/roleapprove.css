@@ -39,6 +39,9 @@
     border-radius: 3px;
 }
 
+.container td:first-child { color: #00C300; }
+
+
 @media (max-width: 800px) {
     .container td:nth-child(4),
     .container th:nth-child(4) { display: none; }
