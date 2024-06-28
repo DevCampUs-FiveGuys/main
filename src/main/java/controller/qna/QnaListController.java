@@ -28,7 +28,7 @@ public class QnaListController {
 
         model.addAttribute("qnalist", qnalist);
         model.addAttribute("qnatotalCount", qnatotalCount);
-        model.addAttribute("page", "");
+        model.addAttribute("page", "qna");
 
         return "thymeleaf/qna/qnaList";
     }

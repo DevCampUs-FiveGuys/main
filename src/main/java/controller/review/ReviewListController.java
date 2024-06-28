@@ -87,7 +87,7 @@ public class ReviewListController {
         model.addAttribute("malePercentage", malePercentage);
         model.addAttribute("femalePercentage", femalePercentage);
         model.addAttribute("courselist", courselist);
-        model.addAttribute("page", "");
+        model.addAttribute("page", "review");
 
         return "thymeleaf/review"; // Return the name of the Thymeleaf template
     }
