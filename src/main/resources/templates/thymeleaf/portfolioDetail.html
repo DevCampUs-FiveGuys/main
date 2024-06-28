@@ -12,7 +12,7 @@
             <i class="fas fa-list"></i>목록
         </button>
         <div class="detailfull">
-            <tr th:each="dto : ${list}">
+            <div th:each="dto : ${list}">
                 <div class="center-content">
                     <div class="img-and-text">
                         <img class="stpathimg2" th:src="@{${stpath}+'/'+${dto.file_name}}">
@@ -26,8 +26,105 @@
                 <div class="description2">
                     <div th:utext="${dto.description}"></div>
                 </div>
-            </tr>
-        </div>
+            </div>
+            <div class="replytext">
+                <span class="replytext2" style="float: right" th:color="gray">
+                    <i class="bi bi-chat-dots"></i>
+                    &nbsp;
+                    댓글 <span class="answercount">0</span>
+                </span>
+                <span class="replytext3" style="font-size: 20px;" th:text="${comment}"></span>
+                    <div class="answerlist"></div>
+                <td><b>댓글</b><br>
+                    <textarea class="pfcomment" style="width: 30%; height: 60px;" id="acomment"></textarea>
+                    <button type="submit" class="btn btn-outline-success"
+                            style="height: 60px; position: relative; top: -27px;"
+                            id="btnansweradd">등록</button>
+            </div>
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                // 처음 로딩시 댓글 목록 출력
+                answer_list();
+
+                // 댓글 추가 버튼
+                $("#btnansweradd").click(function() {
+                    let portfolio_id = [[${dto.portfolio_id}]];
+                    let comment = $("#acomment").val();
+                    if (comment == '') {
+                        alert("댓글을 입력후 등록해주세요");
+                        return;
+                    }
+
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'text',
+                        url: "/portfolio/ainsert",
+                        data: {"portfolio_id": portfolio_id, "comment": comment},
+                        success: function() {
+                            // 댓글 목록 다시 출력
+                            answer_list();
+                            // 초기화
+                            $("#acomment").val("");
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error: " + error);
+                        }
+                    });
+                });
+
+                // 댓글 삭제 이벤트
+                $(document).on("click", ".adel", function() {
+                    let reply_id = $(this).attr("reply_id");
+                    let a = confirm("해당 댓글을 삭제할까요?");
+                    if (a) {
+                        $.ajax({
+                            type: "get",
+                            dataType: 'text',
+                            data: {"reply_id": reply_id},
+                            url: "/portfolio/adelete",
+                            success: function() {
+                                // 댓글 삭제후 목록 다시 출력
+                                answer_list();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error: " + error);
+                            }
+                        });
+                    }
+                });
+            });
+
+            function answer_list() {
+                let portfolio_id = [[${dto.portfolio_id}]];
+
+                $.ajax({
+                    type: "get",
+                    dataType: "json",
+                    data: {"portfolio_id": portfolio_id},
+                    url: "/portfolio/alist",
+                    success: function(data) {
+                        // 댓글 갯수 출력
+                        $(".answercount").text(data.length);
+                        // 목록 출력
+                        let s = "";
+                        $.each(data, function(idx, ele) {
+                            s += `
+                                 ${ele.userName}
+                                 <span class="aday">${ele.created_at}</span>
+                                  `;
+
+                            s += `
+                                  <br>
+                                  <pre class="adata">${ele.comment}</pre>
+                                  <br>
+                                `;
+                        });
+                        $(".answerlist").html(s);
+                    }
+                });
+            }
+        </script>
     </div>
 </div>
 </html>

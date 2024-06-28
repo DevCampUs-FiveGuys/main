@@ -60,6 +60,7 @@ public class PortfolioPageController {
         model.addAttribute("endPage", endPage);
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("no", no);
+        model.addAttribute("page", "portfolio");
 
 
         return "thymeleaf/portfolio";
