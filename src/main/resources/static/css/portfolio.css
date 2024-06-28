@@ -406,3 +406,12 @@
 .pdh1 {
     margin-top: 50px;
 }
+
+.replytext {
+    text-align: center;
+}
+
+.replytext2 {
+    position: relative;
+    right: 500px;
+}

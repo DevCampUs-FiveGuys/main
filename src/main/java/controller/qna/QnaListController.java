@@ -28,6 +28,7 @@ public class QnaListController {
 
         model.addAttribute("qnalist", qnalist);
         model.addAttribute("qnatotalCount", qnatotalCount);
+        model.addAttribute("page", "qna");
 
         return "thymeleaf/qna/qnaList";
     }
@@ -38,6 +39,7 @@ public class QnaListController {
 
         QnaDto qnadto=new QnaDto();
         model.addAttribute("qnadto",qnadto);
+        model.addAttribute("page", "/write");
 
         return "thymeleaf/qna/qnaWrite";
     }
