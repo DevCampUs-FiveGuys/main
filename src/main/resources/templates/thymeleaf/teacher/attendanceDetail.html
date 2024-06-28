@@ -18,14 +18,19 @@
             <div class="col-md-3">
                 <ul class="list-group mt-4">
                     <li class="list-group-item">
-
-                        <a th:href="@{/teacher/mypage}"><i class="icon icon-attendance"></i>출석현황</a>
+                        <a th:href="@{/teacher/mypage}" th:classappend="${page == 'attendanceList' ? 'active' : ''}">
+                            <i class="icon icon-attendance"></i>출석현황
+                        </a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/mypage/roleapprove}"><i class="icon icon-file-text"></i>학생승인</a>
+                        <a th:href="@{/teacher/mypage/roleapprove}" th:classappend="${page == 'roleApprove' ? 'active' : ''}">
+                            <i class="icon icon-file-text"></i>학생승인
+                        </a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/mypage/updateProfile}"><i class="icon icon-edit"></i>정보수정</a>
+                        <a th:href="@{/teacher/mypage/updateProfile}" th:classappend="${page == 'updateProfile' ? 'active' : ''}">
+                            <i class="icon icon-edit"></i>정보수정
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -42,8 +47,8 @@
                     <tbody>
                     <tr th:each="attendancelist : ${attendancelist}">
                         <td th:text="${attendancelist.membername}"></td>
-                        <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd hh:mm')}"></td>
-                        <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd hh:mm')}"></td>
+                        <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd HH:mm')}"></td>
                         <td th:text="${attendancelist.vacation == 1 ? 'V' : 'X'}"></td>
                     </tr>
                     </tbody>
