@@ -33,10 +33,12 @@ public class TeacherService {
         teacherMapperInter.updateStudent(member_id);
     }
 
+    // 학생승인에서 거절버튼 클릭시 해당 member의 권한을 DENY로 변경
     public void updateGuest(int member_id) {
         teacherMapperInter.updateGuest(member_id);
     }
 
+    //출석현황에서 캘린더 클릭시 클릭을 한 해당 날짜 가져오기
     public List<AttendanceDto> getAttendanceByDate(String dateStr) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         List<AttendanceDto> attendanceList = teacherMapperInter.getStudentAttendaceList();
@@ -49,6 +51,7 @@ public class TeacherService {
                 .collect(Collectors.toList());
     }
 
+    //출석현황에서 캘린더 클릭시 클릭을 한 해당 날짜를 가지고 출석인원 count
     public Map<String, Integer> getAttendanceCountsByDate() {
         List<Map<String, Object>> counts = teacherMapperInter.getAttendanceCountsByDate();
         Map<String, Integer> attendanceCounts = new HashMap<>();
