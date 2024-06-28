@@ -5,6 +5,51 @@
 
 <head>
     <link rel="stylesheet" th:href="@{/css/student_mypage.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function fetchFavorites() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/portfolio/heart/get',
+                    success: function(data) {
+                        const container = $('.favorites-container');
+                        container.empty();
+                        data.forEach(function(dto) {
+                            const portfolioHtml = `
+                                <div class="course1" style="border: 1px solid">
+                                    <img class="stpathimg" src="https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject/${dto.file_name}"
+                                         onclick="location.href='/portfolio/Detail?portfolio_id=${dto.portfolio_id}'">
+                                    <span class="readcount1">${dto.readcount}</span>
+                                    <div>
+                                        <span class="title1">${dto.title}</span>
+                                        <p class="gisu">[강남센터] [N캠프] 클라우드 기반 웹 개발자 & 데브옵스 과정_15기</p>
+                                    </div>
+                                    <div class="bo_v_info_label">
+                                        <span class="bo_v_label inline-block">개강일</span>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;
+                                        <span class="normal coral">2024-06-23</span>
+                                    </div>
+                                    <div class="bo_v_info_label">
+                                        <span class="bo_v_lavel inline-block">교육기간</span>
+                                        &nbsp;|&nbsp;2024-06-23 ~ 2024-09-16
+                                    </div>
+                                    <span>${new Date(dto.created_at).toLocaleDateString()}</span>
+                                    <button class="look" onclick="location.href='/portfolio/Detail?portfolio_id=${dto.portfolio_id}'">자세히보기 +</button>
+                                </div>
+                            `;
+                            container.append(portfolioHtml);
+                        });
+                    },
+                    error: function() {
+                        alert('Failed to fetch favorites');
+                    }
+                });
+            }
+
+            fetchFavorites();
+        });
+    </script>
 </head>
 
 <body>
@@ -37,7 +82,9 @@
             </div>
             <div class="col-md-9">
                 <h2 class="text-center my-4">찜목록</h2>
-                <p>여기에 찜목록 내용을 추가하세요.</p>
+                <div class="favorites-container">
+                    <!-- Favorite portfolios will be dynamically loaded here -->
+                </div>
             </div>
         </div>
     </div>
