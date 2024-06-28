@@ -36,20 +36,9 @@ public class HomeController {
     public String login() {
         return "thymeleaf/login";
     }
-    @GetMapping("/review")
-    public String review() {
-        return "thymeleaf/review";
-    }
-    @GetMapping("/portfolio")
-    public String portfolio() {
-        return "thymeleaf/portfolio";
-    }
-//    @GetMapping("/qna")
-//    public String qna() {
-//        return "thymeleaf/qna";
-//    }
     @GetMapping("/student_mypage")
-    public String student_mypage() {
+    public String student_mypage(Model model) {
+        model.addAttribute("page","attendance");
         return "thymeleaf/student/student_mypage";
     }
     @GetMapping("/portfolioDetail")
