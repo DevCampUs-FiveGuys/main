@@ -6,7 +6,7 @@
 <head>
 
     <link rel="stylesheet" th:href="@{/css/teacher/teacher_mypage.css}">
-    <link rel="stylesheet" th:href="@{/css/teacher/attendancelist.css}">
+    <link rel="stylesheet" th:href="@{/css/teacher/pagescreens/attendancelist.css}">
     <!-- 일반 alert 대신에 SweetAlert2 쓰기 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -24,6 +24,27 @@
                 initialView: 'dayGridMonth',
                 dateClick: function(info) {
                     window.location.href = '/teacher/mypage/attendancedetail?date=' + info.dateStr;
+                },
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    $.ajax({
+                        url: '/teacher/mypage/attendanceCounts',
+                        method: 'GET',
+                        success: function(data) {
+                            let events = [];
+                            for (let date in data) {
+                                if (data.hasOwnProperty(date)) {
+                                    events.push({
+                                        title: '출석 인원 : ' + data[date] + '명',
+                                        start: date
+                                    });
+                                }
+                            }
+                            successCallback(events);
+                        },
+                        error: function() {
+                            failureCallback();
+                        }
+                    });
                 }
             });
 
@@ -39,20 +60,25 @@
             <div class="col-md-3">
                 <ul class="list-group mt-4">
                     <li class="list-group-item">
-
-                        <a th:href="@{/teacher/mypage}"><i class="icon icon-attendance"></i>출석현황</a>
+                        <a th:href="@{/teacher/mypage}" th:classappend="${page == 'attendanceList' ? 'active' : ''}">
+                            <i class="icon icon-attendance"></i>출석현황
+                        </a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/mypage/roleapprove}"><i class="icon icon-file-text"></i>학생승인</a>
+                        <a th:href="@{/teacher/mypage/roleapprove}" th:classappend="${page == 'roleApprove' ? 'active' : ''}">
+                            <i class="icon icon-file-text"></i>학생승인
+                        </a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/teacher/mypage/updateProfile}"><i class="icon icon-edit"></i>정보수정</a>
+                        <a th:href="@{/teacher/mypage/updateProfile}" th:classappend="${page == 'updateProfile' ? 'active' : ''}">
+                            <i class="icon icon-edit"></i>정보수정
+                        </a>
                     </li>
                 </ul>
             </div>
             <div class="col-md-9">
                 <h2 class="text-center my-4">출석현황</h2>
-                <div id="calendar"></div>
+                <div class="calendar" id="calendar"></div>
                 </div>
             </div>
         </div>

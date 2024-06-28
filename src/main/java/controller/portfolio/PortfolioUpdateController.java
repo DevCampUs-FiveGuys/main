@@ -13,6 +13,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,41 +48,18 @@ public class PortfolioUpdateController {
     @Autowired
     private NcpObjectStorageService storageService;
 
-    @GetMapping("/portfolio/write")
-    public String portfolioWrite(
-            /*@RequestParam(defaultValue = "0") int portfolio_id,
-            @RequestParam(defaultValue = "0") int regroup,
-            @RequestParam(defaultValue = "0") int restep,
-            @RequestParam(defaultValue = "0") int relevel,
-            @RequestParam(defaultValue = "1") int currentPage,*/
-            Model model
-    )
-
-    {
-        /*String title = "";
-        if(portfolio_id>0) {
-            title = "[답글]"+portfolioService.getData(portfolio_id).getTitle();
-        }*/
-        PortfolioDto dto = new PortfolioDto();
-        model.addAttribute("PortfolioDto", dto);
-        /*model.addAttribute("portfolio_id", portfolio_id);
-        model.addAttribute("regroup", regroup);
-        model.addAttribute("restep", restep);
-        model.addAttribute("relevel", relevel);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("title", title);*/
-
-        return "thymeleaf/portfolioWrite";
-    }
-
     @PostMapping("/portfolio/insert")
     public String insertPortfolio(
             @ModelAttribute PortfolioDto dto,
             @RequestParam("upload") MultipartFile upload,
-            HttpServletRequest request
-    )
-
+            Authentication authentication,
+            Model model)
     {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            String userName = memberService.findByUsername(email).getName();
+            dto.setMember_id(member_id);
+
         String photo = storageService.uploadFile(bucketName, folderName, upload);
         dto.setFile_name(photo);
 
