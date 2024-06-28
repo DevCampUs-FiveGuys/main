@@ -42,7 +42,7 @@ public class HeartController {
         }
     }
 
-    // 찜한 포트폴리오를 조회 (찜한 포트폴리오가 있는지 확인)
+    // 찜한 포트폴리오를 마이페이지 찜목록 페이지에 띄우기
     @GetMapping("/heart/get")
     @ResponseBody
     public List<HeartDto> getHeart(Authentication authentication) {
@@ -52,5 +52,22 @@ public class HeartController {
             return heartService.getHeart(member_id);
         }
         return null;
+    }
+
+    // 포트폴리오가 찜이 되어있는지 확인
+    @GetMapping("/heart/check")
+    @ResponseBody
+    public boolean isHearted(@RequestParam int portfolio_id, Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            List<HeartDto> heartList = heartService.getHeart(member_id);
+            for (HeartDto heart : heartList) {
+                if (heart.getPortfolio_id() == portfolio_id) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

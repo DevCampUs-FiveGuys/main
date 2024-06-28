@@ -43,6 +43,33 @@
                 });
             }
         }
+
+        $(document).ready(function() {
+            $('.favorite-button').each(function() {
+                const button = this;
+                const portfolio_id = $(button).data('portfolio-id');
+                $.ajax({
+                    type: "GET",
+                    url: "/portfolio/heart/check",
+                    data: { portfolio_id: portfolio_id },
+                    success: function(isHearted) {
+                        const icon = button.querySelector('i');
+                        if (isHearted) {
+                            button.classList.add('active');
+                            icon.classList.remove('far');
+                            icon.classList.add('fas');
+                        } else {
+                            button.classList.remove('active');
+                            icon.classList.remove('fas');
+                            icon.classList.add('far');
+                        }
+                    },
+                    error: function() {
+                        alert('찜 상태를 확인하는데 실패했습니다.');
+                    }
+                });
+            });
+        });
     </script>
 </head>
 <body>
@@ -83,7 +110,7 @@
                     </div>
                     <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}" />
                     <button class="look" th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${dto.portfolio_id})}'|">자세히보기 +</button>
-                    <button type="button" class="favorite-button" th:onclick="toggleFavorite(this, [[${dto.portfolio_id}]])">
+                    <button type="button" class="favorite-button" th:data-portfolio-id="${dto.portfolio_id}" th:onclick="toggleFavorite(this, [[${dto.portfolio_id}]])">
                         <i class="far fa-heart"></i>
                     </button>
                 </div>
