@@ -44,7 +44,8 @@ public class MemberListController {
     }
 
     @GetMapping("/student/mypage")
-    public String studentMypage() {
+    public String studentMypage(Model model) {
+        model.addAttribute("page", "attendance");
         return "thymeleaf/student/attendance";
     }
 
