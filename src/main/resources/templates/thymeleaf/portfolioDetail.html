@@ -4,93 +4,6 @@
       layout:decorate="~{layouts/layout}">
 <head>
     <link rel="stylesheet" th:href="@{/css/portfolio.css}">
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            // 처음 로딩시 댓글 목록 출력
-            answer_list();
-
-            // 댓글 추가 버튼
-            $("#btnansweradd").click(function() {
-                let portfolio_id = [[${dto.portfolio_id}]];
-                let comment = $("#acomment").val();
-                if (comment == '') {
-                    alert("댓글을 입력후 등록해주세요");
-                    return;
-                }
-
-                $.ajax({
-                    type: 'post',
-                    dataType: 'text',
-                    url: "/ainsert",
-                    data: {"portfolio_id": portfolio_id, "comment": comment},
-                    success: function() {
-                        // 댓글 목록 다시 출력
-                        answer_list();
-                        // 초기화
-                        $("#acomment").val("");
-                    }
-                });
-            });
-
-            // 댓글 삭제 이벤트
-            $(document).on("click", ".adel", function() {
-                let reply_id = $(this).attr("reply_id");
-                let a = confirm("해당 댓글을 삭제할까요?");
-                if (a) {
-                    $.ajax({
-                        type: "get",
-                        dataType: 'text',
-                        data: {"reply_id": reply_id},
-                        url: "./adelete",
-                        success: function() {
-                            // 댓글 삭제후 목록 다시 출력
-                            answer_list();
-                        }
-                    });
-                }
-            });
-        });
-
-        function answer_list() {
-            let portfolio_id = [[${dto.portfolio_id}]];
-            let loginok = /*[[${session.loginok}]]*/ 'no';
-            let loginid = /*[[${session.loginid}]]*/ '';
-
-            $.ajax({
-                type: "get",
-                dataType: "json",
-                data: {"portfolio_id": portfolio_id},
-                url: "./alist",
-                success: function(data) {
-                    // 댓글 갯수 출력
-                    $(".answercount").text(data.length);
-                    // 목록 출력
-                    let s = "";
-                    $.each(data, function(idx, ele) {
-                        s += `
-                        ${ele.userName}(${ele.email})
-                        <span class="aday">${ele.created_at}</span>
-                    `;
-                        // 로그인 중이면서 댓글 아이디와 로그인 아이디가 같을 경우 삭제 아이콘 추가
-                        if (loginok == 'yes' && loginid == ele.myid) {
-                            s += `
-                            <i class="bi bi-trash adel" reply_id="${ele.reply_id}"
-                            style="cursor:pointer;"></i>
-                        `;
-                        }
-
-                        s += `
-                        <br>
-                        <pre class="adata">${ele.comment}</pre>
-                        <br>
-                    `;
-                    });
-                    $(".answerlist").html(s);
-                }
-            });
-        }
-    </script>
 </head>
 <div layout:fragment="content">
     <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
@@ -114,32 +27,104 @@
                     <div th:utext="${dto.description}"></div>
                 </div>
             </div>
-            <span style="float: right" th:color="gray">
-            <i class="bi bi-chat-dots"></i>
-            &nbsp;
-            댓글 <span class="answercount">0</span>
-            </span>
-            <tr>
-                <td>
-                    <pre>
-                        <span style="font-size: 20px;" th:text="${comment}"></span>
-                    </pre>
-                </td>
-            </tr>
-            <tr>
-                <td>
+            <div class="replytext">
+                <span class="replytext2" style="float: right" th:color="gray">
+                    <i class="bi bi-chat-dots"></i>
+                    &nbsp;
+                    댓글 <span class="answercount">0</span>
+                </span>
+                <span class="replytext3" style="font-size: 20px;" th:text="${comment}"></span>
                     <div class="answerlist"></div>
-                </td>
-            </tr>
-            <tr>
                 <td><b>댓글</b><br>
-                    <textarea style="width: 80%; height: 60px;" id="acomment"></textarea>
-                    <button type="button" class="btn btn-outline-success"
+                    <textarea class="pfcomment" style="width: 30%; height: 60px;" id="acomment"></textarea>
+                    <button type="submit" class="btn btn-outline-success"
                             style="height: 60px; position: relative; top: -27px;"
                             id="btnansweradd">등록</button>
-                </td>
-            </tr>
-        </div>
+            </div>
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                // 처음 로딩시 댓글 목록 출력
+                answer_list();
+
+                // 댓글 추가 버튼
+                $("#btnansweradd").click(function() {
+                    let portfolio_id = [[${dto.portfolio_id}]];
+                    let comment = $("#acomment").val();
+                    if (comment == '') {
+                        alert("댓글을 입력후 등록해주세요");
+                        return;
+                    }
+
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'text',
+                        url: "/portfolio/ainsert",
+                        data: {"portfolio_id": portfolio_id, "comment": comment},
+                        success: function() {
+                            // 댓글 목록 다시 출력
+                            answer_list();
+                            // 초기화
+                            $("#acomment").val("");
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error: " + error);
+                        }
+                    });
+                });
+
+                // 댓글 삭제 이벤트
+                $(document).on("click", ".adel", function() {
+                    let reply_id = $(this).attr("reply_id");
+                    let a = confirm("해당 댓글을 삭제할까요?");
+                    if (a) {
+                        $.ajax({
+                            type: "get",
+                            dataType: 'text',
+                            data: {"reply_id": reply_id},
+                            url: "/portfolio/adelete",
+                            success: function() {
+                                // 댓글 삭제후 목록 다시 출력
+                                answer_list();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error: " + error);
+                            }
+                        });
+                    }
+                });
+            });
+
+            function answer_list() {
+                let portfolio_id = [[${dto.portfolio_id}]];
+
+                $.ajax({
+                    type: "get",
+                    dataType: "json",
+                    data: {"portfolio_id": portfolio_id},
+                    url: "/portfolio/alist",
+                    success: function(data) {
+                        // 댓글 갯수 출력
+                        $(".answercount").text(data.length);
+                        // 목록 출력
+                        let s = "";
+                        $.each(data, function(idx, ele) {
+                            s += `
+                                 ${ele.userName}
+                                 <span class="aday">${ele.created_at}</span>
+                                  `;
+
+                            s += `
+                                  <br>
+                                  <pre class="adata">${ele.comment}</pre>
+                                  <br>
+                                `;
+                        });
+                        $(".answerlist").html(s);
+                    }
+                });
+            }
+        </script>
     </div>
 </div>
 </html>
