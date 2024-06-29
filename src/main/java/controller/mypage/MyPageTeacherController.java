@@ -2,6 +2,7 @@ package controller.mypage;
 
 import data.dto.AttendanceDto;
 import data.dto.MemberDto;
+import data.naver.cloud.NcpObjectStorageService;
 import data.service.AttendanceService;
 import data.service.MemberService;
 import data.service.TeacherService;
@@ -15,6 +16,7 @@ import data.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,13 @@ public class MyPageTeacherController {
 
     @NonNull
     private MemberService memberService;
+
+    private String bucketName="bitcamp-bucket-149";
+    private String folderName="semiproject";
+
+
+    @Autowired
+    private NcpObjectStorageService storageService;
 
     //출석현황 페이지로 이동
     @GetMapping("")
@@ -100,11 +109,22 @@ public class MyPageTeacherController {
 
     //정보수정에서 프로필 정보 수정
     @PostMapping("/update")
-    public String updateInfo(@ModelAttribute MemberDto memberDto, Authentication authentication) {
+    public String updateInfo(@ModelAttribute MemberDto memberDto, Authentication authentication, @RequestParam("upload") MultipartFile upload) {
         if (authentication != null) {
             String email = authentication.getName();
             MemberDto member = memberService.findByUsername(email);
             member.setTel(memberDto.getTel());
+
+            if (upload != null && !upload.isEmpty()) {
+                try {
+                    String photo = storageService.uploadFile(bucketName, folderName, upload);
+                    member.setPhoto(photo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return "redirect:/teacher/mypage/updateProfile?error=photoUploadFailed";
+                }
+            }
+
             memberService.updateMember(member);
         }
         return "redirect:/teacher/mypage/updateProfile";
