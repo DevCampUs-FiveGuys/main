@@ -1,13 +1,7 @@
 package controller.mypage;
 
-import data.dto.AttendanceDto;
-import data.dto.HeartDto;
-import data.dto.MemberDto;
-import data.dto.VacationDto;
-import data.service.AttendanceService;
-import data.service.HeartService;
-import data.service.MemberService;
-import data.service.VacationService;
+import data.dto.*;
+import data.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -32,6 +26,9 @@ public class MyPageStudentController {
 
     @Autowired
     private HeartService heartService;
+
+    @Autowired
+    private PortfolioService portfolioService;
 
     // 출석현황 페이지로 이동
     @ModelAttribute
@@ -64,8 +61,15 @@ public class MyPageStudentController {
 
     // 게시글 페이지로 이동
     @GetMapping("/portfolio_posts")
-    public String portfolio_posts(Model model) {
-        model.addAttribute("page", "posts");
+    public String portfolio_posts(Authentication authentication, Model model) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            List<PortfolioDto> portfolioList = portfolioService.getPortfolioDataByMemberId(member_id);
+            model.addAttribute("portfolioList", portfolioList);
+            model.addAttribute("member_id", member_id);
+            model.addAttribute("page", "posts");
+        }
         return "thymeleaf/student/portfolio_posts";
     }
 

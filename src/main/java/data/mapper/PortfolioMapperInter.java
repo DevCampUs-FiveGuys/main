@@ -27,10 +27,13 @@ public interface PortfolioMapperInter {
     @Select("select * from portfolio where portfolio_id=#{portfolio_id}")
     public List<PortfolioDto> getPortfolioData(int portfolio_id);
 
-
     @Select("select * from portfolio order by regroup desc,restep asc limit #{start},#{perpage}")
     public List<PortfolioDto> getPagingList(Map<String, Integer> map);
 
     @Update("update portfolio set readcount=readcount+1 where portfolio_id=#{portfolio_id}")
     public void updateReadcount(int portfolio_id);
+
+    // 로그인한 회원의 작성한 포트폴리오 리스트 가져오기
+    @Select("select * from portfolio where member_id=#{member_id}")
+    public List<PortfolioDto> getPortfoliosByMemberId(int member_id);
 }

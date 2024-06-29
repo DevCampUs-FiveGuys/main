@@ -63,4 +63,8 @@ public class PortfolioService {
         portfolioMapper.updateReadcount(portfolio_id);
     }
 
+    public List<PortfolioDto> getPortfolioDataByMemberId(int member_id) {
+        return portfolioMapper.getPortfoliosByMemberId(member_id);
+    }
+
 }
