@@ -150,7 +150,9 @@ function searchrole() {
 function searchAttendance() {
     let courseName = $("#courseName").val();
     let courseNum = $("#courseNum").val();
-    console.log(courseName, courseNum);
+    let dateStr = $("#calendardate").val();
+
+    console.log(courseName, courseNum, dateStr);
 
     $.ajax({
         type: "get",
@@ -188,3 +190,42 @@ function searchAttendance() {
         }
     });
 }
+
+// 달력 불러오기
+document.addEventListener('DOMContentLoaded', function() {
+    let calendarEl = document.getElementById('calendar');
+
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        dateClick: function(info) {
+            window.location.href = '/admin/mypage/attendancedetail?date=' + info.dateStr;
+        },
+        events: function(fetchInfo, successCallback, failureCallback) {
+            $.ajax({
+                url: '/admin/mypage/attendanceCounts',
+                method: 'GET',
+                success: function(data) {
+                    let events = [];
+                    for (let date in data) {
+                        if (data.hasOwnProperty(date)) {
+                            events.push({
+                                title: '출석 인원 : ' + data[date] + '명',
+                                start: date
+                            });
+                        }
+                    }
+                    successCallback(events);
+                },
+                error: function() {
+                    failureCallback();
+                }
+            });
+        }
+    });
+    calendar.render();
+});
+
+function updateAbsent(){
+    confirm("해당 결석을 병가로 출결수정하시겠습니까?");
+}
+

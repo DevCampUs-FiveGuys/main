@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AdminMapperInter {
@@ -40,11 +41,17 @@ public interface AdminMapperInter {
     public List<MemberDto> selectRole(String roles);
 
     // 출석현황 : 전체 목록 뽑아내기
-    @Select("select a.*, m.name as membername from attendance a join member m on a.member_id = m.member_id")
+    @Select("select a.*, m.name as membername from attendance a join member m on a.member_id = m.member_id ")
     public List<AttendanceDto> getallattendance();
 
     // 출석현황 : 선택한 과정명&기수 목록 뽑아내기
     @Select("select a.*, m.name as membername from attendance a join member m on a.member_id = m.member_id where course_name = #{name} and course_num =#{num}")
     public List<AttendanceDto> selectallattendance(String name, String num);
+
+    // 출석현황에서 캘린더 클릭한 해당 날짜에서 출석한 인원 count
+    @Select("select date_format(check_in, '%Y-%m-%d') as date, count(*) as count from attendance group by date_format(check_in, '%Y-%m-%d')")
+    List<Map<String, Object>> getAttendanceCountsByDate();
+
+    // 병가를 출석으로 출결 업데이트
 
 }
