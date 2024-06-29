@@ -22,4 +22,8 @@ public interface VacationMapperInter {
     // 휴가 신청한 내역을 조회할 수 있어야 함
     @Select("select * from vacation where member_id = #{member_id}")
     public List<VacationDto> getAllVacation(int member_id);
+
+    // 모든 승인된 휴가 조회
+    @Select("select * from vacation where member_id = #{member_id} and confirm = 1")
+    public List<VacationDto> getApprovedVacations(int member_id);
 }

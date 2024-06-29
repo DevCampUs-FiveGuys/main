@@ -283,4 +283,16 @@ public class MyPageStudentController {
         }
         return null;
     }
+
+    // 모든 승인된 휴가 조회
+    @GetMapping("/vacation/approved")
+    @ResponseBody
+    public List<VacationDto> getApprovedVacations(Authentication authentication) {
+        if (authentication != null) {
+            String email = authentication.getName();
+            int member_id = memberService.findByUsername(email).getMember_id();
+            return vacationService.getApprovedVacations(member_id);
+        }
+        return null;
+    }
 }
