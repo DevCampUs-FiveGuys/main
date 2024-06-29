@@ -78,6 +78,10 @@ public class AdminService {
         }
         return attendanceCounts;
     }
+    // 병가를 출석으로 출결 업데이트
+    public void approveabsent(int member_id, String dateStr) {
+        adminMapperInter.approveabsent(member_id, dateStr);
+    }
 
 
 

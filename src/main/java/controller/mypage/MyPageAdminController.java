@@ -172,5 +172,14 @@ public class MyPageAdminController {
         return selectedAttendance;
     }
 
+    // 병가를 출석으로 출결 업데이트
+    @GetMapping("/attendancedetail/update")
+    @ResponseBody
+    public String approveabsent(@RequestParam("member_id") int member_id, @RequestParam("dateStr")String dateStr){
+
+        adminService.approveabsent(member_id, dateStr);
+
+        return "redirect:/admin/mypage/attendancedetail?date={dateStr}";
+    }
 }
 

@@ -42,7 +42,7 @@
                         </select>
                         <input type="hidden" id="calendardate" name="calendardate" th:value="${selectedDate}"/>
                         <button type="button" onclick="searchAttendance()" class="search-btn">조회하기</button>
-                        <button type="button" onclick="window.location.reload()">전체보기123</button>
+                        <button type="button" onclick="window.location.reload()">전체보기</button>
                     </div>
                     <span th:text="${selectedDate}"></span>
                     <table class="container">
@@ -67,10 +67,11 @@
                             <td th:text="${attendancelist.late}"></td>
                             <td th:text="${attendancelist.vacation}"></td>
                             <td class="btn-absent">
-                                <button type="button" th:text="${attendancelist.absent}" onclick="updateAbsent()"></button>
+                                <button type="button" class="absent-btn" th:text="${attendancelist.absent}"></button>
                             </td>
                             <td th:text="${attendancelist.hospital}"></td>
-                            <td><button>승인</button></td>
+                            <td><button class="hospital-btn">승인</button></td>
+                            <td style="display: none" th:text="${attendancelist.member_id}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -78,6 +79,57 @@
             </div>
         </div>
         <script type="text/javascript" th:src="@{/js/adminmypage.js}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const absentButtons = document.querySelectorAll('.hospital-btn');
+                absentButtons.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        let membername = $(this).closest('tr').find('td:first').text(); // 해당 row의 첫 번째 열(membername) 가져오기
+                        let member_id = $(this).closest('tr').find('td:last').text();
+                        let absent = $(this).closest('tr').find('td:nth-child(6)').text();
+                        let dateStr = $("#calendardate").val();
+
+                        // SweetAlert 모달창 띄우기
+                        // 해당 날짜의 결석이 1일때마만 병가로 업데이트 해줘야 함
+                        if(absent == 1) {
+                            Swal.fire({
+                                title: '병가 수정',
+                                text: membername+ '님의 결석을 병가처리하시겠습니까?',
+                                icon: 'info',
+                                showCancelButton: true,
+                                confirmButtonText: '확인',
+                                cancelButtonText: '취소',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/admin/mypage/attendancedetail/update',
+                                        data: { member_id: member_id, dateStr: dateStr },
+                                        success: function() {
+                                            // 병가 처리 성공 시
+                                            Swal.fire('처리되었습니다!', '', 'success');
+                                            document.location.reload();
+                                        },
+                                        error: function(xhr, status, error) {
+                                            // 오류 처리
+                                            console.error('AJAX 오류:', status, error);
+                                            Swal.fire('오류가 발생했습니다.', '다시 시도해 주세요.', 'error');
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: '병가승인을 처리할 수 없습니다.',
+                                content : '출결을 다시 확인해주세요',
+                                icon : 'error',
+                                showCancelButton: false,
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
     </div>
 </div>
 </body>

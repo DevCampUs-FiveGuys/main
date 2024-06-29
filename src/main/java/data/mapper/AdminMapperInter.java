@@ -53,5 +53,7 @@ public interface AdminMapperInter {
     List<Map<String, Object>> getAttendanceCountsByDate();
 
     // 병가를 출석으로 출결 업데이트
+    @Update("update attendance set absent = absent - 1, hospital = hospital + 1 where member_id=#{member_id} and date_format(check_in, '%Y-%m-%d') = #{dateStr}")
+    public void approveabsent(int member_id, String dateStr);
 
 }
