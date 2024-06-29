@@ -181,5 +181,28 @@ public class MyPageAdminController {
 
         return "redirect:/admin/mypage/attendancedetail?date={dateStr}";
     }
+
+    // 훈련 추가 페이지
+    @GetMapping("/CreateCourse")
+    public String createcourse(Model model) {
+
+        List<CourseDto> courseinfo = reviewService.getCourseInfo();
+
+        CourseDto courseDto = new CourseDto();
+
+        model.addAttribute("courseDto",courseDto);
+        model.addAttribute("courseinfo", courseinfo);
+        model.addAttribute("page", "CreateCourse");
+
+        return "thymeleaf/admin/CreateCourse";
+    }
+
+    @PostMapping("/course/insert")
+    public String courseinsert(@ModelAttribute CourseDto courseDto) {
+
+        reviewService.insertCourse(courseDto);
+
+        return "redirect:/admin/mypage/CreateCourse";
+    }
 }
 

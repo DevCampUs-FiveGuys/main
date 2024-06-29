@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/admin/admin-mypage.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/screens/attendancedetail.css}">
+    <!-- 일반 alert 대신에 SweetAlert2 쓰기 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group mt-4">
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage}" th:classappend="${page == 'Admattendancelist' ? 'active' : ''}"><i class="icon icon-attendance"></i>출석현황</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/changerole}" th:classappend="${page == 'Admchangeroles' ? 'active' : ''}"><i class="icon icon-file-text"></i>권한변경</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/updateprofile}" th:classappend="${page == 'UpdateProfile' ? 'active' : ''}"><i class="icon icon-edit"></i>정보수정</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/CreateCourse}" th:classappend="${page == 'Createcourse' ? 'active' : ''}"><i class="icon icon-edit"></i>훈련 정보</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <h2 class="text-center my-4">훈련 정보</h2>
+                <table class="container">
+                    <thead>
+                    <tr>
+                        <th><h1>과정명</h1></th>
+                        <th><h1>기수</h1></th>
+                        <th><h1>시작일</h1></th>
+                        <th><h1>종료일</h1></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="courseinfo : ${courseinfo}">
+                        <td th:text="${courseinfo.name}"></td>
+                        <td th:text="${courseinfo.num}"></td>
+                        <td th:text="${#dates.format(courseinfo.start_day, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(courseinfo.end_day, 'yyyy-MM-dd')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <form th:action="@{/admin/mypage/course/insert}" method="post" th:object="${courseDto}">
+                    <input type="text" placeholder="과정명" th:field="*{name}" name="name"/>
+                    <input type="text" placeholder="기수" th:field="*{num}" name="num"/>
+                        <button type="submit">등록</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
