@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 public class CourseDto {
+    private int courseId;
     private String num;
     private String name;
     private Timestamp start_day;

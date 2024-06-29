@@ -60,7 +60,8 @@
                         </thead>
                         <tbody id="AttendanceList">
                         <tr th:each="attendancelist : ${attendancelist}">
-                            <td th:text="${attendancelist.membername}"></td>
+<!--                            <input type="hidden" th:value="${attendancelist.member_id}"/>-->
+                            <td th:text="${attendancelist.membername}" th:value="${attendancelist.membername}"></td>
                             <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd HH:mm')}"></td>
                             <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd HH:mm')}"></td>
                             <td th:text="${attendancelist.late}"></td>

@@ -45,8 +45,8 @@ public interface AdminMapperInter {
     public List<AttendanceDto> getallattendance();
 
     // 출석현황 : 선택한 과정명&기수 목록 뽑아내기
-    @Select("select a.*, m.name as membername from attendance a join member m on a.member_id = m.member_id where course_name = #{name} and course_num =#{num}")
-    public List<AttendanceDto> selectallattendance(String name, String num);
+    @Select("select check_in, check_out, m.name as membername, late, vacation, absent, hospital, a.member_id as member_id from course c join member m on c.num = m.course_num and c.name = m.course_name join attendance a on a.member_id = m.member_id where date_format(check_in, '%Y-%m-%d') = #{dateStr} and c.name = #{name} and c.num = #{num}")
+    public List<AttendanceDto> selectallattendance(String name, String num, String dateStr);
 
     // 출석현황에서 캘린더 클릭한 해당 날짜에서 출석한 인원 count
     @Select("select date_format(check_in, '%Y-%m-%d') as date, count(*) as count from attendance group by date_format(check_in, '%Y-%m-%d')")

@@ -157,7 +157,7 @@ function searchAttendance() {
     $.ajax({
         type: "get",
         url: "/admin/mypage/list/nums/attendance",
-        data: {name: courseName, num: courseNum},
+        data: {name: courseName, num: courseNum, dateStr: dateStr},
         dataType: "json",
         success: function (response) {
             let AttendanceListTbody = $("#AttendanceList");

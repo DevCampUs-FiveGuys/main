@@ -18,13 +18,13 @@
             <div class="col-md-3">
                 <ul class="list-group mt-4">
                     <li class="list-group-item">
-                        <a th:href="@{/admin/mypage}"><i class="icon icon-attendance"></i>출석현황</a>
+                        <a th:href="@{/admin/mypage}" th:classappend="${page == 'Admattendancelist' ? 'active' : ''}"><i class="icon icon-attendance"></i>출석현황</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/admin/mypage/changerole}"><i class="icon icon-file-text"></i>권한변경</a>
+                        <a th:href="@{/admin/mypage/changerole}" th:classappend="${page == 'Admchangeroles' ? 'active' : ''}"><i class="icon icon-file-text"></i>권한변경</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/admin/mypage/updateprofile}"><i class="icon icon-edit"></i>정보수정</a>
+                        <a th:href="@{/admin/mypage/updateprofile}" th:classappend="${page == 'UpdateProfile' ? 'active' : ''}"><i class="icon icon-edit"></i>정보수정</a>
                     </li>
                 </ul>
             </div>

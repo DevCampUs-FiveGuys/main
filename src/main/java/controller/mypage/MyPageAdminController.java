@@ -35,12 +35,10 @@ public class MyPageAdminController {
     // 출석현황 : 캘린더
     @GetMapping("")
     public String attendanceList(Model model) {
-        List<AttendanceDto> attendancelist = adminService.getallattendance();
-        List<CourseDto> courselist = reviewService.getAllCourseList();
+
+        model.addAttribute("page", "Admattendancelist");
 
 
-        model.addAttribute("courselist", courselist);
-        model.addAttribute("attendancelist", attendancelist);
         return "thymeleaf/admin/Admattendancelist";
     }
 
@@ -79,6 +77,7 @@ public class MyPageAdminController {
 
         model.addAttribute("memberlist", memberlist);
         model.addAttribute("courselist", courselist);
+        model.addAttribute("page", "Admchangeroles");
 
         return "thymeleaf/admin/Admchangeroles";
     }
@@ -145,7 +144,7 @@ public class MyPageAdminController {
             String email = authentication.getName();
             MemberDto member = memberService.findByUsername(email);
             model.addAttribute("member", member);
-            model.addAttribute("page", "updateProfile");
+            model.addAttribute("page", "UpdateProfile");
         }
         return "thymeleaf/admin/UpdateProfile";
     }
