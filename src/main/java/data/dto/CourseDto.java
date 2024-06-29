@@ -17,6 +17,6 @@ public class CourseDto {
     private int courseId;
     private String num;
     private String name;
-    private Timestamp start_day;
-    private Timestamp end_day;
+    private String start_day;
+    private String end_day;
 }

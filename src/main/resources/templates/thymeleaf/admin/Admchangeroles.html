@@ -29,14 +29,16 @@
                         <a th:href="@{/admin/mypage/updateprofile}" th:classappend="${page == 'UpdateProfile' ? 'active' : ''}"><i class="icon icon-edit"></i>정보수정</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/admin/mypage/CreateCourse}" th:classappend="${page == 'Createcourse' ? 'active' : ''}"><i class="icon icon-edit"></i>훈련 정보</a>
+                        <a th:href="@{/admin/mypage/CreateCourse}" th:classappend="${page == 'Createcourse' ? 'active' : ''}"><i class="icon icon-list"></i>훈련 정보</a>
                     </li>
                 </ul>
             </div>
             <div class="col-md-9">
+                <h2 class="text-center my-4">권한 변경</h2>
                 <div>
                     <!--  권한 검색 -->
-                    <select id="roles" onchange="searchrole()">
+                    <span style=" font-weight: 400; color: black">권한 &nbsp;:</span>
+                    <select id="roles" onchange="searchrole()" style="border: 0; padding-left: 5px">
                         <option value="ALL" th:text="전체"></option>
                         <option value="ROLE_GUEST" th:text="게스트"></option>
                         <option value="ROLE_STUDENT" th:text="수강생"></option>
@@ -44,7 +46,7 @@
                     </select>
 
                     <!--  과정명 기수 검색 -->
-                    <div>
+                    <div class="select-course">
                         <select id="courseName" onchange="loadCourseNums()" style="width: 250px;height: 25px;margin-right: 20px; border-radius: 20px;">
                             <option value="">과정명을 선택하세요</option>
                             <!-- Thymeleaf를 이용해 서버에서 받은 과정명 옵션을 반복 -->
@@ -78,7 +80,7 @@
                         <td th:text="${member.gender == 0 ? '남자' : '여자'}"></td>
                         <td th:text="${member.birth.substring(0, 10)}"></td>
                         <td>
-                            <select class="roleSelect">
+                            <select class="roleSelect" style="border: 0">
                                 <option value="ROLE_GUEST" th:text="게스트" th:selected="${member.roles == 'ROLE_GUEST'}">게스트</option>
                                 <option value="ROLE_STUDENT" th:text="수강생"th:selected="${member.roles == 'ROLE_STUDENT'}">수강생</option>
                                 <option value="ROLE_TEACHER" th:text="강사"th:selected="${member.roles == 'ROLE_TEACHER'}">강사</option>

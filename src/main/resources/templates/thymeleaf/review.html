@@ -9,21 +9,31 @@
 
 <div layout:fragment="content">
     <!-- 제목 -->
-    <div class="review-untree_co-section">
-        <div class="container">
-            <div class="row justify-content-center text-center">
-                <div class="col-lg-3">
-                    <h2 class="text-secondary heading-2" style="font-weight: bold;">Reviews</h2>
-                    <p style="color: black">훈련 과정에 대해 소중한 후기를 남겨주세요</p>
+<!--    <div class="review-untree_co-section">-->
+<!--        <div class="container">-->
+<!--            <div class="row justify-content-center text-center">-->
+<!--                <div class="col-lg-3">-->
+<!--                    <h2 class="text-secondary heading-2" style="font-weight: bold;">Reviews</h2>-->
+<!--                    <p style="color: black">훈련 과정에 대해 소중한 후기를 남겨주세요</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div> &lt;!&ndash; 제목 end &ndash;&gt;-->
+    <div class="untree_co-section bg-light" style="border-bottom: 1px solid gray">
+<!--        <div class="review-untree_co-section">-->
+            <div class="container">
+                <div class="row justify-content-center text-center">
+                    <div class="col-lg-3">
+                        <h2 class="text-secondary heading-2" style="font-weight: bold;">Reviews</h2>
+                        <p style="color: black">훈련 과정에 대해 소중한 후기를 남겨주세요</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div> <!-- 제목 end -->
-    <div class="untree_co-section bg-light" style="border-bottom: 1px solid gray">
+<!--        </div>-->
         <div class="container">
             <!--  과정명, 기수 검색 -->
             <div class="row justify-content-center mb-5 text-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6" style="padding-top: 25px">
                     <p>과정명과 기수를 선택하여 후기를 볼 수 있어요!</p>
                     <div>
                         <select id="courseName" onchange="loadCourseNums()"

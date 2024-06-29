@@ -9,21 +9,23 @@
 }
 
 .container td {
-    font-weight: bold;
+    font-weight: normal;
     font-size: 1em;
     -webkit-box-shadow: 0 2px 2px -2px #ffffff;
     -moz-box-shadow: 0 2px 2px -2px #ffffff;
     box-shadow: 0 2px 2px -2px #ffffff;
 }
 
-.container td:first-child { color: #00C300; }
+.container tr {
+    border-radius: 2px;
+}
 
 .container {
     text-align: left;
     overflow: hidden;
+    /*width: 80%;*/
     margin: 0 auto;
     display: table;
-    margin-bottom: 30px;
 }
 
 .container td, .container th {
@@ -32,12 +34,16 @@
     padding-left:2%;
     text-align: center;
     vertical-align: center;
+    font-weight: bold;
 }
-
 
 .container thead {
     background-color: #00C300;
 }
+
+.container td:first-child { color: #00C300; }
+
+
 @media (max-width: 800px) {
     .container td:nth-child(4),
     .container th:nth-child(4) { display: none; }
@@ -48,42 +54,12 @@
     background-color: white;
 }
 
-.approvebtn {
+.btn-absent button {
     border: none;
     background-color: white;
-    padding: 0;
 }
-
-.approvebtn:hover {
-    color: #00A300;
-}
-
-.select-course {
-    margin: 15px 0;
-}
-
-.select-course select{
-    width: 150px;
-    height: 28px;
-    margin-right: 20px;
-    border-radius: 10px;
-    /*outline: 0;*/
-    border: 0;
-    background-color: #e6e6e6;
-}
-.select-course button {
-    background-color: #00c300;
-    color: black;
-    border: 0;
-    opacity: 80%;
-    width: 65px;
-    border-radius: 7px;
-    margin-right: 8px;
-    font-weight: bold;
-}
-.select-course button:hover {
-    background-color: #00B300;
-    color: whitesmoke;
-    opacity: 70%;
-    font-weight: bold;
+.course-sub-title {
+    display: block;
+    margin-bottom: 30px;
+    text-align: center;
 }
