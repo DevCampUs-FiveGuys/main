@@ -89,9 +89,10 @@
 }
 .reviews-box {
     margin: auto;
-    width: 700px;
+    width: 600px;
     height: 200px;
-    border: 1px solid darkgray;
+    border: 0.1px solid #00C300;
+    border-radius: 5px;
     padding: 20px;
 }
 .reviews-box-1 {
@@ -104,7 +105,7 @@
     align-items: center;
 }
 .review-name {
-    font-size: 15px;
+    font-size: 18px;
     color: black;
     padding-bottom: 10px;
 }
@@ -146,7 +147,7 @@ canvas {
     border: 1px solid #00C300;
     color: white;
     font-weight: bold;
-    width: 75px;
+    width: auto;
 }
 .review-untree_co-section {
     padding: 40px 0; }
