@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import data.naver.cloud.NcpObjectStorageService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -14,6 +16,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/student/mypage")
 public class MyPageStudentController {
+
+    private String bucketName="bitcamp-bucket-149";
+    private String folderName="semiproject";
+
+    @Autowired
+    private NcpObjectStorageService storageService;
 
     @Autowired
     private MemberService memberService;
@@ -86,12 +94,23 @@ public class MyPageStudentController {
     }
 
     // 정보수정 업데이트
-    @PostMapping("/updateProfile")
-    public String updateInfo(@ModelAttribute MemberDto memberDto, Authentication authentication) {
+    @PostMapping("/update")
+    public String updateInfo(@ModelAttribute MemberDto memberDto, Authentication authentication, @RequestParam("upload") MultipartFile upload) {
         if (authentication != null) {
             String email = authentication.getName();
             MemberDto member = memberService.findByUsername(email);
             member.setTel(memberDto.getTel());
+
+            if (upload != null && !upload.isEmpty()) {
+                try {
+                    String photo = storageService.uploadFile(bucketName, folderName, upload);
+                    member.setPhoto(photo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return "redirect:/student/mypage/updateProfile?error=photoUploadFailed";
+                }
+            }
+
             memberService.updateMember(member);
         }
         return "redirect:/student/mypage/updateProfile";

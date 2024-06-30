@@ -79,8 +79,8 @@
     <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
         <h1 class="portfolio_h1">PortFolio</h1>
         <div class="filters1">
-            <button class="animate-button" th:onclick="|location.href='@{/portfolio/portfolioWrite}'|">
-                <i class="fas fa-pencil-alt"></i>글쓰기
+            <button class="animate-button" sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/portfolio/portfolioWrite}'|">
+                <i class="fas fa-pencil-alt"></i> 글쓰기
             </button>
         </div>
 
@@ -88,16 +88,16 @@
             <tr th:each="dto : ${list}">
                 <div class="course1" style="border: 1px solid">
                     <img class="stpathimg" th:src="@{${stpath}+'/'+${dto.file_name}}"
-                         th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${dto.portfolio_id})}'|">
-                    <span class="readcount1" th:text="${dto.readcount}"></span>
+                         th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${dto.portfolio_id})}'|">
+                    <p class="readcount1">조회수 : <span th:text="${dto.readcount}"></span></p>
                     <div>
                         <span class="title1" th:text="${dto.title}"></span>
                     </div>
                     <span th:text="${dto.name}"></span>
                     <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}" />
-                    <button class="look" th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${dto.portfolio_id})}'|">자세히보기 +</button>
+                    <button class="look" th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${dto.portfolio_id})}'|">자세히보기 +</button>
                     <button type="button" class="favorite-button" th:data-portfolio-id="${dto.portfolio_id}" th:onclick="toggleFavorite(this, [[${dto.portfolio_id}]])">
-                        <i sec:authorize="isAuthenticated()" class="far fa-heart"></i>
+                        <i sec:authorize="hasRole('ROLE_STUDENT')" class="far fa-heart"></i>
                     </button>
                 </div>
             </tr>

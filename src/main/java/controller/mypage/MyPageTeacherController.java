@@ -122,8 +122,15 @@ public class MyPageTeacherController {
 
             if (upload != null && !upload.isEmpty()) {
                 try {
-                    String photo = storageService.uploadFile(bucketName, folderName, upload);
-                    member.setPhoto(photo);
+                    if (member.getPhoto() != null) {
+                        String existPhoto = member.getPhoto();
+
+                        storageService.deleteFile(bucketName, folderName, existPhoto);
+                    }
+
+                    String newPhoto = storageService.uploadFile(bucketName, folderName, upload);
+
+                    member.setPhoto(newPhoto);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return "redirect:/teacher/mypage/updateProfile?error=photoUploadFailed";
