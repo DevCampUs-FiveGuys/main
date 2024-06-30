@@ -32,4 +32,9 @@ public class VacationService {
     public List<VacationDto> getAllVacation(int member_id) {
         return vacationMapper.getAllVacation(member_id);
     }
+
+    // 모든 승인된 휴가 조회
+    public List<VacationDto> getApprovedVacations(int member_id) {
+        return vacationMapper.getApprovedVacations(member_id);
+    }
 }

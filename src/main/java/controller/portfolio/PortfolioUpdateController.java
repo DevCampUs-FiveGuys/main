@@ -53,12 +53,11 @@ public class PortfolioUpdateController {
             @ModelAttribute PortfolioDto dto,
             @RequestParam("upload") MultipartFile upload,
             Authentication authentication,
-            Model model)
-    {
-            String email = authentication.getName();
-            int member_id = memberService.findByUsername(email).getMember_id();
-            String userName = memberService.findByUsername(email).getName();
-            dto.setMember_id(member_id);
+            Model model) {
+        String email = authentication.getName();
+        int member_id = memberService.findByUsername(email).getMember_id();
+        String userName = memberService.findByUsername(email).getName();
+        dto.setMember_id(member_id);
 
         String photo = storageService.uploadFile(bucketName, folderName, upload);
         dto.setFile_name(photo);
@@ -68,4 +67,27 @@ public class PortfolioUpdateController {
         return "redirect:/portfolio/list";
     }
 
+    @GetMapping("/portfolio/updateform")
+    public String updateform(int portfolio_id, Model model) {
+
+        PortfolioDto dto = portfolioService.getData(portfolio_id);
+        model.addAttribute("dto", dto);
+        return "thymeleaf/portfolioDetailUpdate";
+    }
+
+    @PostMapping("/portfolio/update")
+    public String update(@ModelAttribute PortfolioDto dto,
+                         @RequestParam("upload") MultipartFile upload) {
+
+        System.out.println("member_id" + dto.getMember_id());
+        System.out.println("title: " + dto.getTitle());
+
+    if (!upload.isEmpty()) {
+        String photo = storageService.uploadFile(bucketName, folderName, upload);
+        dto.setFile_name(photo);
+    }
+        portfolioService.updatePortfolio(dto);
+
+        return "redirect:/portfolio/Detail?portfolio_id="+dto.getPortfolio_id();
+    }
 }

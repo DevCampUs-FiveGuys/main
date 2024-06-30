@@ -536,16 +536,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         $.ajax({
-            url: '/student/mypage/vacation/all',
+            url: '/student/mypage/vacation/approved',
             method: 'GET',
             data: {
                 member_id: memberId
             },
-            success: function (vacationDays) {
-                document.getElementById('vacation-count').innerText = vacationDays.length;
+            success: function (approvedVacations) {
+                document.getElementById('vacation-count').innerText = approvedVacations.length;
             },
             error: function (xhr, status, error) {
-                console.error('Error fetching vacation days:', error);
+                console.error('Error fetching approved vacation days:', error);
             }
         });
     }
