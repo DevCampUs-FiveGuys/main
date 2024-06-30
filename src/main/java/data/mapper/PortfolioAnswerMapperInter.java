@@ -2,10 +2,7 @@ package data.mapper;
 
 import data.dto.PortfolioDto;
 import data.dto.replyDto;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -20,5 +17,11 @@ public interface PortfolioAnswerMapperInter {
 
     @Delete("delete from reply where reply_id=#{reply_id}")
     public void deleteAnswer(int reply_id);
+
+    @Select("SELECT r.member_id, r.portfolio_id, r.comment, m.name, r.created_at, r.reply_id " +
+            "FROM reply r " +
+            "JOIN member m ON m.member_id = r.member_id " +
+            "WHERE r.portfolio_id = #{portfolio_id}")
+    List<replyDto> selectAllRepliesByPortfolioId(@Param("portfolio_id") int portfolio_id);
 
 }

@@ -79,13 +79,6 @@
     <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
         <h1 class="portfolio_h1">PortFolio</h1>
         <div class="filters1">
-            <button class="active">전체</button>
-            <button>강남센터</button>
-            <button>N캠프_Devops</button>
-            <button>AI WeekKlasse</button>
-            <button>N캠프_AlaaS</button>
-            <button>씨아카데미</button>
-            <button>AWS캠프</button>
             <button class="animate-button" th:onclick="|location.href='@{/portfolio/portfolioWrite}'|">
                 <i class="fas fa-pencil-alt"></i>글쓰기
             </button>
@@ -99,17 +92,8 @@
                     <span class="readcount1" th:text="${dto.readcount}"></span>
                     <div>
                         <span class="title1" th:text="${dto.title}"></span>
-                        <p class="gisu">[강남센터] [N캠프] 클라우드 기반 웹 개발자 & 데브옵스 과정_15기</p>
                     </div>
-                    <div class="bo_v_info_label">
-                        <span class="bo_v_label inline-block">개강일</span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;
-                        <span class="normal coral">2024-06-23</span>
-                    </div>
-                    <div class="bo_v_info_label">
-                        <span class="bo_v_lavel inline-block">교육기간</span>
-                        &nbsp;|&nbsp;2024-06-23 ~ 2024-09-16
-                    </div>
+                    <span th:text="${dto.name}"></span>
                     <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}" />
                     <button class="look" th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${dto.portfolio_id})}'|">자세히보기 +</button>
                     <button type="button" class="favorite-button" th:data-portfolio-id="${dto.portfolio_id}" th:onclick="toggleFavorite(this, [[${dto.portfolio_id}]])">

@@ -37,23 +37,12 @@
     font-weight: bold;
 }
 
-
 .container thead {
     background-color: #00C300;
 }
 
 .container td:first-child { color: #00C300; }
 
-/*.container td:hover {*/
-/*    background-color: #00C300;*/
-/*    color: #403E10;*/
-/*    font-weight: bold;*/
-
-/*    transition-delay: 0s;*/
-/*    transition-duration: 0.4s;*/
-/*    transition-property: all;*/
-/*    transition-timing-function: linear;*/
-/*}*/
 
 @media (max-width: 800px) {
     .container td:nth-child(4),
@@ -63,4 +52,14 @@
 .updaterole {
     border: none;
     background-color: white;
+}
+
+.btn-absent button {
+    border: none;
+    background-color: white;
+}
+.course-sub-title {
+    display: block;
+    margin-bottom: 30px;
+    text-align: center;
 }
