@@ -39,6 +39,7 @@
                         <th><h1>기수</h1></th>
                         <th><h1>시작일</h1></th>
                         <th><h1>종료일</h1></th>
+                        <th><h1>훈련 삭제하기</h1></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -47,6 +48,11 @@
                         <td th:text="${courseinfo.num}"></td>
                         <td th:text="${(courseinfo.start_day).substring(0,10)}"></td>
                         <td th:text="${(courseinfo.end_day).substring(0,10)}"></td>
+                        <td>
+                            <a th:href="@{/admin/mypage/course/delete(name=${courseinfo.name},num=${courseinfo.num})}">
+                                <i class="icon-delete" style="color: #999999; font-size: 1.7em"></i>
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

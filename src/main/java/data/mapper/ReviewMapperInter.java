@@ -29,7 +29,7 @@ public interface ReviewMapperInter {
     public List<ReviewDto> getAllReview();
 
     // 성별 개수 count 하기
-    @Select("select count(*) from member where gender=#{gender}")
+    @Select("select count(*) from member where gender=#{gender} and roles='ROLE_STUDENT'")
     public int countByGender(int gender);
 
     // 등록된 학생의 전체 수
