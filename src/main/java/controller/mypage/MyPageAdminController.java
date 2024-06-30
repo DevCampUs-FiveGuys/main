@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/mypage")
@@ -30,16 +32,40 @@ public class MyPageAdminController {
     private MemberService memberService;
 
 
-    // 출석현황
+    // 출석현황 : 캘린더
     @GetMapping("")
     public String attendanceList(Model model) {
-        List<AttendanceDto> attendancelist = adminService.getallattendance();
+
+        model.addAttribute("page", "Admattendancelist");
+
+
+        return "thymeleaf/admin/Admattendancelist";
+    }
+
+    // 출석현황 : 캘린더 클릭 시 출석 attendance detail로 이동
+    @GetMapping("/attendancedetail")
+    public String attendancedetail(
+            @RequestParam("date") String dateStr,
+            Model model) {
+
+        List<AttendanceDto> attendancelist = adminService.getAttendanceByDate(dateStr);
+
         List<CourseDto> courselist = reviewService.getAllCourseList();
 
 
-        model.addAttribute("courselist", courselist);
+        model.addAttribute("page", "AttendanceDetail");
         model.addAttribute("attendancelist", attendancelist);
-        return "thymeleaf/admin/Admattendancelist";
+        model.addAttribute("courselist",courselist);
+        model.addAttribute("selectedDate",dateStr);
+
+        return "thymeleaf/admin/AttendanceDetail";
+    }
+
+    //출석현황 : 캘린더 클릭시 클릭을 한 해당 날짜를 가지고 출석인원 count(Map)
+    @GetMapping("/attendanceCounts")
+    @ResponseBody
+    public Map<String, Integer> getAttendanceCounts() {
+        return adminService.getAttendanceCountsByDate();
     }
 
     // 권한수정
@@ -51,6 +77,7 @@ public class MyPageAdminController {
 
         model.addAttribute("memberlist", memberlist);
         model.addAttribute("courselist", courselist);
+        model.addAttribute("page", "Admchangeroles");
 
         return "thymeleaf/admin/Admchangeroles";
     }
@@ -99,6 +126,7 @@ public class MyPageAdminController {
         }
     }
 
+    // 권한 : '전체' 추가
     @GetMapping("/list/role")
     @ResponseBody
     public List<MemberDto> selectRole(@RequestParam(required = false) String roles) {
@@ -116,7 +144,7 @@ public class MyPageAdminController {
             String email = authentication.getName();
             MemberDto member = memberService.findByUsername(email);
             model.addAttribute("member", member);
-            model.addAttribute("page", "updateProfile");
+            model.addAttribute("page", "UpdateProfile");
         }
         return "thymeleaf/admin/UpdateProfile";
     }
@@ -128,6 +156,7 @@ public class MyPageAdminController {
             String email = authentication.getName();
             MemberDto member = memberService.findByUsername(email);
             member.setTel(memberDto.getTel());
+            member.setPhoto(memberDto.getPhoto());
             memberService.updateMember(member);
         }
         return "redirect:/admin/mypage/updateprofile";
@@ -136,11 +165,44 @@ public class MyPageAdminController {
     // 기수명 선택 -> 해당 멤버 출석 목록
     @GetMapping("/list/nums/attendance")
     @ResponseBody
-    public List<AttendanceDto> selectAllMember(@RequestParam("name") String name, @RequestParam("num") String num) {
+    public List<AttendanceDto> selectAllMember(@RequestParam("name") String name, @RequestParam("num") String num, @RequestParam("dateStr") String dateStr) {
 
-        List<AttendanceDto> selectedAttendance = adminService.selectallattendance(name, num);
+        List<AttendanceDto> selectedAttendance = adminService.selectallattendance(name, num, dateStr);
 
         return selectedAttendance;
+    }
+
+    // 병가를 출석으로 출결 업데이트
+    @GetMapping("/attendancedetail/update")
+    @ResponseBody
+    public String approveabsent(@RequestParam("member_id") int member_id, @RequestParam("dateStr")String dateStr){
+
+        adminService.approveabsent(member_id, dateStr);
+
+        return "redirect:/admin/mypage/attendancedetail?date={dateStr}";
+    }
+
+    // 훈련 추가 페이지
+    @GetMapping("/CreateCourse")
+    public String createcourse(Model model) {
+
+        List<CourseDto> courseinfo = reviewService.getCourseInfo();
+
+        CourseDto courseDto = new CourseDto();
+
+        model.addAttribute("courseDto",courseDto);
+        model.addAttribute("courseinfo", courseinfo);
+        model.addAttribute("page", "CreateCourse");
+
+        return "thymeleaf/admin/CreateCourse";
+    }
+
+    @PostMapping("/course/insert")
+    public String courseinsert(@ModelAttribute CourseDto courseDto) {
+
+        reviewService.insertCourse(courseDto);
+
+        return "redirect:/admin/mypage/CreateCourse";
     }
 }
 

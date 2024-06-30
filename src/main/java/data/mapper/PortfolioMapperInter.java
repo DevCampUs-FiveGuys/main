@@ -28,7 +28,6 @@ public interface PortfolioMapperInter {
     @Select("select * from portfolio where portfolio_id=#{portfolio_id}")
     public List<PortfolioDto> getPortfolioData(int portfolio_id);
 
-
     @Select("select p.*, m.name from portfolio p left join member m on p.member_id = m.member_id order by regroup desc,restep asc limit #{start},#{perpage}")
     public List<PortfolioDto> getPagingList(Map<String, Integer> map);
 
@@ -37,4 +36,8 @@ public interface PortfolioMapperInter {
 
     @Select("SELECT * FROM portfolio p JOIN member m ON m.member_id = p.member_id WHERE p.portfolio_id = #{portfolio_id} order by regroup desc, restep asc limit #{start}, #{perpage}")
     List<PortfolioDto> selectAllRepliesByPortfolio(Map<String, Object> map);
+  
+    // 로그인한 회원의 작성한 포트폴리오 리스트 가져오기
+    @Select("select * from portfolio where member_id=#{member_id}")
+    public List<PortfolioDto> getPortfoliosByMemberId(int member_id);
 }

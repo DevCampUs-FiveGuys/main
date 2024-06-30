@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/admin/admin-mypage.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/screens/createcourse.css}">
+    <!-- 일반 alert 대신에 SweetAlert2 쓰기 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group mt-4">
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage}" th:classappend="${page == 'Admattendancelist' ? 'active' : ''}"><i class="icon icon-attendance"></i>출석현황</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/changerole}"
+                           th:classappend="${page == 'Admchangeroles' ? 'active' : ''}"><i class="icon icon-file-text"></i>권한변경</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/updateprofile}" th:classappend="${page == 'UpdateProfile' ? 'active' : ''}"><i class="icon icon-edit"></i>정보수정</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/CreateCourse}" th:classappend="${page == 'CreateCourse' ? 'active' : ''}"><i class="icon icon-list"></i>훈련 정보</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <h2 class="text-center my-4">훈련 정보</h2>
+                <table class="container">
+                    <thead>
+                    <tr>
+                        <th><h1>과정명</h1></th>
+                        <th><h1>기수</h1></th>
+                        <th><h1>시작일</h1></th>
+                        <th><h1>종료일</h1></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="courseinfo : ${courseinfo}">
+                        <td th:text="${courseinfo.name}"></td>
+                        <td th:text="${courseinfo.num}"></td>
+                        <td th:text="${(courseinfo.start_day).substring(0,10)}"></td>
+                        <td th:text="${(courseinfo.end_day).substring(0,10)}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <hr>
+                    <h2 class="text-center my-4" style="padding-top: 30px">훈련 추가하기</h2>
+                    <span class="course-sub-title">새로운 훈련을 추가해주세요!</span>
+                    <div>
+                        <div>
+                        <form th:action="@{/admin/mypage/course/insert}" method="post">
+                            <div class="form-group">
+                                <label>과정명</label>
+                                <input class="form-control" type="text" placeholder="과정명을 입력해주세요" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>기수</label>
+                                <input  class="form-control" type="text" placeholder="기수를 입력해주세요" id="num" name="num" required>
+                            </div>
+                            <div class="form-group">
+                                <label>시작일</label>
+                                <input class="form-control" type="date" placeholder="시작일을 입력해주세요" id="start_day" name="start_day" required>
+                            </div>
+                            <div class="form-group">
+                                <label>종료일</label>
+                                <input class="form-control" type="date" placeholder="종료일을 입력해주세요" id="end_day" name="end_day" required>
+                            </div>
+                            <div style="text-align: center">
+                                <button type="submit" class="btn btn-primary" style="font-weight: bold; margin-bottom: 20px">등록하기</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/admin.js}"></script>
+</div>
+</body>
+</html>

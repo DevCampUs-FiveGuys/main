@@ -23,13 +23,13 @@
                 <a th:href="@{/}">
                     <img th:src="@{/images/Logo3.png}" style="width: 20%; cursor: pointer">
                 </a>
-                <ul class="js-clone-nav d-none d-lg-inline-block text-left float-right site-menu">
+                <ul class="js-clone-nav d-none d-lg-inline-block text-left float-right site-menu" th:with="profileUrl=${photo != null ? 'https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject/' + photo : '/images/empty.png'}">
                     <li><a th:href="@{/}" th:classappend="${page == 'home' ? 'active' : ''}">Home</a></li>
                     <li><a th:href="@{/review/list}" th:classappend="${page == 'review' ? 'active' : ''}">Review</a></li>
                     <li><a th:href="@{/portfolio/list}" th:classappend="${page == 'portfolio' ? 'active' : ''}">Portfolio</a></li>
                     <li><a th:href="@{/qna/list}" th:classappend="${page == 'qna' ? 'active' : ''}">QnA</a></li>
                     <li th:if="${#authorization.expression('isAuthenticated()')}"><a th:href="|/mypage|">
-                        <img th:src="@{${photo}}"
+                        <img th:src="@{${profileUrl}}"
                              style="width: 40px; height: 40px; display: inline-block; border-radius: 50%;">
                         <p th:text="${userName}" style="display: inline-block"></p></a></li>
                     <li sec:authorize="!isAuthenticated()"><a th:href="@{/signup}" th:classappend="${page == 'signup' ? 'active' : ''}">Sign up</a></li>

@@ -59,6 +59,10 @@ public class  ReviewService {
     public List<CourseDto> getAllCourseList(){
         return courseMapperInter.getAllCourseList();
     }
+    // courseDto 전체 정보 불러오기
+    public List<CourseDto> getCourseInfo(){return courseMapperInter.getCourseInfo();}
+    // 훈련과정정보 추가
+    public void insertCourse(CourseDto courseDto){courseMapperInter.insertCourse(courseDto);}
 
     public void updateLike(int review_id) {
         reviewMapperInter.updateLike(review_id);

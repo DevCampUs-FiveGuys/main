@@ -6,17 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
-import java.sql.Timestamp;
-
-@NoArgsConstructor
 @Data
-@Alias("CourseDto")
 @Builder
+@Alias("mainPortfolioDto")
+@NoArgsConstructor
 @AllArgsConstructor
-public class CourseDto {
-    private int courseId;
-    private String num;
+public class mainPortfolioDto {
+    private int portfolio_id;
+    private String title;
+    private String created_at;
+    private String file_name;
     private String name;
-    private String start_day;
-    private String end_day;
 }
