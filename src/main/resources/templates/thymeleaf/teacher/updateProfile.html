@@ -41,9 +41,12 @@
                     <form th:action="@{/teacher/mypage/update}" th:object="${member}" method="post" enctype="multipart/form-data">
                         <div class="profile-photo">
                             <label>프로필 사진</label>
-                            <div th:with="profileUrl=${member.photo != null ? 'https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject/' + member.photo : '/images/empty.png'}">
+                            <div class="profile-img" th:with="profileUrl=${member.photo != null ? 'https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject/' + member.photo : '/images/empty.png'}">
                                 <img th:src="@{${profileUrl}}" alt="profile-photo" width="150" height="150" id="showimg">
-                                <input type="file" id="upload" name="upload" accept="image/*" onchange="previewImage(event)">
+                                <label for="upload" class="custom-file-upload">
+                                    파일 선택
+                                </label>
+                                <input type="file" id="upload" name="upload" accept="image/*" onclick="" onchange="previewImage(event)">
                             </div>
                         </div>
                         <div class="form-group row">
