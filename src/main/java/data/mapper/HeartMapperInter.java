@@ -19,9 +19,10 @@ public interface HeartMapperInter {
     public void deleteHeart(int member_id, int portfolio_id);
 
     // 찜한 포트폴리오가 있는지 확인 (heart 테이블과 portfolio 테이블을 조인하여 조회)
-    @Select("SELECT h.*, p.file_name, p.readcount, p.created_at, p.title " +
+    @Select("SELECT h.*, p.file_name, p.readcount, p.created_at, p.title, m.name " +
             "FROM heart h " +
             "JOIN portfolio p ON h.portfolio_id = p.portfolio_id " +
+            "JOIN member m ON p.member_id = m.member_id " +
             "WHERE h.member_id = #{member_id}")
     public List<HeartDto> getHeart(int member_id);
 }

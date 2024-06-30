@@ -57,9 +57,6 @@ public class PortfolioPageController {
             dto.setRecount(portfolioAnswerService.getAnswerData(dto.getPortfolio_id()).size());
         }
 
-        System.out.println(list.get(0).getName());
-        System.out.println(list.get(1).getReadcount());
-
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("list", list);
         model.addAttribute("currentPage", currentPage);
