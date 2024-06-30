@@ -21,4 +21,5 @@ public class HeartDto {
     private String readcount;     // portfolio 로 부터 가져온 필드
     private Timestamp created_at; // portfolio 로 부터 가져온 필드
     private String title;         // portfolio 로 부터 가져온 필드
+    private String name;          // member 로 부터 가져온 필드
 }
