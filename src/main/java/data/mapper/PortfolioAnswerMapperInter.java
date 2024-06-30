@@ -21,7 +21,7 @@ public interface PortfolioAnswerMapperInter {
     @Select("SELECT r.member_id, r.portfolio_id, r.comment, m.name, r.created_at, r.reply_id " +
             "FROM reply r " +
             "JOIN member m ON m.member_id = r.member_id " +
-            "WHERE r.portfolio_id = #{portfolio_id}")
+            "WHERE r.portfolio_id = #{portfolio_id} order by reply_id desc")
     List<replyDto> selectAllRepliesByPortfolioId(@Param("portfolio_id") int portfolio_id);
 
 }

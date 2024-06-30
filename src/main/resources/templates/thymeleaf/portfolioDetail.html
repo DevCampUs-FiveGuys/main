@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/layout}">
 <head>
     <link rel="stylesheet" th:href="@{/css/portfolio.css}">
@@ -21,7 +22,6 @@
                 th:onclick="|location.href='@{/portfolio/delete(portfolio_id=${dto.portfolio_id})}'|">
             삭제
         </button>
-
         <div class="detailfull">
                 <div class="center-content">
                     <div class="img-and-text">

@@ -28,7 +28,7 @@ public interface PortfolioMapperInter {
     @Select("select * from portfolio where portfolio_id=#{portfolio_id}")
     public List<PortfolioDto> getPortfolioData(int portfolio_id);
 
-    @Select("select p.*, m.name from portfolio p left join member m on p.member_id = m.member_id order by regroup desc,restep asc limit #{start},#{perpage}")
+    @Select("select p.*, m.name from portfolio p left join member m on p.member_id = m.member_id order by regroup desc,restep asc, portfolio_id desc limit #{start},#{perpage}")
     public List<PortfolioDto> getPagingList(Map<String, Integer> map);
 
     @Update("update portfolio set readcount=readcount+1 where portfolio_id=#{portfolio_id}")
@@ -40,4 +40,7 @@ public interface PortfolioMapperInter {
     // 로그인한 회원의 작성한 포트폴리오 리스트 가져오기
     @Select("select * from portfolio where member_id=#{member_id}")
     public List<PortfolioDto> getPortfoliosByMemberId(int member_id);
+
+    @Delete("delete from reply where portfolio_id = #{portfolio_id}")
+    public void deleteRepliesByPortfolioId(int portfolio_id);
 }

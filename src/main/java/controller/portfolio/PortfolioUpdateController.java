@@ -80,15 +80,26 @@ public class PortfolioUpdateController {
     public String update(@ModelAttribute PortfolioDto dto,
                          @RequestParam("upload") MultipartFile upload) {
 
-        System.out.println("member_id" + dto.getMember_id());
-        System.out.println("title: " + dto.getTitle());
+        if (upload != null && !upload.isEmpty()) {
+            try {
+                if (dto.getFile_name() != null) {
+                    String existphoto = dto.getFile_name();
+                    storageService.deleteFile(bucketName, folderName, existphoto);
+                }
 
-    if (!upload.isEmpty()) {
-        String photo = storageService.uploadFile(bucketName, folderName, upload);
-        dto.setFile_name(photo);
-    }
+                String photo = storageService.uploadFile(bucketName, folderName, upload);
+                dto.setFile_name(photo);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                return "redirect:/portfolio/update?error=photoUploadFailed";
+            }
+
+        }
         portfolioService.updatePortfolio(dto);
 
-        return "redirect:/portfolio/Detail?portfolio_id="+dto.getPortfolio_id();
+        return "redirect:/portfolio/Detail?portfolio_id=" + dto.getPortfolio_id();
     }
+
 }
