@@ -14,6 +14,8 @@ public class PortfolioAnswerService {
 
     @Autowired
     private PortfolioAnswerMapperInter anInter;
+    @Autowired
+    private PortfolioAnswerMapperInter portfolioAnswerMapperInter;
 
     public void insertAnswer(replyDto dto)
     {
@@ -29,4 +31,9 @@ public class PortfolioAnswerService {
     {
         anInter.deleteAnswer(reply_id);
     }
+
+    public List<replyDto> getAllRepliesByPortfolioId(int portfolio_id) {
+        return portfolioAnswerMapperInter.selectAllRepliesByPortfolioId(portfolio_id);
+    }
+
 }

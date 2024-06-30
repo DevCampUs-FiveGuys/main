@@ -19,4 +19,5 @@ public class replyDto {
     private int portfolio_id;
     private String comment;
     private Timestamp created_at;
+    private String name;
 }

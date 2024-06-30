@@ -1,6 +1,7 @@
 package controller.portfolio;
 
 import data.dto.PortfolioDto;
+import data.service.MemberService;
 import data.service.PortfolioAnswerService;
 import data.service.PortfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class PortfolioPageController {
 
     @Autowired
     private PortfolioAnswerService portfolioAnswerService;
+
+    @Autowired
+    private MemberService memberService;
 
     @GetMapping("/list")
     public String list(
@@ -53,6 +57,9 @@ public class PortfolioPageController {
             dto.setRecount(portfolioAnswerService.getAnswerData(dto.getPortfolio_id()).size());
         }
 
+        System.out.println(list.get(0).getName());
+        System.out.println(list.get(1).getReadcount());
+
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("list", list);
         model.addAttribute("currentPage", currentPage);
@@ -62,7 +69,12 @@ public class PortfolioPageController {
         model.addAttribute("no", no);
         model.addAttribute("page", "portfolio");
 
-
         return "thymeleaf/portfolio";
     }
+
+//    @GetMapping("")
+//    public List<PortfolioDto> getLists(@RequestParam int portfolio_id)
+//    {
+//        return portfolioService.getAllRepliesByPortfolio(portfolio_id);
+//    }
 }

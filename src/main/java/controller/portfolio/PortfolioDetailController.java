@@ -18,27 +18,36 @@ import java.util.List;
 public class PortfolioDetailController {
 
     @Autowired
-    PortfolioService portfolioService;
+    private PortfolioService portfolioService;
     @Autowired
     private MemberService memberService;
 
     @GetMapping("/portfolio/Detail")
-    public String detail(Model model, int portfolio_id, Authentication authentication)
+    public String detail(Model model,
+                         @RequestParam int portfolio_id,
+                         Authentication authentication)
     {
         String email = authentication.getName();
         int member_id = memberService.findByUsername(email).getMember_id();
+        System.out.println(member_id);
         String userName = memberService.findByUsername(email).getName();
 
             portfolioService.updateReadcount(portfolio_id);
-            List<PortfolioDto> list = portfolioService.getPortfolioData(portfolio_id);
             PortfolioDto dto = portfolioService.getData(portfolio_id);
 
             model.addAttribute("portfolio_id", portfolio_id);
-            model.addAttribute("list", list);
             model.addAttribute("dto",dto);
             model.addAttribute("member_id", member_id);
             model.addAttribute("userName", userName);
 
         return "thymeleaf/portfolioDetail";
+    }
+
+    @GetMapping("/portfolio/delete")
+    public String delete(@RequestParam int portfolio_id)
+    {
+        portfolioService.deletePortfolio(portfolio_id);
+
+        return "redirect:/portfolio/list";
     }
 }

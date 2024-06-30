@@ -25,5 +25,6 @@ public class PortfolioDto {
     private int restep;
     private int relevel;
     private int recount;
+    private String name;
 
 }
