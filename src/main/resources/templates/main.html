@@ -56,7 +56,7 @@
                         <img th:src="${stpath}+${mainPortfolio.file_name}" alt="Image">
                         </div>
                         <div class="property-specs">
-                            <h3 th:text="${mainPortfolio.title}" style="font-family: 'Spoqa Han Sans Neo', sans-serif;"></h3>
+                            <h3 th:text="${mainPortfolio.title}"></h3>
                             <h6 th:text="${mainPortfolio.name}"></h6>
                             <h6 th:text="${mainPortfolio.created_at}"></h6>
                             <div class="location d-flex justify-content-between align-items-center">
@@ -95,10 +95,6 @@
                                     <strong class="d-block" th:text="${mainReview.name}"></strong>
                                     <span th:text="${mainReview.course_name} + '&nbsp;' + ${mainReview.course_num}"></span>
                                 </div>
-                            </div>
-                            <div class="author-name">
-                                <strong class="d-block">John Smith</strong>
-                                <span>CTO &mdash; Slack, Inc.</span>
                             </div>
                         </div>
                     </div>
