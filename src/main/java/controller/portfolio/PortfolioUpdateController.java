@@ -54,6 +54,7 @@ public class PortfolioUpdateController {
             @RequestParam("upload") MultipartFile upload,
             Authentication authentication,
             Model model) {
+
         String email = authentication.getName();
         int member_id = memberService.findByUsername(email).getMember_id();
         String userName = memberService.findByUsername(email).getName();
