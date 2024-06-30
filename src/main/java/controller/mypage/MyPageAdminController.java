@@ -1,13 +1,16 @@
 package controller.mypage;
 
 import data.dto.*;
+import data.naver.cloud.NcpObjectStorageService;
 import data.service.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,11 @@ public class MyPageAdminController {
     private MemberService memberService;
     @NonNull
     private VacationService vacationService;
+
+    private String bucketName="bitcamp-bucket-149";
+    private String folderName="semiproject";
+    @Autowired
+    private NcpObjectStorageService storageService;
 
 
     // 출석현황 : 캘린더
@@ -148,14 +156,30 @@ public class MyPageAdminController {
         return "thymeleaf/admin/UpdateProfile";
     }
 
-    // 프로필 수정 후 업데이트
+    //정보수정에서 프로필 정보 수정
     @PostMapping("/update")
-    public String updateInfo(@ModelAttribute MemberDto memberDto, Authentication authentication) {
+    public String updateInfo(@ModelAttribute MemberDto memberDto, Authentication authentication, @RequestParam("upload") MultipartFile upload) {
         if (authentication != null) {
             String email = authentication.getName();
             MemberDto member = memberService.findByUsername(email);
             member.setTel(memberDto.getTel());
-            member.setPhoto(memberDto.getPhoto());
+
+            if (upload != null && !upload.isEmpty()) {
+                try {
+                    if (member.getPhoto() != null) {
+                        String existPhoto = member.getPhoto();
+
+                        storageService.deleteFile(bucketName, folderName, existPhoto);
+                    }
+
+                    String newPhoto = storageService.uploadFile(bucketName, folderName, upload);
+
+                    member.setPhoto(newPhoto);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return "redirect:/admin/mypage/updateprofile?error=photoUploadFailed";
+                }
+            }
             memberService.updateMember(member);
         }
         return "redirect:/admin/mypage/updateprofile";

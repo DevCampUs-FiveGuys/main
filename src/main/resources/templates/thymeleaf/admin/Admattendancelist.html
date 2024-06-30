@@ -51,14 +51,14 @@
                     </thead>
                     <tbody>
                     <tr th:each="vacationlist : ${vacationlist}">
-                        <td th:text="${vacationlist.member_id}"></td>
+                        <td th:text="${vacationlist.name}"></td>
                         <td th:text="${#dates.format(vacationlist.date, 'yyyy-MM-dd')}"></td>
                         <td th:text="${vacationlist.reason}"></td>
                         <td>
                             <div class="data-container">
                                 <form th:action="@{/admin/mypage/approveVacation}" method="post">
                                     <input type="hidden" name="vacation_id" th:value="${vacationlist.vacation_id}" />
-                                    <button class="approveVacation" type="submit">승인</button>
+                                    <button class="approveVacation" type="submit"><span>승인</span></button>
                                 </form>
                             </div>
                         </td>
@@ -66,7 +66,7 @@
                             <div class="data-container">
                                 <form th:action="@{/admin/mypage/denyVacation}" method="post">
                                     <input type="hidden" name="vacation_id" th:value="${vacationlist.vacation_id}" />
-                                    <button class="denyVacation" type="submit">거절</button>
+                                    <button class="denyVacation" type="submit"><span>거절</span></button>
                                 </form>
                             </div>
                         </td>
