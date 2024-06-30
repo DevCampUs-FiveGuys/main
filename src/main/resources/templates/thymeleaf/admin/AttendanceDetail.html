@@ -34,7 +34,7 @@
                 <div class="col-md-9">
                     <h2 class="text-center my-4">출석 명단</h2>
                     <!--  과정명 기수 검색 -->
-                    <div>
+                    <div class="select-course">
                         <select id="courseName" onchange="loadCourseNums()" style="width: 250px;height: 25px;margin-right: 20px; border-radius: 20px;">
                             <option value="">과정명을 선택하세요</option>
                             <!-- Thymeleaf를 이용해 서버에서 받은 과정명 옵션을 반복 -->
@@ -45,9 +45,9 @@
                         </select>
                         <input type="hidden" id="calendardate" name="calendardate" th:value="${selectedDate}"/>
                         <button type="button" onclick="searchAttendance()" class="search-btn">조회하기</button>
-                        <button type="button" onclick="window.location.reload()">전체보기</button>
+                        <button type="button" onclick="window.location.reload()" class="search-btn">전체보기</button>
                     </div>
-                    <span th:text="${selectedDate}"></span>
+<!--                    <span th:text="${selectedDate}"></span>-->
                     <table class="container">
                         <thead>
                         <tr>
@@ -63,17 +63,14 @@
                         </thead>
                         <tbody id="AttendanceList">
                         <tr th:each="attendancelist : ${attendancelist}">
-<!--                            <input type="hidden" th:value="${attendancelist.member_id}"/>-->
                             <td th:text="${attendancelist.membername}" th:value="${attendancelist.membername}"></td>
                             <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd HH:mm')}"></td>
                             <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd HH:mm')}"></td>
                             <td th:text="${attendancelist.late}"></td>
                             <td th:text="${attendancelist.vacation}"></td>
-                            <td class="btn-absent">
-                                <button type="button" class="absent-btn" th:text="${attendancelist.absent}"></button>
-                            </td>
+                            <td th:text="${attendancelist.absent}"></td>
                             <td th:text="${attendancelist.hospital}"></td>
-                            <td><button class="hospital-btn">승인</button></td>
+                            <td><button class="hospital-btn"><span>승인</span></button></td>
                             <td style="display: none" th:text="${attendancelist.member_id}"></td>
                         </tr>
                         </tbody>

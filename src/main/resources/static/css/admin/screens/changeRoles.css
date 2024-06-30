@@ -48,14 +48,24 @@
     background-color: white;
 }
 
-.approvebtn {
+.approvebtn, .denybtn  {
     border: none;
     background-color: white;
     padding: 0;
 }
 
-.approvebtn:hover {
+.approvebtn span,
+.denybtn span{
+    color: #999999;
+    font-weight: bold;
+}
+.approvebtn span:hover{
+   border-bottom: 2px solid #00A300;
     color: #00A300;
+}
+.denybtn span:hover{
+    border-bottom: 2px solid red;
+    color: red;
 }
 
 .select-course {
@@ -76,7 +86,7 @@
     color: black;
     border: 0;
     opacity: 80%;
-    width: 65px;
+    width: 70px;
     border-radius: 7px;
     margin-right: 8px;
     font-weight: bold;

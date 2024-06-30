@@ -1,9 +1,7 @@
 package data.mapper;
 
 import data.dto.CourseDto;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -18,9 +16,15 @@ public interface CourseMapperInter {
     @Select("select num from course where name=#{name}")
     public List<String> getNumOfCourse(String name);
 
+    // 새로운 훈련 추가
     @Insert("insert into course (name,num, start_day, end_day) VALUES (#{name},#{num}, #{start_day}, #{end_day})")
     public void insertCourse(CourseDto courseDto);
 
+    // 과정명 정보 전체 불러오기
     @Select("select * from course")
     public List<CourseDto> getCourseInfo();
+    
+    // 훈련 삭제
+    @Delete("delete from course where name = #{name} and num = #{num}")
+    public void deleteCourse(String name, String num);
 }
