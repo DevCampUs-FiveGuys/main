@@ -39,6 +39,40 @@
             <div class="col-md-9">
                 <h2 class="text-center my-4">출석현황</h2>
                 <div class="calendar" id="calendar"></div>
+                <table class="container-table">
+                    <thead>
+                    <tr>
+                        <th><h1>학생이름</h1></th>
+                        <th><h1>신청날짜</h1></th>
+                        <th><h1>신청사유</h1></th>
+                        <th><h1>휴가승인</h1></th>
+                        <th><h1>휴가거절</h1></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="vacationlist : ${vacationlist}">
+                        <td th:text="${vacationlist.member_id}"></td>
+                        <td th:text="${#dates.format(vacationlist.date, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${vacationlist.reason}"></td>
+                        <td>
+                            <div class="data-container">
+                                <form th:action="@{/admin/mypage/approveVacation}" method="post">
+                                    <input type="hidden" name="vacation_id" th:value="${vacationlist.vacation_id}" />
+                                    <button class="approveVacation" type="submit">승인</button>
+                                </form>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="data-container">
+                                <form th:action="@{/admin/mypage/denyVacation}" method="post">
+                                    <input type="hidden" name="vacation_id" th:value="${vacationlist.vacation_id}" />
+                                    <button class="denyVacation" type="submit">거절</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <script type="text/javascript" th:src="@{/js/adminmypage.js}"></script>
         </div>

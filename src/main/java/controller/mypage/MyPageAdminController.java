@@ -1,13 +1,7 @@
 package controller.mypage;
 
-import data.dto.AttendanceDto;
-import data.dto.CourseDto;
-import data.dto.MemberDto;
-import data.dto.ReviewDto;
-import data.service.AdminService;
-import data.service.AttendanceService;
-import data.service.MemberService;
-import data.service.ReviewService;
+import data.dto.*;
+import data.service.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -30,12 +24,17 @@ public class MyPageAdminController {
     private ReviewService reviewService;
     @NonNull
     private MemberService memberService;
+    @NonNull
+    private VacationService vacationService;
 
 
     // 출석현황 : 캘린더
     @GetMapping("")
     public String attendanceList(Model model) {
 
+        List<VacationDto> vacationlist = vacationService.selectAllVacation();
+
+        model.addAttribute("vacationlist", vacationlist);
         model.addAttribute("page", "Admattendancelist");
 
 
@@ -203,6 +202,30 @@ public class MyPageAdminController {
         reviewService.insertCourse(courseDto);
 
         return "redirect:/admin/mypage/CreateCourse";
+    }
+
+    @GetMapping("/course/delete")
+    public String coursedelete(String name, String num) {
+        reviewService.deleteCourse(name, num);
+        return "redirect:/admin/mypage/CreateCourse";
+    }
+
+    @PostMapping("/approveVacation")
+    public String approveVacation(
+            @RequestParam int vacation_id
+    ){
+        vacationService.approveVacation(vacation_id);
+
+        return "redirect:/admin/mypage";
+    }
+
+    @PostMapping("/denyVacation")
+    public String denyVacation(
+            @RequestParam int vacation_id
+    ){
+        vacationService.denyVacation(vacation_id);
+
+        return "redirect:/admin/mypage";
     }
 }
 

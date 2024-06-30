@@ -26,4 +26,14 @@ public interface VacationMapperInter {
     // 모든 승인된 휴가 조회
     @Select("select * from vacation where member_id = #{member_id} and confirm = 1")
     public List<VacationDto> getApprovedVacations(int member_id);
+
+    @Select("update vacation set confirm = 1 where vacation_id = #{vacation_id}")
+    public void approveVacation(int vacation_id);
+
+    @Select("update vacation set confirm = 2 where vacation_id = #{vacation_id}")
+    public void denyVacation(int vacation_id);
+
+    //휴가 승인 안된 휴가 신청 내역들 조회
+    @Select("select * from vacation where confirm = 0")
+    public List<VacationDto> selectAllVacation();
 }
