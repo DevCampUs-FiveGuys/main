@@ -51,4 +51,8 @@ public class VacationService {
     public void denyVacation(int vacation_id) {
         vacationMapper.denyVacation(vacation_id);
     }
+
+    public List<VacationDto> getAllconfirm() {
+        return vacationMapper.getAllconfirm();
+    }
 }

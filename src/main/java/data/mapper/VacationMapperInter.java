@@ -34,6 +34,10 @@ public interface VacationMapperInter {
     public void denyVacation(int vacation_id);
 
     //휴가 승인 안된 휴가 신청 내역들 조회
-    @Select("select v.*, m.name  from vacation v join member m on v.member_id = m.member_id where confirm=0")
+    @Select("select v.*, m.name  from vacation v join member m on v.member_id = m.member_id")
     public List<VacationDto> selectAllVacation();
+
+    //휴가 승인 또는 신청한 학생 조회
+    @Select("select v.*, m.name  from vacation v join member m on v.member_id = m.member_id where confirm=0 or confirm=1")
+    public List<VacationDto> getAllconfirm();
 }
