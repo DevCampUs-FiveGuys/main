@@ -1,6 +1,9 @@
 package com.example.devcampus;
 
 import data.dto.CourseDto;
+import data.dto.mainPortfolioDto;
+import data.dto.mainReviewDto;
+import data.service.MainService;
 import data.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,8 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HomeController {
     private final ReviewService reviewService;
+    private final MainService mainService;
     @GetMapping("/")
     public String home(Model model) {
+        List<mainPortfolioDto> portfolioList = mainService.getPortfolioDataMain();
+        List<mainReviewDto> reviewList = mainService.getReviewDataMain();
+        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("portfolioList", portfolioList);
         model.addAttribute("page", "home");
         return "main";
     }
