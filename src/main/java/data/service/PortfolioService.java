@@ -68,4 +68,8 @@ public class PortfolioService {
         return portfolioMapper.getPortfoliosByMemberId(member_id);
     }
 
+    public void deleteRepliesByPortfolioId(int portfolio_id) {
+        portfolioMapper.deleteRepliesByPortfolioId(portfolio_id);
+    }
+
 }

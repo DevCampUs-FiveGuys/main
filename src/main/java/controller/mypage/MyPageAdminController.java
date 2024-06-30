@@ -1,19 +1,16 @@
 package controller.mypage;
 
-import data.dto.AttendanceDto;
-import data.dto.CourseDto;
-import data.dto.MemberDto;
-import data.dto.ReviewDto;
-import data.service.AdminService;
-import data.service.AttendanceService;
-import data.service.MemberService;
-import data.service.ReviewService;
+import data.dto.*;
+import data.naver.cloud.NcpObjectStorageService;
+import data.service.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -30,12 +27,22 @@ public class MyPageAdminController {
     private ReviewService reviewService;
     @NonNull
     private MemberService memberService;
+    @NonNull
+    private VacationService vacationService;
+
+    private String bucketName="bitcamp-bucket-149";
+    private String folderName="semiproject";
+    @Autowired
+    private NcpObjectStorageService storageService;
 
 
     // 출석현황 : 캘린더
     @GetMapping("")
     public String attendanceList(Model model) {
 
+        List<VacationDto> vacationlist = vacationService.selectAllVacation();
+
+        model.addAttribute("vacationlist", vacationlist);
         model.addAttribute("page", "Admattendancelist");
 
 
@@ -149,14 +156,30 @@ public class MyPageAdminController {
         return "thymeleaf/admin/UpdateProfile";
     }
 
-    // 프로필 수정 후 업데이트
+    //정보수정에서 프로필 정보 수정
     @PostMapping("/update")
-    public String updateInfo(@ModelAttribute MemberDto memberDto, Authentication authentication) {
+    public String updateInfo(@ModelAttribute MemberDto memberDto, Authentication authentication, @RequestParam("upload") MultipartFile upload) {
         if (authentication != null) {
             String email = authentication.getName();
             MemberDto member = memberService.findByUsername(email);
             member.setTel(memberDto.getTel());
-            member.setPhoto(memberDto.getPhoto());
+
+            if (upload != null && !upload.isEmpty()) {
+                try {
+                    if (member.getPhoto() != null) {
+                        String existPhoto = member.getPhoto();
+
+                        storageService.deleteFile(bucketName, folderName, existPhoto);
+                    }
+
+                    String newPhoto = storageService.uploadFile(bucketName, folderName, upload);
+
+                    member.setPhoto(newPhoto);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return "redirect:/admin/mypage/updateprofile?error=photoUploadFailed";
+                }
+            }
             memberService.updateMember(member);
         }
         return "redirect:/admin/mypage/updateprofile";
@@ -203,6 +226,30 @@ public class MyPageAdminController {
         reviewService.insertCourse(courseDto);
 
         return "redirect:/admin/mypage/CreateCourse";
+    }
+
+    @GetMapping("/course/delete")
+    public String coursedelete(String name, String num) {
+        reviewService.deleteCourse(name, num);
+        return "redirect:/admin/mypage/CreateCourse";
+    }
+
+    @PostMapping("/approveVacation")
+    public String approveVacation(
+            @RequestParam int vacation_id
+    ){
+        vacationService.approveVacation(vacation_id);
+
+        return "redirect:/admin/mypage";
+    }
+
+    @PostMapping("/denyVacation")
+    public String denyVacation(
+            @RequestParam int vacation_id
+    ){
+        vacationService.denyVacation(vacation_id);
+
+        return "redirect:/admin/mypage";
     }
 }
 
