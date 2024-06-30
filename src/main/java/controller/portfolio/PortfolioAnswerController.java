@@ -1,5 +1,6 @@
 package controller.portfolio;
 
+import data.dto.MemberDto;
 import data.dto.replyDto;
 import data.service.MemberService;
 import data.service.PortfolioAnswerService;
@@ -32,7 +33,6 @@ public class PortfolioAnswerController {
         String email = authentication.getName();
         int member_id = memberService.findByUsername(email).getMember_id();
         String userName = memberService.findByUsername(email).getName();
-        String name = authentication.getName();
 
         model.addAttribute("member_id", member_id);
         model.addAttribute("userName", userName);
@@ -46,19 +46,15 @@ public class PortfolioAnswerController {
 
         portfolioAnswerService.insertAnswer(dto);
 
-
     }
 
     @GetMapping("/alist")
-    public List<replyDto> alist(@RequestParam int portfolio_id)
-
-    {
-        return portfolioAnswerService.getAnswerData(portfolio_id);
+    public List<replyDto> getAnswers(@RequestParam int portfolio_id) {
+        return portfolioAnswerService.getAllRepliesByPortfolioId(portfolio_id);
     }
 
     @GetMapping("/adelete")
     public void deleteAnswer(@RequestParam int reply_id)
-
     {
         portfolioAnswerService.deleteAnswer(reply_id);
     }
