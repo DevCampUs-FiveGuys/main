@@ -2,10 +2,9 @@ package controller.mypage;
 
 import data.dto.AttendanceDto;
 import data.dto.MemberDto;
+import data.dto.VacationDto;
 import data.naver.cloud.NcpObjectStorageService;
-import data.service.AttendanceService;
-import data.service.MemberService;
-import data.service.TeacherService;
+import data.service.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,9 @@ public class MyPageTeacherController {
     @NonNull
     private MemberService memberService;
 
+    @NonNull
+    private VacationService vacationService;
+
     private String bucketName="bitcamp-bucket-149";
     private String folderName="semiproject";
 
@@ -43,6 +45,9 @@ public class MyPageTeacherController {
     @GetMapping("")
     public String attendancelist(Model model) {
 
+        List<VacationDto> confirmlist = vacationService.getAllconfirm();
+
+        model.addAttribute("confirmlist", confirmlist);
         model.addAttribute("page", "attendanceList");
 
         return "thymeleaf/teacher/attendanceList";
@@ -117,8 +122,15 @@ public class MyPageTeacherController {
 
             if (upload != null && !upload.isEmpty()) {
                 try {
-                    String photo = storageService.uploadFile(bucketName, folderName, upload);
-                    member.setPhoto(photo);
+                    if (member.getPhoto() != null) {
+                        String existPhoto = member.getPhoto();
+
+                        storageService.deleteFile(bucketName, folderName, existPhoto);
+                    }
+
+                    String newPhoto = storageService.uploadFile(bucketName, folderName, upload);
+
+                    member.setPhoto(newPhoto);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return "redirect:/teacher/mypage/updateProfile?error=photoUploadFailed";

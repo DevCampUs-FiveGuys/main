@@ -19,4 +19,5 @@ public class VacationDto {
     private String reason;
     private int confirm;
     private int member_id;
+    private String name;
 }
