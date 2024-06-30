@@ -8,325 +8,96 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 </head>
 <div layout:fragment="content">
-    <div class="untree_co_slider-wrap" data-aos="fade-up">
-        <div class="nav-direction">
-            <a href="#" class="js-nav-right nav-right"><span class="icon-keyboard_arrow_right"></span></a>
-            <a href="#" class="js-nav-left nav-left"><span class="icon-keyboard_arrow_left"></span></a>
+    <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject/'">
+        <div class="untree_co_slider-wrap" data-aos="fade-up">
+            <div class="nav-direction">
+                <a href="#" class="js-nav-right nav-right"><span class="icon-keyboard_arrow_right"></span></a>
+                <a href="#" class="js-nav-left nav-left"><span class="icon-keyboard_arrow_left"></span></a>
+            </div>
+
+            <div class="untree_co_slider">
+                <div class="item">
+                    <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
+                </div>
+                <div class="item">
+                    <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
+                </div>
+                <div class="item">
+                    <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
+                </div>
+                <div class="item">
+                    <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
+                </div>
+                <div class="item">
+                    <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
+                </div>
+                <div class="item">
+                    <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
+                </div>
+            </div>
         </div>
 
-        <div class="untree_co_slider">
-            <div class="item">
-                <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
+        <div class="untree_co-section bg-light">
+            <div class="container">
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <h2 class="heading-2">Portfolio</h2>
+                    </div>
+                    <div class="col-6 text-right properties-nav-direction">
+                        <a href="#" class="prev js-custom-prev-v2"><span class="icon-keyboard_backspace"></span></a>
+                        <a href="#" class="next js-custom-next-v2"><span class="icon-keyboard_backspace"></span></a>
+                    </div>
+                </div>
             </div>
-            <div class="item">
-                <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
-            </div>
-            <div class="item">
-                <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
-            </div>
-            <div class="item">
-                <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
-            </div>
-            <div class="item">
-                <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
-            </div>
-            <div class="item">
-                <img th:src="@{/images/Devops_1500.png}" alt="Image" class="img-fluid">
-            </div>
+            <div class="owl-3-slider owl-carousel">
+                <div th:each="mainPortfolio : ${portfolioList}" class="item">
+                    <div class="property-entry img-container">
+                        <img th:src="${stpath}+${mainPortfolio.file_name}" alt="Image">
+                        <div class="property-specs">
+                            <h6 th:text="${mainPortfolio.title}"></h6>
+                            <h6 th:text="${mainPortfolio.created_at}"></h6>
+                            <div class="location d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="d-block caption">location: </span>
+                                    <h3><a href="#"><span>2 Zwar Place, Florey</span></a></h3>
+                                </div>
+                                <div class="more">
+                                    <a th:href="@{/portfolio/Detail(portfolio_id=${mainPortfolio.portfolio_id})}">
+                                        <span class="icon-keyboard_backspace"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- /.owl-3-slider -->
         </div>
-    </div>
-
-    <div class="untree_co-section bg-light">
-        <div class="container">
-            <div class="row align-items-center mb-3">
+        <div class="untree_co-section">
+            <div class="container">
                 <div class="col-6">
-                    <h2 class="heading-2">Portfolio</h2>
+                    <h2 class="heading-2">Reviews</h2>
+                    <span>더 많은 리뷰 보러가기</span>
                 </div>
-                <div class="col-6 text-right properties-nav-direction">
-                    <a href="#" class="prev js-custom-prev-v2"><span class="icon-keyboard_backspace"></span></a>
-                    <a href="#" class="next js-custom-next-v2"><span class="icon-keyboard_backspace"></span></a>
+                <div class="row align-items-stretch">
+                    <div class="col-lg-4 mb-4 mb-lg-0" th:each="mainReview : ${reviewList}" >
+                        <div class="untree_co-testimonial h-100">
+                            <blockquote>
+                                <p th:text="${mainReview.content}"></p>
+                            </blockquote>
+                            <div class="author d-flex align-items-center">
+                                <div class="author-picture mr-3">
+                                    <img th:src="${mainReview.photo != null ? stpath+mainReview.photo : '/images/empty.png'}" alt="Image">
+                                </div>
+                                <div class="author-name">
+                                    <strong class="d-block" th:text="${mainReview.name}"></strong>
+                                    <span th:text="${mainReview.course_name} + '&nbsp;' + ${mainReview.course_num}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="owl-3-slider owl-carousel">
-            <div class="item">
-                <div class="property-entry ">
-                    <div id="second-div">
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="property-entry">
-                    <img th:src="@{../images/property_1-min.jpg}" alt="Image" class="img-fluid">
-                    <div class="property-specs">
-                        <strong class="price">$849,200</strong>
-                        <ul class="list-unstyled specs">
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bathtub"></span>
-                                <strong>2</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bed"></span>
-                                <strong>4</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-house-size"></span>
-                                <strong>120<sup>2</sup></strong>
-                            </li>
-                        </ul>
-
-                        <div class="location d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="d-block caption">location: </span>
-                                <h3><a href="#"><span>2 Zwar Place, Florey</span></a></h3>
-                            </div>
-                            <div class="more">
-                                <a href="#">
-                                    <span class="icon-keyboard_backspace"></span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div> <!-- /.property-entry -->
-            </div> <!-- /.item -->
-            <div class="item">
-                <div class="property-entry">
-                    <img src="../images/property_2-min.jpg" alt="Image" class="img-fluid">
-                    <div class="property-specs">
-                        <strong class="price">$900,295</strong>
-                        <ul class="list-unstyled specs">
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bathtub"></span>
-                                <strong>2</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bed"></span>
-                                <strong>4</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-house-size"></span>
-                                <strong>120<sup>2</sup></strong>
-                            </li>
-                        </ul>
-
-                        <div class="location d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="d-block caption">location: </span>
-                                <h3><a href="#"><span>2 Zwar Place, Florey</span></a></h3>
-                            </div>
-                            <div class="more">
-                                <a href="#">
-                                    <span class="icon-keyboard_backspace"></span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div> <!-- /.property-entry -->
-            </div> <!-- /.item -->
-            <div class="item">
-                <div class="property-entry">
-                    <img src="../images/property_3-min.jpg" alt="Image" class="img-fluid">
-                    <div class="property-specs">
-                        <strong class="price">$2,013,920</strong>
-                        <ul class="list-unstyled specs">
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bathtub"></span>
-                                <strong>2</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bed"></span>
-                                <strong>4</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-house-size"></span>
-                                <strong>120<sup>2</sup></strong>
-                            </li>
-                        </ul>
-
-                        <div class="location d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="d-block caption">location: </span>
-                                <h3><a href="#"><span>2 Zwar Place, Florey</span></a></h3>
-                            </div>
-                            <div class="more">
-                                <a href="#">
-                                    <span class="icon-keyboard_backspace"></span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div> <!-- /.property-entry -->
-            </div> <!-- /.item -->
-            <div class="item">
-                <div class="property-entry">
-                    <img src="../images/property_1-min.jpg" alt="Image" class="img-fluid">
-                    <div class="property-specs">
-                        <strong class="price">$849,200</strong>
-                        <ul class="list-unstyled specs">
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bathtub"></span>
-                                <strong>2</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bed"></span>
-                                <strong>4</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-house-size"></span>
-                                <strong>120<sup>2</sup></strong>
-                            </li>
-                        </ul>
-
-                        <div class="location d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="d-block caption">location: </span>
-                                <h3><a href="#"><span>2 Zwar Place, Florey</span></a></h3>
-                            </div>
-                            <div class="more">
-                                <a href="#">
-                                    <span class="icon-keyboard_backspace"></span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div> <!-- /.property-entry -->
-            </div> <!-- /.item -->
-            <div class="item">
-                <div class="property-entry">
-                    <img src="../images/property_2-min.jpg" alt="Image" class="img-fluid">
-                    <div class="property-specs">
-                        <strong class="price">$900,295</strong>
-                        <ul class="list-unstyled specs">
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bathtub"></span>
-                                <strong>2</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bed"></span>
-                                <strong>4</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-house-size"></span>
-                                <strong>120<sup>2</sup></strong>
-                            </li>
-                        </ul>
-
-                        <div class="location d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="d-block caption">location: </span>
-                                <h3><a href="#"><span>2 Zwar Place, Florey</span></a></h3>
-                            </div>
-                            <div class="more">
-                                <a href="#">
-                                    <span class="icon-keyboard_backspace"></span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div> <!-- /.property-entry -->
-            </div> <!-- /.item -->
-            <div class="item">
-                <div class="property-entry">
-                    <img src="../images/property_3-min.jpg" alt="Image" class="img-fluid">
-                    <div class="property-specs">
-                        <strong class="price">$2,013,920</strong>
-                        <ul class="list-unstyled specs">
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bathtub"></span>
-                                <strong>2</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-bed"></span>
-                                <strong>4</strong>
-                            </li>
-                            <li class="d-inline-flex align-items-center">
-                                <span class="icon-wrap flaticon-house-size"></span>
-                                <strong>120<sup>2</sup></strong>
-                            </li>
-                        </ul>
-
-                        <div class="location d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="d-block caption">location: </span>
-                                <h3><a href="#"><span>2 Zwar Place, Florey</span></a></h3>
-                            </div>
-                            <div class="more">
-                                <a href="#">
-                                    <span class="icon-keyboard_backspace"></span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div> <!-- /.property-entry -->
-            </div> <!-- /.item -->
-        </div> <!-- /.owl-3-slider -->
+            </div> <!-- /.container -->
+        </div> <!-- /.untree_co-section -->
     </div>
-    <div class="untree_co-section">
-        <div class="container">
-            <div class="row align-items-stretch">
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <div class="untree_co-testimonial h-100">
-
-                        <blockquote>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque animi omnis quas
-                                voluptate aliquam dolore facere, exercitationem, quos nihil iusto.</p>
-                        </blockquote>
-                        <div class="author d-flex align-items-center">
-                            <div class="author-picture mr-3"><img src="images/person_1.jpg" alt="Image"
-                                                                  class="img-fluid">
-                            </div>
-                            <div class="author-name">
-                                <strong class="d-block">John Smith</strong>
-                                <span>CTO &mdash; Slack, Inc.</span>
-                            </div>
-                        </div>
-                    </div> <!-- /.untree_co-testimonial -->
-                </div> <!-- /.col-lg-4 -->
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <div class="untree_co-testimonial h-100">
-
-                        <blockquote>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque animi omnis quas
-                                voluptate aliquam dolore facere, exercitationem, quos nihil iusto.</p>
-                        </blockquote>
-                        <div class="author d-flex align-items-center">
-                            <div class="author-picture mr-3"><img src="images/person_2.jpg" alt="Image"
-                                                                  class="img-fluid">
-                            </div>
-                            <div class="author-name">
-                                <strong class="d-block">John Smith</strong>
-                                <span>CTO &mdash; Slack, Inc.</span>
-                            </div>
-                        </div>
-                    </div> <!-- /.untree_co-testimonial -->
-                </div> <!-- /.col-lg-4 -->
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <div class="untree_co-testimonial h-100">
-
-                        <blockquote>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque animi omnis quas
-                                voluptate aliquam dolore facere, exercitationem, quos nihil iusto.</p>
-                        </blockquote>
-                        <div class="author d-flex align-items-center">
-                            <div class="author-picture mr-3"><img src="images/person_3.jpg" alt="Image"
-                                                                  class="img-fluid">
-                            </div>
-                            <div class="author-name">
-                                <strong class="d-block">John Smith</strong>
-                                <span>CTO &mdash; Slack, Inc.</span>
-                            </div>
-                        </div>
-                    </div> <!-- /.untree_co-testimonial -->
-                </div> <!-- /.col-lg-4 -->
-            </div> <!-- /.row -->
-        </div> <!-- /.container -->
-    </div> <!-- /.untree_co-section -->
-    <!--<script type="text/javascript" th:src="@{/js/main.js}"></script>-->
 </div>
 </html>

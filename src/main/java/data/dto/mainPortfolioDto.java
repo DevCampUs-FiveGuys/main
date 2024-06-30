@@ -8,10 +8,10 @@ import org.apache.ibatis.type.Alias;
 
 @Data
 @Builder
-@Alias("mainDto")
+@Alias("mainPortfolioDto")
 @NoArgsConstructor
 @AllArgsConstructor
-public class mainDto {
+public class mainPortfolioDto {
     private int portfolio_id;
     private String title;
     private String created_at;
