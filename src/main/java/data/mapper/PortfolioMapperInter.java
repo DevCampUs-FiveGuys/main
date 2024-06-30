@@ -36,7 +36,7 @@ public interface PortfolioMapperInter {
 
     @Select("SELECT * FROM portfolio p JOIN member m ON m.member_id = p.member_id WHERE p.portfolio_id = #{portfolio_id} order by regroup desc, restep asc limit #{start}, #{perpage}")
     List<PortfolioDto> selectAllRepliesByPortfolio(Map<String, Object> map);
-  
+
     // 로그인한 회원의 작성한 포트폴리오 리스트 가져오기
     @Select("select * from portfolio where member_id=#{member_id}")
     public List<PortfolioDto> getPortfoliosByMemberId(int member_id);
