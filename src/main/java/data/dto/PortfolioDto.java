@@ -26,5 +26,6 @@ public class PortfolioDto {
     private int relevel;
     private int recount;
     private String name;
-
+    private String course_name; // member 테이블과 조인하여 가져온 필드
+    private String course_num;  // member 테이블과 조인하여 가져온 필드
 }

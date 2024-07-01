@@ -1,40 +1,52 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" layout:decorate="~{layouts/layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{layouts/layout}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" th:href="@{/css/portfolio.css}">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/portfoliodetail.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css"
+          rel="stylesheet">
 </head>
 <div layout:fragment="content">
     <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
-        <button class="animate2-button" th:onclick="|location.href='@{/portfolio/list}'|">
-            <i class="fas fa-list"></i>목록
-        </button>
-        <button class="animate3-button" th:if="${dto.member_id == member_id}"
-                th:onclick="|location.href='@{/portfolio/updateform(portfolio_id=${dto.portfolio_id})}'|">
-            수정
-        </button>
-        <button class="animate4-button" th:if="${dto.member_id == member_id}"
-                th:onclick="|location.href='@{/portfolio/delete(portfolio_id=${dto.portfolio_id})}'|">
-            삭제
-        </button>
-        <h1 class="title3" th:text="${dto.title}"></h1>
-        <div class="date-part">
-            <p class="readcount2">조회수 : <span th:text="${dto.readcount}"></span></p>
-            <p class="date2">게시일 : <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}"></span></p>
-            <p class="date3" th:if="${dto.updated_at != null}">수정일 : <span th:text="${#dates.format(dto.updated_at, 'yyyy.MM.dd')}"></span></p>
-        </div>
-        <div class="detailfull">
-                <div class="center-content">
-                    <img class="stpathimg2" th:src="@{${stpath}+'/'+${dto.file_name}}">
-                    <div class="description2">
-                        <div th:utext="${dto.description}"></div>
-                    </div>
+        <div class="detail-header">
+            <div class="detail-header_info">
+                <img class="detail-header_thumbnail" th:src="@{${stpath}+'/'+${dto.file_name}}">
+                <div class="detail-header_date">
+                    <p class="detail-header_readcount">조회수 : <span th:text="${dto.readcount}"></span></p>
+                    <p class="detail-header_created_at">게시일 : <span
+                            th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}"></span></p>
+                    <p class="detail-header_updated_at" th:if="${dto.updated_at != null}">수정일 : <span
+                            th:text="${#dates.format(dto.updated_at, 'yyyy.MM.dd')}"></span></p>
                 </div>
-            <div sec:authorize="!isAuthenticated()" style="text-align: center; font-size: 20px; font-weight: bold; padding-bottom : 50px;">댓글을 확인하고 싶으면 로그인 하세요 !</div>
+            </div>
+            <h1 class="detail-header_title" th:text="${dto.title}"></h1>
+            <div class="detail-header_date-nav_buttons">
+                <button class="list_button" th:onclick="|location.href='@{/portfolio/list}'|">
+                    <i class="fas fa-list"></i>목록
+                </button>
+                <button class="update_button" th:if="${dto.member_id == member_id}"
+                        th:onclick="|location.href='@{/portfolio/updateform(portfolio_id=${dto.portfolio_id})}'|">
+                    수정
+                </button>
+                <button class="delete_button" th:if="${dto.member_id == member_id}"
+                        th:onclick="|location.href='@{/portfolio/delete(portfolio_id=${dto.portfolio_id})}'|">
+                    삭제
+                </button>
+            </div>
+        </div>
+        <div class="detail-body">
+            <div class="detail-body_center">
+                <div class="detail-body_description">
+                    <div th:utext="${dto.description}"></div>
+                </div>
+            </div>
+            <div sec:authorize="!isAuthenticated()"
+                 style="text-align: center; font-size: 20px; font-weight: bold; padding-bottom : 50px;">댓글을 확인하고 싶으면 로그인
+                하세요 !
+            </div>
             <div class="replytext" sec:authorize="isAuthenticated()">
                 <span class="replytext2" style="float: right" th:color="gray">
                     <i class="bi bi-chat-dots"></i>
@@ -43,11 +55,13 @@
                 </span>
                 <span class="replytext3" style="font-size: 20px;" th:text="${comment}"></span>
                 <div class="answerlist"></div>
-                    <b>댓글</b><br>
-                        <textarea sec:authorize="isAuthenticated()" class="pfcomment" style="width: 86%; height: 60px;" id="acomment"></textarea>
-                        <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-outline-success"
-                                style="height: 60px; position: relative; top: -27px;"
-                                id="btnansweradd">등록</button>
+                <b>댓글</b><br>
+                <textarea class="pfcomment" id="acomment" sec:authorize="isAuthenticated()"
+                          style="width: 86%; height: 60px;"></textarea>
+                <button class="btn btn-outline-success" id="btnansweradd" sec:authorize="isAuthenticated()"
+                        style="height: 60px; position: relative; top: -27px;"
+                        type="submit">등록
+                </button>
             </div>
             <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
             <script type="text/javascript">
@@ -130,7 +144,7 @@
                                     <span class="aday">${formattedDate}</span>
                                     `;
 
-                                    if(current_member_id == ele.member_id) {
+                                if (current_member_id == ele.member_id) {
                                     s +=
                                         `
                                         <i class="bi bi-trash adel" reply_id="${ele.reply_id}"
