@@ -93,6 +93,7 @@
                         <span class="title1" th:text="${dto.title}"></span>
                     </div>
                     <span th:text="${dto.name}"></span>
+                    (<span th:text="${dto.course_name}"></span>, <span th:text="${dto.course_num}"></span>)
                     <p class="readcount1">조회수 : <span th:text="${dto.readcount}"></span></p>
                     <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}" />
                     <button class="look" th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${dto.portfolio_id})}'|">자세히보기 +</button>
