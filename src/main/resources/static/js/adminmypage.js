@@ -86,7 +86,6 @@ function loadCourseNums() {
 
 // 권한 승인 함수
 $(".roleSelect").change(function () {
-    alert($(this).val()); // 내가 바꾸려고 선택한 권한
     $(this).parent().next().find(".selectedRoles").val($(this).val());
     // $(this) = roleSelect -> parent = td -> next = td -> class가 SElectedRoles걸 찾고 -> selectedRoles의 value를 this의 Value로 바꿔주기
 })
