@@ -17,4 +17,6 @@ public class mainPortfolioDto {
     private String created_at;
     private String file_name;
     private String name;
+    private String course_name;
+    private String course_num;
 }
