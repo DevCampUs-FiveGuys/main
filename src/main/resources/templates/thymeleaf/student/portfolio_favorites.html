@@ -13,17 +13,19 @@
         .course1 {
             border: 1px solid #ddd;
             padding: 10px;
-            width: 100%; /* Full width inside swiper-slide */
+            width: 100%; /* swiper 너비 비율 조정 */
             box-sizing: border-box;
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
+            border-radius: 10px;
         }
 
         .course1 img {
             width: 100%;
-            height: auto;
+            height: 200px; /* 이미지 높이 고정 */
+            object-fit: cover; /* 이미지 비율 유지 */
         }
 
         .course1 .badge {
@@ -40,7 +42,9 @@
         }
 
         .course1-details {
+            width: 100%;
             margin-top: 10px;
+            text-align: left; /* 텍스트를 왼쪽으로 배치 */
         }
 
         .course1-details p {
@@ -57,12 +61,7 @@
 
         .stpathimg {
             cursor: pointer;
-        }
-
-        .readcount1 {
-            position: relative;
-            left: 330px;
-            top: 30px;
+            border-radius: 10px;
         }
 
         .title1 {
@@ -82,6 +81,11 @@
             color: #fff;
             padding: 5px 10px;
             cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .look:hover {
+            background: #555;
         }
 
         .favorite-button {
@@ -102,6 +106,8 @@
         .swiper-container {
             width: 100%;
             padding: 20px 0;
+            overflow: hidden;
+            margin-bottom: 100px;
         }
 
         .swiper-slide {
@@ -110,21 +116,29 @@
             align-items: center;
             flex-direction: column;
         }
+
+        .swiper-pagination {
+            margin-bottom: 20px;
+        }
     </style>
 
     <script>
         $(document).ready(function() {
-            // Swiper initialization
+            // 스와이퍼 설정
             var swiper = new Swiper('.swiper-container', {
-                slidesPerView: 3,
-                spaceBetween: 30,
+                slidesPerView: 2, // 한 화면에 보여질 슬라이드 개수
+                spaceBetween: 10, // 슬라이드 사이의 간격
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
                 },
+                autoplay: {
+                    delay: 3000, // 3초마다 슬라이드 이동
+                    disableOnInteraction: false, // 사용자와 상호작용 후에도 계속 반복
+                },
             });
 
-            // Favorite toggle functionality
+            // 찜 상태 확인
             $('.favorite-button').each(function() {
                 const button = this;
                 const portfolio_id = $(button).data('portfolio-id');
@@ -226,14 +240,17 @@
                             <div class="swiper-slide" th:each="heartDto : ${heartList}">
                                 <div class="course1" style="border: 1px solid">
                                     <img class="stpathimg" th:src="@{${stpath}+'/'+${heartDto.file_name}}"
-                                         th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${heartDto.portfolio_id})}'|">
-                                    <span class="readcount1" th:text="${heartDto.readcount}"></span>
+                                         th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${heartDto.portfolio_id})}'|">
                                     <div>
                                         <span class="title1" th:text="${heartDto.title}"></span>
                                     </div>
-                                    <span th:text="${heartDto.name}"></span>
-                                    <span th:text="${#dates.format(heartDto.created_at, 'yyyy.MM.dd')}" />
-                                    <button class="look" th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${heartDto.portfolio_id})}'|">자세히보기 +</button>
+                                    <div class="course1-details">
+                                        <span th:text="${heartDto.name}"></span>
+                                        (<span th:text="${heartDto.course_name}"></span>, <span th:text="${heartDto.course_num}"></span>)
+                                        <p>조회수 : <span th:text="${heartDto.readcount}"></span></p>
+                                        <span th:text="${#dates.format(heartDto.created_at, 'yyyy.MM.dd')}"></span>
+                                    </div>
+                                    <button class="look" th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${heartDto.portfolio_id})}'|">자세히보기 +</button>
                                     <button type="button" class="favorite-button" th:data-portfolio-id="${heartDto.portfolio_id}" th:onclick="toggleFavorite(this, [[${heartDto.portfolio_id}]])">
                                         <i class="far fa-heart"></i>
                                     </button>
