@@ -96,7 +96,7 @@
 .animate-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #3498db;
+    background-color: #adb5bd;
     font-size: 16px;
     border: none;
     border-radius: 4px;
@@ -729,4 +729,9 @@
 .note-editor .note-toolbar {
     white-space: nowrap; /* 툴바 내용이 줄바꿈되지 않도록 설정 */
     overflow-x: auto; /* 툴바 내용이 넘칠 경우 가로 스크롤바 추가 */
+}
+
+.detail-header_title1 {
+    position: relative;
+    right: 500px;
 }
