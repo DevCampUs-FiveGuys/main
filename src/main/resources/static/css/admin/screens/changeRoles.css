@@ -97,3 +97,8 @@
     opacity: 70%;
     font-weight: bold;
 }
+.roleSelect {
+    border: 0;
+    font-weight: bold;
+    color: #999999;
+}
