@@ -49,6 +49,11 @@ public class MemberListController {
         return "thymeleaf/student/attendance";
     }
 
+    @GetMapping("/guest/mypage")
+    public String guestMypage(Model model) {
+        model.addAttribute("page", "attendance");
+        return "thymeleaf/guest/mypage";
+    }
 
     @GetMapping("/mypage")
     public String myPage(Authentication authentication, Model model) {
@@ -64,8 +69,10 @@ public class MemberListController {
                 return "redirect:/teacher/mypage";
             } else if (role.equals("ROLE_ADMIN")) {
                 return "redirect:/admin/mypage";
+            } else if (role.equals("ROLE_GUEST")) {
+                return "redirect:/guest/mypage";
             }
         }
-        return "redirect:/login";
+        return "redirect:/";
     }
 }

@@ -102,6 +102,7 @@
         .swiper-container {
             width: 100%;
             padding: 20px 0;
+            overflow: hidden;
         }
 
         .swiper-slide {
@@ -226,14 +227,14 @@
                             <div class="swiper-slide" th:each="heartDto : ${heartList}">
                                 <div class="course1" style="border: 1px solid">
                                     <img class="stpathimg" th:src="@{${stpath}+'/'+${heartDto.file_name}}"
-                                         th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${heartDto.portfolio_id})}'|">
+                                         th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${heartDto.portfolio_id})}'|">
                                     <span class="readcount1" th:text="${heartDto.readcount}"></span>
                                     <div>
                                         <span class="title1" th:text="${heartDto.title}"></span>
                                     </div>
                                     <span th:text="${heartDto.name}"></span>
                                     <span th:text="${#dates.format(heartDto.created_at, 'yyyy.MM.dd')}" />
-                                    <button class="look" th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${heartDto.portfolio_id})}'|">자세히보기 +</button>
+                                    <button class="look" th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${heartDto.portfolio_id})}'|">자세히보기 +</button>
                                     <button type="button" class="favorite-button" th:data-portfolio-id="${heartDto.portfolio_id}" th:onclick="toggleFavorite(this, [[${heartDto.portfolio_id}]])">
                                         <i class="far fa-heart"></i>
                                     </button>
