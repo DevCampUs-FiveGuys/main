@@ -79,7 +79,24 @@
             <div class="col-md-9">
                 <h2 class="text-center my-4">출석현황</h2>
                 <div class="calendar" id="calendar"></div>
-                </div>
+                <table class="container-table">
+                    <thead>
+                    <tr>
+                        <th><h1>학생이름</h1></th>
+                        <th><h1>신청날짜</h1></th>
+                        <th><h1>신청사유</h1></th>
+                        <th><h1>휴가 승인여부</h1></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="confirmlist : ${confirmlist}">
+                        <td th:text="${confirmlist.name}"></td>
+                        <td th:text="${#dates.format(confirmlist.date, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${confirmlist.reason}"></td>
+                        <td th:text="${confirmlist.confirm == 1 ? '승인' : '보류'}"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

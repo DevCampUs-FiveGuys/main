@@ -7,13 +7,17 @@ import data.mapper.PortfolioMapperInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PortfolioAnswerService {
 
     @Autowired
     private PortfolioAnswerMapperInter anInter;
+    @Autowired
+    private PortfolioAnswerMapperInter portfolioAnswerMapperInter;
 
     public void insertAnswer(replyDto dto)
     {
@@ -29,4 +33,9 @@ public class PortfolioAnswerService {
     {
         anInter.deleteAnswer(reply_id);
     }
+
+    public List<replyDto> getAllRepliesByPortfolioId(int portfolio_id) {
+        return portfolioAnswerMapperInter.selectAllRepliesByPortfolioId(portfolio_id);
+    }
+
 }

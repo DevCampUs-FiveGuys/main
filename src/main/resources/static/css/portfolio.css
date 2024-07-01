@@ -249,11 +249,11 @@
     left: 400px;
 }
 
-#showimg{
+#showimg {
     position: absolute;
     width: 500px;
     height: 200px;
-    top:60px;
+    top: 60px;
     border: 2px solid gray;
 }
 
@@ -310,15 +310,25 @@
 }
 
 .title3 {
+    position: relative;
     font-size: 30px;
     font-weight: bold;
     color: #1b1e21;
+    top: 100px;
+    text-align: center;
 }
 
 .description2 {
     display: flex;
-    justify-content: center;
-    margin-bottom: 100px;
+    justify-content: flex-start; /* 이미지와 설명이 나란히 위치하도록 설정 */
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.stpathimg2 {
+    max-width: 20%;
+    height: auto;
+    margin-right: 20px; /* 이미지와 텍스트 사이의 간격 조정 */
 }
 
 .animate2-button {
@@ -339,6 +349,42 @@
     background-color: #2980b9; /* 호버 시 배경색 변경 */
 }
 
+.animate3-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: white;
+    font-size: 16px;
+    border: 1px solid #333; /* 테두리 추가 */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    bottom: 450px; /* 화면 아래에서의 거리 */
+    right: 20px;  /* 화면 오른쪽에서의 거리 */
+}
+
+.animate3-button:hover {
+    background-color: #2980b9; /* 호버 시 배경색 변경 */
+}
+
+.animate4-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: white;
+    font-size: 16px;
+    border: 1px solid #333; /* 테두리 추가 */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    bottom: 400px; /* 화면 아래에서의 거리 */
+    right: 20px;  /* 화면 오른쪽에서의 거리 */
+}
+
+.animate4-button:hover {
+    background-color: #2980b9; /* 호버 시 배경색 변경 */
+}
+
 .pfpage {
     margin: 0 auto;
     margin-bottom: 30px;
@@ -350,18 +396,12 @@
     width: 50%;     /* 원하는 너비로 설정, 필요에 따라 조절 가능 */
 }
 
-.readcount1 {
-    position: relative;
-    left: 330px;
-    top: 30px;
-}
-
 .center-content {
     display: flex;
     justify-content: center; /* 수평 중앙 정렬 */
     align-items: center; /* 수직 중앙 정렬 */
-    border-top: 2px solid black; /* 상단 경계선 */
-    border-bottom: 2px solid black; /* 하단 경계선 */
+    border-top: 2px solid #adb5bd; /* 상단 경계선 */
+    border-bottom: 2px solid #adb5bd; /* 하단 경계선 */
     width: 60%;
     margin: 0 auto;
     margin-top: 50px;
@@ -370,26 +410,15 @@
     padding-bottom: 20px;
 }
 
-.img-and-text {
-    display: flex;
-    flex-direction: column; /* 세로 방향으로 배치 */
-    align-items: center; /* 중앙 정렬 */
-    margin-left: -20px; /* 이미지와 텍스트를 왼쪽으로 이동 */
-}
-
-.stpathimg2 {
-    margin-bottom: 10px; /* 이미지와 제목 사이의 간격 조정 */
-    width: 300px;
-}
-
 .text-content {
     display: flex;
     flex-direction: column;
     align-items: center; /* 텍스트 중앙 정렬 */
 }
 
-.title3, .readcount2, .date2 {
-    margin: 5px 0; /* 텍스트 요소들 사이의 간격 조정 */
+.readcount2 {
+    font-weight: bold;
+    color: black;
 }
 
 /* 폰트 크기 변경 */
@@ -407,11 +436,189 @@
     margin-top: 50px;
 }
 
-.replytext {
+.show3 {
     text-align: center;
 }
 
-.replytext2 {
-    position: relative;
-    right: 500px;
+.date-part {
+    text-align: left;
+    margin-left: 72%;
 }
+
+/* Reply Section Styles */
+.replytext {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 100px;
+}
+
+.replytext2 {
+    font-size: 18px;
+    color: #333;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.replytext3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.answerlist {
+    margin-top: 20px;
+}
+
+.aday {
+    font-size: 12px;
+    color: #999;
+    margin-left: 10px;
+}
+
+.adata {
+    font-size: 14px;
+    color: #333;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    white-space: pre-wrap;
+    margin: 10px 0;
+}
+
+.adel {
+    color: red;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.pfcomment {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+    margin-left: 10px;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* 반응형 스타일링 */
+@media (max-width: 1200px) {
+    .title3 {
+        font-size: 28px;
+    }
+
+    .replytext {
+        width: 90%;
+    }
+}
+
+@media (max-width: 992px) {
+    .title3 {
+        font-size: 26px;
+    }
+
+    .center-content {
+        width: 85%;
+    }
+
+    .replytext {
+        width: 95%;
+    }
+}
+
+@media (max-width: 768px) {
+    .title3 {
+        font-size: 24px;
+    }
+
+    .replytext {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .pfcomment {
+        width: 100%;
+    }
+
+    .btn-outline-success {
+        top: 0;
+        height: auto;
+        margin-top: 10px;
+    }
+
+    .stpathimg2 {
+        max-width: 50%;
+        height: auto;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .title3 {
+        font-size: 22px;
+    }
+
+    .replytext2 {
+        font-size: 16px;
+    }
+
+    .replytext3 {
+        font-size: 18px;
+    }
+
+    .pfcomment {
+        font-size: 12px;
+    }
+
+    .btn-outline-success {
+        font-size: 14px;
+        padding: 5px 10px;
+    }
+
+}
+
+.portfolio_h1 {
+    font-size: 36px; /* 폰트 크기 설정 */
+    color: #00c300; /* 폰트 색상 설정 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    font-weight: bold; /* 폰트 굵기 설정 */
+    margin-top: 50px; /* 상단 여백 설정 */
+    letter-spacing: 2px; /* 글자 간격 설정 */
+    text-transform: uppercase; /* 모든 글자를 대문자로 변환 */
+    padding-bottom: 10px; /* 하단 여백 추가 */
+}
+
+@media (max-width: 768px) {
+    .portfolio_h1 {
+        font-size: 28px; /* 작은 화면에서 폰트 크기 조정 */
+        margin-top: 15px; /* 상단 여백 조정 */
+        margin-bottom: 15px; /* 하단 여백 조정 */
+    }
+}
+
+@media (max-width: 576px) {
+    .portfolio_h1 {
+        font-size: 24px; /* 더 작은 화면에서 폰트 크기 조정 */
+        margin-top: 10px; /* 상단 여백 조정 */
+        margin-bottom: 10px; /* 하단 여백 조정 */
+    }
+}
+

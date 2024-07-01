@@ -37,6 +37,58 @@
     font-weight: bold;
 }
 
+.select-course select{
+    width: 150px;
+    height: 28px;
+    margin-right: 20px;
+    border-radius: 10px;
+    /*outline: 0;*/
+    border: 0;
+    background-color: #e6e6e6;
+}
+.search-btn {
+    background-color: #00c300;
+    color: black;
+    border: 0;
+    opacity: 80%;
+    width: 65px;
+    border-radius: 7px;
+    margin-right: 8px;
+    font-weight: bold;
+}
+.search-btn:hover {
+    background-color: #00B300;
+    color: whitesmoke;
+    opacity: 70%;
+    font-weight: bold;
+}
+.hospital-btn {
+    border: none;
+    background-color: white;
+    padding: 0;
+}
+.hospital-btn span {
+    font-weight: bold;
+    color: #999999;
+}
+.hospital-btn span:hover {
+    color: #00A300;
+    border-bottom: 2px solid #00A300;
+}
+
+.select-course {
+    margin: 15px 0;
+}
+
+.select-course select{
+    width: 150px;
+    height: 28px;
+    margin-right: 20px;
+    border-radius: 10px;
+    /*outline: 0;*/
+    border: 0;
+    background-color: #e6e6e6;
+}
 
 .container thead {
     background-color: #00C300;
@@ -44,16 +96,7 @@
 
 .container td:first-child { color: #00C300; }
 
-/*.container td:hover {*/
-/*    background-color: #00C300;*/
-/*    color: #403E10;*/
-/*    font-weight: bold;*/
 
-/*    transition-delay: 0s;*/
-/*    transition-duration: 0.4s;*/
-/*    transition-property: all;*/
-/*    transition-timing-function: linear;*/
-/*}*/
 
 @media (max-width: 800px) {
     .container td:nth-child(4),
@@ -61,6 +104,11 @@
 }
 
 .updaterole {
+    border: none;
+    background-color: white;
+}
+
+.btn-absent button {
     border: none;
     background-color: white;
 }

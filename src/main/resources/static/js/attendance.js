@@ -418,16 +418,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function finalizeAttendance() { // 출결 상태를 최종 확정하는 함수
         var currentTime = new Date();
+        var previousDate = new Date(currentTime);
+        previousDate.setDate(previousDate.getDate() - 1);
         var currentDate = formatDate(currentTime);
+        var previousFormattedDate = formatDate(previousDate);
         var events = calendar.getEvents();
-        var checkInEvent = events.find(event => event.title.startsWith('입실') && event.startStr === currentDate);
-        var checkOutEvent = events.find(event => event.title.startsWith('퇴실') && event.startStr === currentDate);
 
-        if (!checkInEvent && !checkOutEvent) { // 입실 및 퇴실이 없는 경우 결석 처리
-            addEvent('결석', currentDate, '#e62e2e', 1);
+        var checkInEvent = events.find(event => event.title.startsWith('입실') && event.startStr === previousFormattedDate);
+        var checkOutEvent = events.find(event => event.title.startsWith('퇴실') && event.startStr === previousFormattedDate);
+
+        if (!checkInEvent && !checkOutEvent) { // 입실이랑 퇴실 기록 둘 다 없는 경우 결석 처리
+            addEvent('결석', previousFormattedDate, '#e62e2e', 1);
             updateAttendanceStatus('결석');
         } else if (checkInEvent && !checkOutEvent) { // 입실만 있고 퇴실이 없는 경우 결석 처리
-            addEvent('결석', currentDate, '#e62e2e', 1);
+            addEvent('결석', previousFormattedDate, '#e62e2e', 1);
             updateAttendanceStatus('결석');
         }
 
@@ -536,16 +540,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         $.ajax({
-            url: '/student/mypage/vacation/all',
+            url: '/student/mypage/vacation/approved',
             method: 'GET',
             data: {
                 member_id: memberId
             },
-            success: function (vacationDays) {
-                document.getElementById('vacation-count').innerText = vacationDays.length;
+            success: function (approvedVacations) {
+                document.getElementById('vacation-count').innerText = approvedVacations.length;
             },
             error: function (xhr, status, error) {
-                console.error('Error fetching vacation days:', error);
+                console.error('Error fetching approved vacation days:', error);
             }
         });
     }
@@ -553,6 +557,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setInterval(function () { // 1분마다 상태 체크 및 초기화
         var now = new Date();
         if (now.getHours() === 0 && now.getMinutes() === 0) { // 자정이 되면 상태 초기화
+            finalizeAttendance(); // 자정에 결석 상태 확정
             resetCheckStatus();
         }
     }, 60000); // 1분마다 체크

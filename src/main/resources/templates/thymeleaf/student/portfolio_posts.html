@@ -5,6 +5,111 @@
 
 <head>
     <link rel="stylesheet" th:href="@{/css/student_mypage.css}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <style>
+        .course1 {
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 100%; /* Full width inside swiper-slide */
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .course1 img {
+            width: 100%;
+            height: auto;
+        }
+
+        .course1 .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #4caf50;
+            color: white;
+            padding: 5px 10px;
+        }
+
+        .course1 .completed {
+            background-color: #00bcd4;
+        }
+
+        .course1-details {
+            margin-top: 10px;
+        }
+
+        .course1-details p {
+            margin: 5px 0;
+        }
+
+        .course1-details .title {
+            font-weight: bold;
+        }
+
+        .course1-details .date {
+            color: #777;
+        }
+
+        .stpathimg {
+            cursor: pointer;
+        }
+
+        .readcount1 {
+            position: relative;
+            left: 330px;
+            top: 30px;
+        }
+
+        .title1 {
+            display: flex;
+            font-weight: bold;
+            font-size: 20px;
+            color: #1b1e21;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .look {
+            position: absolute;
+            right: 10px;
+            bottom: 10px; /* 필요에 따라 위치를 조정하세요 */
+            background: #333;
+            color: #fff;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .swiper-container {
+            width: 100%;
+            padding: 20px 0;
+            overflow: hidden;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            // Swiper initialization
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 3,
+                spaceBetween: 30,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -37,7 +142,26 @@
             </div>
             <div class="col-md-9">
                 <h2 class="text-center my-4">게시글</h2>
-                <p>여기에 게시글 내용을 추가하세요.</p>
+                <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" th:each="portfolioDto : ${portfolioList}">
+                                <div class="course1" style="border: 1px solid">
+                                    <img class="stpathimg" th:src="@{${stpath}+'/'+${portfolioDto.file_name}}"
+                                         th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${portfolioDto.portfolio_id})}'|">
+                                    <span class="readcount1" th:text="${portfolioDto.readcount}"></span>
+                                    <div>
+                                        <span class="title1" th:text="${portfolioDto.title}"></span>
+                                    </div>
+                                    <span th:text="${portfolioDto.name}"></span>
+                                    <span th:text="${#dates.format(portfolioDto.created_at, 'yyyy.MM.dd')}" />
+                                    <button class="look" th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${portfolioDto.portfolio_id})}'|">자세히보기 +</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

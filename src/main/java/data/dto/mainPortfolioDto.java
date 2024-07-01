@@ -6,18 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
-import java.sql.Timestamp;
-
+@Data
+@Builder
+@Alias("mainPortfolioDto")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Data
-@Alias("replyDto")
-public class replyDto {
-    private int reply_id;
-    private int member_id;
+public class mainPortfolioDto {
     private int portfolio_id;
-    private String comment;
-    private Timestamp created_at;
+    private String title;
+    private String created_at;
+    private String file_name;
     private String name;
+    private String course_name;
+    private String course_num;
 }

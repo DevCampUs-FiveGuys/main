@@ -18,13 +18,16 @@
             <div class="col-md-3">
                 <ul class="list-group mt-4">
                     <li class="list-group-item">
-                        <a th:href="@{/admin/mypage}"><i class="icon icon-attendance"></i>출석현황</a>
+                        <a th:href="@{/admin/mypage}" th:classappend="${page == 'Admattendancelist' ? 'active' : ''}"><i class="icon icon-attendance"></i>출석현황</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/admin/mypage/changerole}"><i class="icon icon-file-text"></i>권한변경</a>
+                        <a th:href="@{/admin/mypage/changerole}" th:classappend="${page == 'Admchangeroles' ? 'active' : ''}"><i class="icon icon-file-text"></i>권한변경</a>
                     </li>
                     <li class="list-group-item">
-                        <a th:href="@{/admin/mypage/updateprofile}"><i class="icon icon-edit"></i>정보수정</a>
+                        <a th:href="@{/admin/mypage/updateprofile}" th:classappend="${page == 'UpdateProfile' ? 'active' : ''}"><i class="icon icon-edit"></i>정보수정</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/CreateCourse}" th:classappend="${page == 'Createcourse' ? 'active' : ''}"><i class="icon icon-list"></i>훈련 정보</a>
                     </li>
                 </ul>
             </div>
@@ -32,12 +35,15 @@
                 <div class="col-md-9">
                     <div class="profile-container">
                         <h2 class="text-center">정보수정</h2>
-                        <form th:action="@{/admin/mypage/update}" th:object="${member}" method="post">
+                        <form th:action="@{/admin/mypage/update}" th:object="${member}" method="post"  enctype="multipart/form-data">
                             <div class="profile-photo">
                                 <label>프로필 사진</label>
-                                <div>
-                                    <img th:src="@{${member.photo != null ? member.photo : '/images/empty.png'}}"
-                                         alt="profile-photo" width="150" height="150">
+                                <div class="profile-img" th:with="profileUrl=${member.photo != null ? 'https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject/' + member.photo : '/images/empty.png'}">
+                                    <img th:src="@{${profileUrl}}" alt="profile-photo" width="150" height="150" id="showimg">
+                                    <label for="upload" class="custom-file-upload">
+                                        파일 선택
+                                    </label>
+                                    <input type="file" id="upload" name="upload" accept="image/*" onclick="" onchange="previewImage(event)">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -93,6 +99,18 @@
                 </div>
             </div>
         </div>
+        <script>
+            function previewImage(event) {
+                let reader = new FileReader();
+                reader.onload = function(){
+                    let showimg = document.getElementById('showimg');
+                    showimg.src = reader.result;
+                }
+                if(event.target.files[0]) {
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            }
+        </script>
     </div>
 </div>
 </body>
