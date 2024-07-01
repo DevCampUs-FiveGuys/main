@@ -18,6 +18,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            border-radius: 10px;
         }
 
         .course1 img {
@@ -59,6 +60,7 @@
 
         .stpathimg {
             cursor: pointer;
+            border-radius: 10px;
         }
 
         .title1 {
@@ -78,6 +80,11 @@
             color: #fff;
             padding: 5px 10px;
             cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .look:hover {
+            background: #555;
         }
 
         .swiper-container {
@@ -160,6 +167,7 @@
                                     </div>
                                     <div class="course1-details">
                                         <span th:text="${portfolioDto.name}"></span>
+                                        (<span th:text="${portfolioDto.course_name}"></span>, <span th:text="${portfolioDto.course_num}"></span>)
                                         <p>조회수 : <span th:text="${portfolioDto.readcount}"></span></p>
                                         <span th:text="${#dates.format(portfolioDto.created_at, 'yyyy.MM.dd')}"></span>
                                     </div>

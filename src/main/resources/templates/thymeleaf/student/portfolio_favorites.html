@@ -19,6 +19,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            border-radius: 10px;
         }
 
         .course1 img {
@@ -60,6 +61,7 @@
 
         .stpathimg {
             cursor: pointer;
+            border-radius: 10px;
         }
 
         .title1 {
@@ -79,6 +81,11 @@
             color: #fff;
             padding: 5px 10px;
             cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .look:hover {
+            background: #555;
         }
 
         .favorite-button {
@@ -239,6 +246,7 @@
                                     </div>
                                     <div class="course1-details">
                                         <span th:text="${heartDto.name}"></span>
+                                        (<span th:text="${heartDto.course_name}"></span>, <span th:text="${heartDto.course_num}"></span>)
                                         <p>조회수 : <span th:text="${heartDto.readcount}"></span></p>
                                         <span th:text="${#dates.format(heartDto.created_at, 'yyyy.MM.dd')}"></span>
                                     </div>
