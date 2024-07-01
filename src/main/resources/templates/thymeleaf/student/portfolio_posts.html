@@ -86,6 +86,7 @@
         .swiper-container {
             width: 100%;
             padding: 20px 0;
+            overflow: hidden;
         }
 
         .swiper-slide {
@@ -147,14 +148,14 @@
                             <div class="swiper-slide" th:each="portfolioDto : ${portfolioList}">
                                 <div class="course1" style="border: 1px solid">
                                     <img class="stpathimg" th:src="@{${stpath}+'/'+${portfolioDto.file_name}}"
-                                         th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${portfolioDto.portfolio_id})}'|">
+                                         th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${portfolioDto.portfolio_id})}'|">
                                     <span class="readcount1" th:text="${portfolioDto.readcount}"></span>
                                     <div>
                                         <span class="title1" th:text="${portfolioDto.title}"></span>
                                     </div>
                                     <span th:text="${portfolioDto.name}"></span>
                                     <span th:text="${#dates.format(portfolioDto.created_at, 'yyyy.MM.dd')}" />
-                                    <button class="look" th:onclick="|location.href='@{/portfolio/Detail(portfolio_id=${portfolioDto.portfolio_id})}'|">자세히보기 +</button>
+                                    <button class="look" th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${portfolioDto.portfolio_id})}'|">자세히보기 +</button>
                                 </div>
                             </div>
                         </div>
