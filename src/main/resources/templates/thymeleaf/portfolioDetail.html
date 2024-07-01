@@ -10,7 +10,6 @@
 </head>
 <div layout:fragment="content">
     <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
-        <h1 class="pdh1" align="center">Portfolio Detail</h1>
         <button class="animate2-button" th:onclick="|location.href='@{/portfolio/list}'|">
             <i class="fas fa-list"></i>목록
         </button>
@@ -22,22 +21,21 @@
                 th:onclick="|location.href='@{/portfolio/delete(portfolio_id=${dto.portfolio_id})}'|">
             삭제
         </button>
+        <h1 class="title3" th:text="${dto.title}"></h1>
+        <div class="date-part">
+            <p class="readcount2">조회수 : <span th:text="${dto.readcount}"></span></p>
+            <p class="date2">게시일 : <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}"></span></p>
+            <p class="date3" th:if="${dto.updated_at != null}">수정일 : <span th:text="${#dates.format(dto.updated_at, 'yyyy.MM.dd')}"></span></p>
+        </div>
         <div class="detailfull">
                 <div class="center-content">
-                    <div class="img-and-text">
-                        <img class="stpathimg2" th:src="@{${stpath}+'/'+${dto.file_name}}">
-                        <div class="text-content">
-                            <p class="title3">제목 : <span class="title3" th:text="${dto.title}">제목:</span></p>
-                            <p class="readcount2">조회수 : <span th:text="${dto.readcount}"></span></p>
-                            <p class="date2">게시일 : <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}"></span></p>
-                            <p class="date3" th:if="${dto.updated_at != null}">수정일 : <span th:text="${#dates.format(dto.updated_at, 'yyyy.MM.dd')}"></span></p>
-                        </div>
+                    <img class="stpathimg2" th:src="@{${stpath}+'/'+${dto.file_name}}">
+                    <div class="description2">
+                        <div th:utext="${dto.description}"></div>
                     </div>
                 </div>
-                <div class="description2">
-                    <div th:utext="${dto.description}"></div>
-                </div>
-            <div class="replytext">
+            <div sec:authorize="!isAuthenticated()" style="text-align: center; font-size: 20px; font-weight: bold; padding-bottom : 50px;">댓글을 확인하고 싶으면 로그인 하세요 !</div>
+            <div class="replytext" sec:authorize="isAuthenticated()">
                 <span class="replytext2" style="float: right" th:color="gray">
                     <i class="bi bi-chat-dots"></i>
                     &nbsp;
@@ -45,12 +43,11 @@
                 </span>
                 <span class="replytext3" style="font-size: 20px;" th:text="${comment}"></span>
                 <div class="answerlist"></div>
-                    <td><b>댓글</b><br>
-                        <textarea class="pfcomment" style="width: 30%; height: 60px;" id="acomment"></textarea>
-                        <button type="submit" class="btn btn-outline-success"
+                    <b>댓글</b><br>
+                        <textarea sec:authorize="isAuthenticated()" class="pfcomment" style="width: 86%; height: 60px;" id="acomment"></textarea>
+                        <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-outline-success"
                                 style="height: 60px; position: relative; top: -27px;"
                                 id="btnansweradd">등록</button>
-                    </td>
             </div>
             <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
             <script type="text/javascript">
@@ -127,21 +124,26 @@
                                 let createdAt = new Date(ele.created_at);
                                 let formattedDate = createdAt.getFullYear() + '.' + ('0' + (createdAt.getMonth() + 1)).slice(-2) + '.' + ('0' + createdAt.getDate()).slice(-2);
 
-                                s += `
+                                s +=
+                                    `
                                     ${ele.name}
                                     <span class="aday">${formattedDate}</span>
-                                `;
-                                if(current_member_id == ele.member_id) {
-                                    s += `
-                                        <i class="bi bi-trash adel" reply_id="${ele.reply_id}"
-                                            style="cursor:pointer;"></i>
                                     `;
+
+                                    if(current_member_id == ele.member_id) {
+                                    s +=
+                                        `
+                                        <i class="bi bi-trash adel" reply_id="${ele.reply_id}"
+                                        style="cursor:pointer;"></i>
+                                        `;
                                 }
-                                s += `
+
+                                s +=
+                                    `
                                     <br>
                                     <pre class="adata">${ele.comment}</pre>
                                     <br>
-                                `
+                                    `
                             });
                             $(".answerlist").html(s);
                         }
