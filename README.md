@@ -26,7 +26,7 @@
 
 ## ERD
 <div align="center">
-<img width="350" alt="image" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/d22b24cf-b322-4ead-b780-f8bf2a5b7bf3">
+<img width="800" alt="image" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/d22b24cf-b322-4ead-b780-f8bf2a5b7bf3">
 </div>
 
 ## Stacks 🐈
@@ -59,7 +59,7 @@
 ## 화면 구성 📺
 | 메인 페이지 | 로그인/회원가입 페이지 |
 | :-------------------------------------------: | :------------: |
-| <img width="225" alt="메인" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/7f7d9189-9288-4d42-9b0d-89b69735412d"> | <img width="225" alt="로그인" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/7f7d9189-9288-4d42-9b0d-89b69735412d"> <img width="225" alt="회원가입" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/dbe9468d-e5bb-4c89-aa6f-eaa133907f54">  |  
+| <img width="225" alt="메인" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/6d354481-ebc2-4d0f-9acf-22d00eff58d6"> | <img width="225" alt="로그인" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/7f7d9189-9288-4d42-9b0d-89b69735412d"> <img width="225" alt="회원가입" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/dbe9468d-e5bb-4c89-aa6f-eaa133907f54">  |  
 
 | 리뷰 페이지 | 포트폴리오 페이지 |  
 | :-------------------------------------------: | :------------: |
