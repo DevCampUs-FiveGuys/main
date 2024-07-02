@@ -87,7 +87,7 @@ public class MyPageTeacherController {
     ){
         teacherService.updateStudent(member_id);
 
-        return "redirect:/teacher/mypage/roleApprove";
+        return "redirect:/teacher/mypage/roleapprove";
     }
 
     //학생승인에서 권한 학생으로 거절
@@ -97,7 +97,7 @@ public class MyPageTeacherController {
     ){
         teacherService.updateGuest(member_id);
 
-        return "redirect:/teacher/mypage/roleApprove";
+        return "redirect:/teacher/mypage/roleapprove";
     }
 
     //정보수정 페이지로 이동
