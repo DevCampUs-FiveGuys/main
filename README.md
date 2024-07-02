@@ -26,7 +26,7 @@
 
 ## ERD
 <div align="center">
-<img width="800" alt="image" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/d22b24cf-b322-4ead-b780-f8bf2a5b7bf3">
+<img width="800" alt="image" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/32ddb990-4614-4a8e-9cf8-7d53c7165185">
 </div>
 
 ## Stacks 🐈
