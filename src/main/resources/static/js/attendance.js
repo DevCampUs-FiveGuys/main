@@ -130,13 +130,15 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (checkInHour > 9 || (checkInHour === 9 && checkInMinute > 40)) { // 지각 조건
                             status = '지각';
                             statusColor = '#fab70f';
-                            if (checkInHour >= 14 || checkOutTime.getHours() < 18 || checkOutTime.getHours() == null) { // 결석 조건
+                            if (checkOutTime != null) { // 결석 조건
                                 status = '결석';
                                 statusColor = '#e62e2e';
+                                addEvent(status, date, statusColor, 1);
                             }
-                            addEvent(status, date, statusColor, 1);
+                            else {
+                                addEvent(status, date, statusColor, 1);
+                            }
                         }
-
                     }
                     if (attendance.check_out) { // 퇴실 데이터가 있을 경우
                         addEvent('퇴실: ' + new Date(attendance.check_out).toLocaleTimeString(), date, '#4287f5', 2);
@@ -151,7 +153,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.log(checkInHour);
 
                         if (checkOutTime.getHours() - checkInHour >= 9) {
-                            addEvent(status, date, statusColor, 1);
+                            if (checkInHour >= 9 && checkInMinute <= 40) {
+                                addEvent(status, date, statusColor, 1);
+                            }
                         }
                     }
                 });
