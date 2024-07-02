@@ -72,4 +72,8 @@ public class AttendanceService {
     public void updateHospital(int member_id, int confirm) {
         attendanceMapper.updateHospital(member_id, confirm);
     }
+
+    public List<AttendanceDto> getAbsentListByID(int member_id) {
+        return attendanceMapper.getAbsentListByID(member_id);
+    }
 }

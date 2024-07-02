@@ -54,4 +54,7 @@ public interface AttendanceMapperInter {
     // 병가를 신청하면 병가 데이터가 업데이트 되어야함
     @Update("update attendance set hospital = hospital + 1, absent = absent - 1 where DATE(check_in) = DATE(now()) and member_id = #{member_id} and #{confirm} = 1")
     public void updateHospital(int member_id, int confirm);
+
+    @Select("select * from attendance where member_id = #{member_id} and absent = 1")
+    public List<AttendanceDto> getAbsentListByID(int member_id);
 }

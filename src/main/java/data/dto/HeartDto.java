@@ -22,4 +22,6 @@ public class HeartDto {
     private Timestamp created_at; // portfolio 로 부터 가져온 필드
     private String title;         // portfolio 로 부터 가져온 필드
     private String name;          // member 로 부터 가져온 필드
+    private String course_name;   // member 로 부터 가져온 필드
+    private String course_num;    // member 로 부터 가져온 필드
 }
