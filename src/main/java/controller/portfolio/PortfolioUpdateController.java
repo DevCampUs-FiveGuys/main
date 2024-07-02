@@ -98,7 +98,6 @@ public class PortfolioUpdateController {
 
         }
         portfolioService.updatePortfolio(dto);
-
         return "redirect:/portfolio/list/Detail?portfolio_id=" + dto.getPortfolio_id();
     }
 

@@ -13,13 +13,13 @@ public interface PortfolioMapperInter {
     @Insert("insert into portfolio (member_id,title,description,file_name,regroup,restep,relevel,recount,created_at)values (#{member_id},#{title},#{description},#{file_name},#{regroup},#{restep},#{relevel},#{recount},now()) ")
     public void insertPortfolio(PortfolioDto dto);
 
-    @Update("update portfolio set member_id=#{member_id}, title=#{title}, description=#{description}, updated_at=NOW() where portfolio_id=#{portfolio_id}")
+    @Update("update portfolio set member_id=#{member_id}, title=#{title}, description=#{description}, updated_at=NOW() , file_name=#{file_name} where portfolio_id=#{portfolio_id}")
     public void updatePortfolio(PortfolioDto dto);
 
     @Delete("delete from portfolio where portfolio_id=#{portfolio_id}")
     public void deletePortfolio(int portfolio_id);
 
-    @Select("select * from portfolio where portfolio_id=#{portfolio_id}")
+    @Select("select p.*, m.name, m.course_name, m.course_num from portfolio p join member m on p.member_id = m.member_id where portfolio_id=#{portfolio_id}")
     public PortfolioDto getData(int portfolio_id);
 
     @Select("select count(*) from portfolio")

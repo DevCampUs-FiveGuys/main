@@ -96,7 +96,7 @@
 .animate-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #3498db;
+    background-color: #adb5bd;
     font-size: 16px;
     border: none;
     border-radius: 4px;
@@ -112,6 +112,28 @@
 }
 
 .animate-button i {
+    margin-right: 5px; /* 아이콘과 텍스트 사이 여백 설정 */
+}
+
+.animate5-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: white;
+    font-size: 16px;
+    border: 1px solid #333; /* 테두리 추가 */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    bottom: 500px; /* 화면 아래에서의 거리 */
+    right: 20px;  /* 화면 오른쪽에서의 거리 */
+}
+
+.animate5-button:hover {
+    background-color: #2980b9;
+}
+
+.animate5-button i {
     margin-right: 5px; /* 아이콘과 텍스트 사이 여백 설정 */
 }
 
@@ -730,3 +752,126 @@
     white-space: nowrap; /* 툴바 내용이 줄바꿈되지 않도록 설정 */
     overflow-x: auto; /* 툴바 내용이 넘칠 경우 가로 스크롤바 추가 */
 }
+
+.detail-header_title1 {
+    position: relative;
+    right: 500px;
+}
+
+/* portfolio.css */
+
+/* 기본 스타일 */
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.detail-header_info {
+    display: flex;
+    align-items: center;
+}
+
+.detail-header_title1 {
+    font-size: 24px;
+    margin-left: 20px;
+}
+
+.show3 {
+    margin-right: 20px;
+}
+
+.show4 {
+    width: 200px;
+}
+
+.detail-body {
+    padding: 20px;
+}
+
+.detail-body_center {
+    display: flex;
+    justify-content: center;
+}
+
+.detail-body_description {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.p_edit textarea {
+    width: 100%;
+    height: 800px;
+    max-width: 100%;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 1200px) {
+    .detail-header_title1 {
+        font-size: 22px;
+    }
+
+    .show4 {
+        width: 180px;
+    }
+
+    .p_edit textarea {
+        height: 600px;
+    }
+}
+
+@media (max-width: 992px) {
+    .detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .detail-header_title1 {
+        font-size: 20px;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .show4 {
+        width: 150px;
+    }
+
+    .p_edit textarea {
+        height: 500px;
+    }
+
+    .animate-button {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .detail-header_info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .show4 {
+        width: 120px;
+    }
+
+    .p_edit textarea {
+        height: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .detail-header_title1 {
+        font-size: 18px;
+    }
+
+    .show4 {
+        width: 100px;
+    }
+
+    .p_edit textarea {
+        height: 300px;
+    }
+}
+
