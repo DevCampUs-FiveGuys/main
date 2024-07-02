@@ -123,6 +123,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         addEvent('입실: ' + new Date(attendance.check_in).toLocaleTimeString(), date, '#4287f5', 2);
                         checkInDone = true;
                         checkInTime = new Date(attendance.check_in);
+
+                        var checkInHour = checkInTime.getHours();
+                        var checkInMinute = checkInTime.getMinutes();
+
+                        if (checkInHour > 9 || (checkInHour === 9 && checkInMinute > 40)) { // 지각 조건
+                            status = '지각';
+                            statusColor = '#fab70f';
+                            if (checkInHour >= 14 || checkOutTime.getHours() < 18 || checkOutTime.getHours() == null) { // 결석 조건
+                                status = '결석';
+                                statusColor = '#e62e2e';
+                            }
+                            addEvent(status, date, statusColor, 1);
+                        }
+
                     }
                     if (attendance.check_out) { // 퇴실 데이터가 있을 경우
                         addEvent('퇴실: ' + new Date(attendance.check_out).toLocaleTimeString(), date, '#4287f5', 2);
@@ -134,15 +148,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         var checkInHour = checkInTime.getHours();
                         var checkInMinute = checkInTime.getMinutes();
 
-                        if (checkInHour > 9 || (checkInHour == 9 && checkInMinute > 40)) { // 지각 조건
-                            status = '지각';
-                            statusColor = '#fab70f';
-                            if (checkInHour >= 14 || checkOutTime.getHours() < 18) { // 결석 조건
-                                status = '결석';
-                                statusColor = '#e62e2e';
-                            }
+                        console.log(checkInHour);
+
+                        if (checkOutTime.getHours() - checkInHour >= 9) {
+                            addEvent(status, date, statusColor, 1);
                         }
-                        addEvent(status, date, statusColor, 1);
                     }
                 });
                 loadVacationData(); // 휴가 데이터 로드
@@ -427,10 +437,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var checkInEvent = events.find(event => event.title.startsWith('입실') && event.startStr === previousFormattedDate);
         var checkOutEvent = events.find(event => event.title.startsWith('퇴실') && event.startStr === previousFormattedDate);
 
-        if (!checkInEvent && !checkOutEvent) { // 입실이랑 퇴실 기록 둘 다 없는 경우 결석 처리
-            addEvent('결석', previousFormattedDate, '#e62e2e', 1);
-            updateAttendanceStatus('결석');
-        } else if (checkInEvent && !checkOutEvent) { // 입실만 있고 퇴실이 없는 경우 결석 처리
+        if (!checkInEvent || !checkOutEvent) { // 입실이랑 퇴실 기록 둘 다 없는 경우 결석 처리
             addEvent('결석', previousFormattedDate, '#e62e2e', 1);
             updateAttendanceStatus('결석');
         }
@@ -554,11 +561,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    setInterval(function () { // 1분마다 상태 체크 및 초기화
+    setTimeout(function (){
         var now = new Date();
+
         if (now.getHours() === 0 && now.getMinutes() === 0) { // 자정이 되면 상태 초기화
             finalizeAttendance(); // 자정에 결석 상태 확정
             resetCheckStatus();
         }
-    }, 60000); // 1분마다 체크
+    })
 });
