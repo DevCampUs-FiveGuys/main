@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/student_mypage.css}">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group mt-4">
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage}" th:classappend="${page == 'attendance' ? 'active' : ''}">
+                            <i class="icon icon-attendance"></i> 출석현황
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/portfolio_favorites}" th:classappend="${page == 'favorites' ? 'active' : ''}">
+                            <i class="icon icon-heart"></i> 찜목록
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/portfolio_posts}" th:classappend="${page == 'posts' ? 'active' : ''}">
+                            <i class="icon icon-file-text"></i> 게시글
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/updateProfile}" th:classappend="${page == 'updateProfile' ? 'active' : ''}">
+                            <i class="icon icon-edit"></i> 정보수정
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="profile-container">
+                    <h2 class="text-center">정보수정</h2>
+                    <form th:action="@{/student/mypage/update}" th:object="${member}" method="post" enctype="multipart/form-data">
+                        <div class="profile-photo">
+                            <label>프로필 사진</label>
+                            <div class="profile-img" th:with="profileUrl=${member.photo != null ? 'https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject/' + member.photo : '/images/empty.png'}">
+                                <img th:src="@{${profileUrl}}" alt="profile-photo" width="150" height="150" id="showimg">
+                                <label for="upload" class="custom-file-upload">
+                                    파일 선택
+                                </label>
+                                <input type="file" id="upload" name="upload" accept="image/*" onchange="previewImage(event)">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label for="name">이름</label>
+                                <input type="text" id="name" th:value="${member.name}" class="form-control" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="gender">성별</label>
+                                <input type="text" id="gender" th:value="${member.gender == 0 ? '남성' : '여성'}" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="birth">생년월일</label>
+                            <input type="text" id="birth" th:value="${member.birth.substring(0, 10)}" class="form-control" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input type="email" id="email" th:value="${member.email}" class="form-control" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="tel">전화번호</label>
+                            <input type="text" id="tel" th:field="*{tel}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="created_at">가입일</label>
+                            <input type="text" id="created_at" th:value="${#dates.format(member.created_at, 'yyyy-MM-dd')}" class="form-control" disabled>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label for="course_name">과정명</label>
+                                <input type="text" id="course_name" th:value="${member.course_name}" class="form-control" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="course_num">기수</label>
+                                <input type="text" id="course_num" th:value="${member.course_num}" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-custom-width btn-margin-top-bottom">수정</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>
+            function previewImage(event) {
+                let reader = new FileReader();
+                reader.onload = function(){
+                    let showimg = document.getElementById('showimg');
+                    showimg.src = reader.result;
+                }
+                if(event.target.files[0]) {
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            }
+        </script>
+    </div>
+</div>
+</body>
+</html>

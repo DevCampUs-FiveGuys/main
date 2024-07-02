@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/student_mypage.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <style>
+        .course1 {
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 100%; /* swiper 너비 비율 조정 */
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 10px;
+        }
+
+        .course1 img {
+            width: 100%;
+            height: 200px; /* 이미지 높이 고정 */
+            object-fit: cover; /* 이미지 비율 유지 */
+        }
+
+        .course1 .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #4caf50;
+            color: white;
+            padding: 5px 10px;
+        }
+
+        .course1 .completed {
+            background-color: #00bcd4;
+        }
+
+        .course1-details {
+            width: 100%;
+            margin-top: 10px;
+            text-align: left; /* 텍스트를 왼쪽으로 배치 */
+        }
+
+        .course1-details p {
+            margin: 5px 0;
+        }
+
+        .course1-details .title {
+            font-weight: bold;
+        }
+
+        .course1-details .date {
+            color: #777;
+        }
+
+        .stpathimg {
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .title1 {
+            display: flex;
+            font-weight: bold;
+            font-size: 20px;
+            color: #1b1e21;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .look {
+            position: absolute;
+            right: 10px;
+            bottom: 10px; /* 필요에 따라 위치를 조정하세요 */
+            background: #333;
+            color: #fff;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .look:hover {
+            background: #555;
+        }
+
+        .favorite-button {
+            position: absolute; /* 절대 위치 지정 */
+            top: 75%; /* 상단에서 수직 중앙으로 이동 */
+            left: 86%; /* 좌측에서 수평 중앙으로 이동 */
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px; /* 아이콘 크기 설정 */
+            color: #ccc; /* 기본 색상 설정 */
+        }
+
+        .favorite-button.active {
+            color: #e74c3c; /* 활성화된 색상 설정 */
+        }
+
+        .swiper-container {
+            width: 100%;
+            padding: 20px 0;
+            overflow: hidden;
+            margin-bottom: 100px;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .swiper-pagination {
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            // 스와이퍼 설정
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 2, // 한 화면에 보여질 슬라이드 개수
+                spaceBetween: 10, // 슬라이드 사이의 간격
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                autoplay: {
+                    delay: 3000, // 3초마다 슬라이드 이동
+                    disableOnInteraction: false, // 사용자와 상호작용 후에도 계속 반복
+                },
+            });
+
+            // 찜 상태 확인
+            $('.favorite-button').each(function() {
+                const button = this;
+                const portfolio_id = $(button).data('portfolio-id');
+                $.ajax({
+                    type: "GET",
+                    url: "/portfolio/heart/check",
+                    data: { portfolio_id: portfolio_id },
+                    success: function(isHearted) {
+                        const icon = button.querySelector('i');
+                        if (isHearted) {
+                            button.classList.add('active');
+                            icon.classList.remove('far');
+                            icon.classList.add('fas');
+                        } else {
+                            button.classList.remove('active');
+                            icon.classList.remove('fas');
+                            icon.classList.add('far');
+                        }
+                    },
+                    error: function() {
+                        alert('찜 상태를 확인하는데 실패했습니다.');
+                    }
+                });
+            });
+        });
+
+        function toggleFavorite(button, portfolio_id) {
+            const icon = button.querySelector('i');
+
+            if (button.classList.contains('active')) {
+                // 찜 해제
+                $.ajax({
+                    type: "DELETE",
+                    url: "/portfolio/heart/delete",
+                    data: { portfolio_id: portfolio_id },
+                    success: function() {
+                        button.classList.remove('active');
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        location.reload();
+                    },
+                    error: function() {
+                        alert('찜 해제를 실패했습니다.');
+                    }
+                });
+            } else {
+                // 찜 추가
+                $.ajax({
+                    type: "POST",
+                    url: "/portfolio/heart/insert",
+                    data: { portfolio_id: portfolio_id },
+                    success: function() {
+                        button.classList.add('active');
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    },
+                    error: function() {
+                        alert('찜을 실패했습니다.');
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group mt-4">
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage}" th:classappend="${page == 'attendance' ? 'active' : ''}">
+                            <i class="icon icon-attendance"></i> 출석현황
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/portfolio_favorites}" th:classappend="${page == 'favorites' ? 'active' : ''}">
+                            <i class="icon icon-heart"></i> 찜목록
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/portfolio_posts}" th:classappend="${page == 'posts' ? 'active' : ''}">
+                            <i class="icon icon-file-text"></i> 게시글
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/updateProfile}" th:classappend="${page == 'updateProfile' ? 'active' : ''}">
+                            <i class="icon icon-edit"></i> 정보수정
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <h2 class="text-center my-4">찜목록</h2>
+                <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" th:each="heartDto : ${heartList}">
+                                <div class="course1" style="border: 1px solid">
+                                    <img class="stpathimg" th:src="@{${stpath}+'/'+${heartDto.file_name}}"
+                                         th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${heartDto.portfolio_id})}'|">
+                                    <div>
+                                        <span class="title1" th:text="${heartDto.title}"></span>
+                                    </div>
+                                    <div class="course1-details">
+                                        <span th:text="${heartDto.name}"></span>
+                                        (<span th:text="${heartDto.course_name}"></span>, <span th:text="${heartDto.course_num}"></span>)
+                                        <p>조회수 : <span th:text="${heartDto.readcount}"></span></p>
+                                        <span th:text="${#dates.format(heartDto.created_at, 'yyyy.MM.dd')}"></span>
+                                    </div>
+                                    <button class="look" th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${heartDto.portfolio_id})}'|">자세히보기 +</button>
+                                    <button type="button" class="favorite-button" th:data-portfolio-id="${heartDto.portfolio_id}" th:onclick="toggleFavorite(this, [[${heartDto.portfolio_id}]])">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/admin/admin-mypage.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/screens/attendancedetail.css}">
+    <!-- 일반 alert 대신에 SweetAlert2 쓰기 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="list-group mt-4">
+                        <li class="list-group-item">
+                            <a th:href="@{/admin/mypage}" th:classappend="${page == 'Admattendancelist' ? 'active' : ''}"><i class="icon icon-attendance"></i>출석현황</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a th:href="@{/admin/mypage/changerole}" th:classappend="${page == 'Admchangeroles' ? 'active' : ''}"><i class="icon icon-file-text"></i>권한변경</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a th:href="@{/admin/mypage/updateprofile}" th:classappend="${page == 'UpdateProfile' ? 'active' : ''}"><i class="icon icon-edit"></i>정보수정</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a th:href="@{/admin/mypage/CreateCourse}" th:classappend="${page == 'Createcourse' ? 'active' : ''}"><i class="icon icon-list"></i>훈련 정보</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <h2 class="text-center my-4">출석 명단</h2>
+                    <!--  과정명 기수 검색 -->
+                    <div class="select-course">
+                        <select id="courseName" onchange="loadCourseNums()" style="width: 250px;height: 25px;margin-right: 20px; border-radius: 20px;">
+                            <option value="">과정명을 선택하세요</option>
+                            <!-- Thymeleaf를 이용해 서버에서 받은 과정명 옵션을 반복 -->
+                            <option th:each="courselist : ${courselist}" th:value="${courselist.name}" th:text="${courselist.name}"></option>
+                        </select>
+                        <select id="courseNum" style="width: 150px; height: 25px; border-radius: 20px; margin-right: 20px">
+                            <option value="">기수를 선택해주세요</option>
+                        </select>
+                        <input type="hidden" id="calendardate" name="calendardate" th:value="${selectedDate}"/>
+                        <button type="button" onclick="searchAttendance()" class="search-btn">조회하기</button>
+                        <button type="button" onclick="window.location.reload()" class="search-btn">전체보기</button>
+                    </div>
+<!--                    <span th:text="${selectedDate}"></span>-->
+                    <table class="container">
+                        <thead>
+                        <tr>
+                            <th><h1>학생이름</h1></th>
+                            <th><h1>입실</h1></th>
+                            <th><h1>퇴실</h1></th>
+                            <th><h1>지각</h1></th>
+                            <th><h1>휴가</h1></th>
+                            <th><h1>결석</h1></th>
+                            <th><h1>병가</h1></th>
+                            <th><h1>병가 승인</h1></th>
+                        </tr>
+                        </thead>
+                        <tbody id="AttendanceList">
+                        <tr th:each="attendancelist : ${attendancelist}">
+                            <td th:text="${attendancelist.membername}" th:value="${attendancelist.membername}"></td>
+                            <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td th:text="${attendancelist.late}"></td>
+                            <td th:text="${attendancelist.vacation}"></td>
+                            <td th:text="${attendancelist.absent}"></td>
+                            <td th:text="${attendancelist.hospital}"></td>
+                            <td><button class="hospital-btn"><span>승인</span></button></td>
+                            <td style="display: none" th:text="${attendancelist.member_id}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" th:src="@{/js/adminmypage.js}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const absentButtons = document.querySelectorAll('.hospital-btn');
+                absentButtons.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        let membername = $(this).closest('tr').find('td:first').text(); // 해당 row의 첫 번째 열(membername) 가져오기
+                        let member_id = $(this).closest('tr').find('td:last').text();
+                        let absent = $(this).closest('tr').find('td:nth-child(6)').text();
+                        let dateStr = $("#calendardate").val();
+
+                        // SweetAlert 모달창 띄우기
+                        // 해당 날짜의 결석이 1일때마만 병가로 업데이트 해줘야 함
+                        if(absent == 1) {
+                            Swal.fire({
+                                title: '병가 수정',
+                                text: membername+ '님의 결석을 병가처리하시겠습니까?',
+                                icon: 'info',
+                                showCancelButton: true,
+                                confirmButtonText: '확인',
+                                cancelButtonText: '취소',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/admin/mypage/attendancedetail/update',
+                                        data: { member_id: member_id, dateStr: dateStr },
+                                        success: function() {
+                                            // 병가 처리 성공 시
+                                            Swal.fire('처리되었습니다!', '', 'success');
+                                            document.location.reload();
+                                        },
+                                        error: function(xhr, status, error) {
+                                            // 오류 처리
+                                            console.error('AJAX 오류:', status, error);
+                                            Swal.fire('오류가 발생했습니다.', '다시 시도해 주세요.', 'error');
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: '병가승인을 처리할 수 없습니다.',
+                                content : '출결을 다시 확인해주세요',
+                                icon : 'error',
+                                showCancelButton: false,
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+</div>
+</body>
+</html>

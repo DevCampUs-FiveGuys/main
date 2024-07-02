@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/student_mypage.css}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <style>
+        .course1 {
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 100%; /* swiper 너비 비율 조정 */
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 10px;
+        }
+
+        .course1 img {
+            width: 100%;
+            height: 200px; /* 이미지 높이 고정 */
+            object-fit: cover; /* 이미지 비율 유지 */
+        }
+
+        .course1 .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #4caf50;
+            color: white;
+            padding: 5px 10px;
+        }
+
+        .course1 .completed {
+            background-color: #00bcd4;
+        }
+
+        .course1-details {
+            width: 100%;
+            margin-top: 10px;
+            text-align: left; /* 텍스트를 왼쪽으로 배치 */
+        }
+
+        .course1-details p {
+            margin: 5px 0;
+        }
+
+        .course1-details .title {
+            font-weight: bold;
+        }
+
+        .course1-details .date {
+            color: #777;
+        }
+
+        .stpathimg {
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .title1 {
+            display: flex;
+            font-weight: bold;
+            font-size: 20px;
+            color: #1b1e21;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .look {
+            position: absolute;
+            right: 10px;
+            bottom: 10px; /* 필요에 따라 위치를 조정하세요 */
+            background: #333;
+            color: #fff;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .look:hover {
+            background: #555;
+        }
+
+        .swiper-container {
+            width: 100%;
+            padding: 20px 0;
+            overflow: hidden;
+            margin-bottom: 100px;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .swiper-pagination {
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            // 스와이퍼 설정
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 2, // 한 화면에 보여질 슬라이드 개수
+                spaceBetween: 10, // 슬라이드 사이의 간격
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                autoplay: {
+                    delay: 3000, // 3초마다 슬라이드 이동
+                    disableOnInteraction: false, // 사용자와 상호작용 후에도 계속 반복
+                },
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group mt-4">
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage}" th:classappend="${page == 'attendance' ? 'active' : ''}">
+                            <i class="icon icon-attendance"></i> 출석현황
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/portfolio_favorites}" th:classappend="${page == 'favorites' ? 'active' : ''}">
+                            <i class="icon icon-heart"></i> 찜목록
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/portfolio_posts}" th:classappend="${page == 'posts' ? 'active' : ''}">
+                            <i class="icon icon-file-text"></i> 게시글
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/updateProfile}" th:classappend="${page == 'updateProfile' ? 'active' : ''}">
+                            <i class="icon icon-edit"></i> 정보수정
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <h2 class="text-center my-4">게시글</h2>
+                <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" th:each="portfolioDto : ${portfolioList}">
+                                <div class="course1" style="border: 1px solid">
+                                    <img class="stpathimg" th:src="@{${stpath}+'/'+${portfolioDto.file_name}}"
+                                         th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${portfolioDto.portfolio_id})}'|">
+                                    <div>
+                                        <span class="title1" th:text="${portfolioDto.title}"></span>
+                                    </div>
+                                    <div class="course1-details">
+                                        <span th:text="${portfolioDto.name}"></span>
+                                        (<span th:text="${portfolioDto.course_name}"></span>, <span th:text="${portfolioDto.course_num}"></span>)
+                                        <p>조회수 : <span th:text="${portfolioDto.readcount}"></span></p>
+                                        <span th:text="${#dates.format(portfolioDto.created_at, 'yyyy.MM.dd')}"></span>
+                                    </div>
+                                    <button class="look" th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${portfolioDto.portfolio_id})}'|">자세히보기 +</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

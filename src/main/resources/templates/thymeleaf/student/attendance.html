@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/student_mypage.css}">
+    <!-- 일반 alert 대신에 SweetAlert2 쓰기 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group mt-4">
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage}" th:classappend="${page == 'attendance' ? 'active' : ''}">
+                            <i class="icon icon-attendance"></i> 출석현황
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/portfolio_favorites}" th:classappend="${page == 'favorites' ? 'active' : ''}">
+                            <i class="icon icon-heart"></i> 찜목록
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/portfolio_posts}" th:classappend="${page == 'posts' ? 'active' : ''}">
+                            <i class="icon icon-file-text"></i> 게시글
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/student/mypage/updateProfile}" th:classappend="${page == 'updateProfile' ? 'active' : ''}">
+                            <i class="icon icon-edit"></i> 정보수정
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <h2 class="text-center my-4" th:text="${userName} + ' 님의 출석현황'"/>
+                <div class="attendance-buttons">
+                    <button id="check-in-btn" class="btn btn-primary">입실</button>
+                    <button id="check-out-btn" class="btn btn-primary">퇴실</button>
+                    <button id="vacation-btn" class="btn btn-primary" data-toggle="modal" data-target="#vacationModal">휴가신청</button>
+                </div>
+                <div id="calendar"></div>
+                <div class="attendance-result">
+                    <div class="attendance-item">
+                        <span id="attendance-count">0</span>
+                        <div>출석</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="late-count">0</span>
+                        <div>지각</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="absent-count">0</span>
+                        <div>결석</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="vacation-count">0</span>
+                        <div>휴가</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span id="sick-leave-count">0</span>
+                        <div>병가</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include "member_id" as a Thymeleaf attribute -->
+    <div id="member-id" th:data-member-id="${member_id}"></div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="vacationModal" tabindex="-1" aria-labelledby="vacationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="vacationModalLabel">휴가 신청</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="vacation-form">
+                        <div class="form-group">
+                            <label for="vacation-date">날짜</label>
+                            <input type="date" class="form-control" id="vacation-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="vacation-reason">사유</label>
+                            <textarea class="form-control" id="vacation-reason" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">신청</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

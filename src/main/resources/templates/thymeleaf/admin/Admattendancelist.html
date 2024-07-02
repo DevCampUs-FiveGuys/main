@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/admin/components/nav-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/screens/attendancelist.css}">
+    <!-- 일반 alert 대신에 SweetAlert2 쓰기 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href='https://unpkg.com/@fullcalendar/core@5.10.2/main.min.css' rel='stylesheet'/>
+    <link href='https://unpkg.com/@fullcalendar/daygrid@5.10.2/main.min.css' rel='stylesheet'/>
+    <script src='https://unpkg.com/@fullcalendar/core@5.10.2/main.min.js'></script>
+    <script src='https://unpkg.com/@fullcalendar/daygrid@5.10.2/main.min.js'></script>
+    <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group mt-4">
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage}" th:classappend="${page == 'Admattendancelist' ? 'active' : ''}"><i class="icon icon-attendance"></i>출석현황</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/changerole}" th:classappend="${page == 'Admchangeroles' ? 'active' : ''}"><i class="icon icon-file-text"></i>권한변경</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/updateprofile}" th:classappend="${page == 'UpdateProfile' ? 'active' : ''}"><i class="icon icon-edit"></i>정보수정</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/admin/mypage/CreateCourse}" th:classappend="${page == 'Createcourse' ? 'active' : ''}"><i class="icon icon-list"></i>훈련 정보</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <h2 class="text-center my-4">출석현황</h2>
+                <div class="calendar" id="calendar"></div>
+                <table class="container-table">
+                    <thead>
+                    <tr>
+                        <th><h1>학생이름</h1></th>
+                        <th><h1>신청날짜</h1></th>
+                        <th><h1>신청사유</h1></th>
+                        <th><h1>휴가승인</h1></th>
+                        <th><h1>휴가거절</h1></th>
+                        <th><h1>휴가 승인여부</h1></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="vacationlist : ${vacationlist}">
+                        <td th:text="${vacationlist.name}"></td>
+                        <td th:text="${#dates.format(vacationlist.date, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${vacationlist.reason}"></td>
+                        <td>
+                            <div class="data-container">
+                                <form th:action="@{/admin/mypage/approveVacation}" method="post">
+                                    <input type="hidden" name="vacation_id" th:value="${vacationlist.vacation_id}" />
+<!--                                    <input th:if="vacationlist.confirm == 0 ?" name="vacation_id" th:value="${vacationlist.vacation_id}" />-->
+                                    <button th:if="${vacationlist.confirm == 0}" class="approveVacation" type="submit"><span>승인</span></button>
+                                    <span th:if="${vacationlist.confirm != 0}" class="approveVacation">처리됨</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="data-container">
+                                <form th:action="@{/admin/mypage/denyVacation}" method="post">
+                                    <input type="hidden" name="vacation_id" th:value="${vacationlist.vacation_id}" />
+                                    <button th:if="${vacationlist.confirm == 0}" class="denyVacation" type="submit"><span>거절</span></button>
+                                    <span th:if="${vacationlist.confirm != 0}" class="denyVacation">처리됨</span>
+                                </form>
+                            </div>
+                        </td>
+                        <td th:text="${vacationlist.confirm == 1 ? '승인' : (vacationlist.confirm == 2 ? '거절' : '보류')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <script type="text/javascript" th:src="@{/js/adminmypage.js}"></script>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

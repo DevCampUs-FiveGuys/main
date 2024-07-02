@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/teacher/teacher_mypage.css}">
+    <link rel="stylesheet" th:href="@{/css/teacher/pagescreens/attendancedetail.css}">
+    <!-- 일반 alert 대신에 SweetAlert2 쓰기 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group mt-4">
+                    <li class="list-group-item">
+                        <a th:href="@{/teacher/mypage}" th:classappend="${page == 'attendanceList' ? 'active' : ''}">
+                            <i class="icon icon-attendance"></i>출석현황
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/teacher/mypage/roleapprove}" th:classappend="${page == 'roleApprove' ? 'active' : ''}">
+                            <i class="icon icon-file-text"></i>학생승인
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/teacher/mypage/updateProfile}" th:classappend="${page == 'updateProfile' ? 'active' : ''}">
+                            <i class="icon icon-edit"></i>정보수정
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <table class="container">
+                    <thead>
+                    <tr>
+                        <th><h1>학생이름</h1></th>
+                        <th><h1>입실시간</h1></th>
+                        <th><h1>퇴실시간</h1></th>
+                        <th><h1>휴가여부</h1></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="attendancelist : ${attendancelist}">
+                        <td th:text="${attendancelist.membername}"></td>
+                        <td th:text="${#dates.format(attendancelist.check_in, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${#dates.format(attendancelist.check_out, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${attendancelist.vacation == 1 ? 'V' : 'X'}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

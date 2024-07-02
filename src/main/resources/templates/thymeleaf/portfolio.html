@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <link rel="stylesheet" th:href="@{/css/portfolio.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // 하트 버튼을 누르면 찜목록에 추가/삭제하는 함수
+        function toggleFavorite(button, portfolio_id) {
+            const icon = button.querySelector('i');
+
+            if (button.classList.contains('active')) {
+                // 찜 해제
+                $.ajax({
+                    type: "DELETE",
+                    url: "/portfolio/heart/delete",
+                    data: { portfolio_id: portfolio_id },
+                    success: function() {
+                        button.classList.remove('active');
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                    },
+                    error: function() {
+                        alert('찜 해제를 실패했습니다.');
+                    }
+                });
+            } else {
+                // 찜 추가
+                $.ajax({
+                    type: "POST",
+                    url: "/portfolio/heart/insert",
+                    data: { portfolio_id: portfolio_id },
+                    success: function() {
+                        button.classList.add('active');
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    },
+                    error: function() {
+                        alert('찜을 실패했습니다.');
+                    }
+                });
+            }
+        }
+
+        // 페이지 로딩 시 찜 상태를 확인하여 버튼을 초기화하는 함수
+        $(document).ready(function() {
+            $('.favorite-button').each(function() {
+                const button = this;
+                const portfolio_id = $(button).data('portfolio-id');
+                $.ajax({
+                    type: "GET",
+                    url: "/portfolio/heart/check",
+                    data: { portfolio_id: portfolio_id },
+                    success: function(isHearted) {
+                        const icon = button.querySelector('i');
+                        if (isHearted) {
+                            button.classList.add('active');
+                            icon.classList.remove('far');
+                            icon.classList.add('fas');
+                        } else {
+                            button.classList.remove('active');
+                            icon.classList.remove('fas');
+                            icon.classList.add('far');
+                        }
+                    },
+                    error: function() {
+                        alert('찜 상태를 확인하는데 실패했습니다.');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:with="stpath='https://kr.object.ncloudstorage.com/bitcamp-bucket-149/semiproject'">
+        <h1 class="portfolio_h1">PortFolio</h1>
+        <div class="filters1">
+            <button class="animate-button" sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/portfolio/portfolioWrite}'|">
+                <i class="fas fa-pencil-alt"></i> 글쓰기
+            </button>
+        </div>
+
+        <div class="course1-list">
+            <tr th:each="dto : ${list}">
+                <div class="course1" style="border: 1px solid">
+                    <img class="stpathimg" th:src="@{${stpath}+'/'+${dto.file_name}}"
+                         th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${dto.portfolio_id})}'|">
+                    <div>
+                        <span class="title1" th:text="${dto.title}"></span>
+                    </div>
+                    <span th:text="${dto.name}"></span>
+                    (<span th:text="${dto.course_name}"></span>, <span th:text="${dto.course_num}"></span>)
+                    <p class="readcount1">조회수 : <span th:text="${dto.readcount}"></span></p>
+                    <span th:text="${#dates.format(dto.created_at, 'yyyy.MM.dd')}" />
+                    <button class="look" th:onclick="|location.href='@{/portfolio/list/Detail(portfolio_id=${dto.portfolio_id})}'|">자세히보기 +</button>
+                    <button type="button" class="favorite-button" th:data-portfolio-id="${dto.portfolio_id}" th:onclick="toggleFavorite(this, [[${dto.portfolio_id}]])">
+                        <i sec:authorize="hasRole('ROLE_STUDENT')" class="far fa-heart"></i>
+                    </button>
+                </div>
+            </tr>
+        </div>
+    </div>
+    <div class="pfpage" style="width: 600px; text-align: center; font-size: 20px;">
+        <span th:if="${startPage != null and startPage > 1}">
+            <a th:href="@{/portfolio/list(currentPage=${startPage - 1})}" style="text-decoration: none; color: black;">&lt;</a>
+        </span>
+        &nbsp;
+        <span th:each="pp : ${#numbers.sequence(startPage != null ? startPage : 1, endPage != null ? endPage : 5)}">
+            <a th:href="@{/portfolio/list(currentPage=${pp})}" th:style="'text-decoration: none; color:' + (${currentPage} == ${pp} ? 'red' : 'black')"
+               th:text="${pp}"></a>&nbsp;
+        </span>
+        &nbsp;
+        <span th:if="${endPage != null and endPage < totalPage}">
+            <a th:href="@{/portfolio/list(currentPage=${endPage + 1})}" style="text-decoration: none; color: black;">&gt;</a>
+        </span>
+    </div>
+</div>
+</body>
+</html>
