@@ -80,7 +80,8 @@
                         <td th:text="${member.gender == 0 ? '남자' : '여자'}"></td>
                         <td th:text="${member.birth.substring(0, 10)}"></td>
                         <td>
-                            <select class="roleSelect" style="border: 0; font-weight: bold; color: #999999">
+
+                            <select class="roleSelect">
                                 <option value="ROLE_GUEST" th:text="게스트" th:selected="${member.roles == 'ROLE_GUEST'}">게스트</option>
                                 <option value="ROLE_STUDENT" th:text="수강생"th:selected="${member.roles == 'ROLE_STUDENT'}">수강생</option>
                                 <option value="ROLE_TEACHER" th:text="강사"th:selected="${member.roles == 'ROLE_TEACHER'}">강사</option>
