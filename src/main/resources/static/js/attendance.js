@@ -139,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 addEvent(status, date, statusColor, 1);
                             }
                         }
+
                     }
                     if (attendance.check_out) { // 퇴실 데이터가 있을 경우
                         addEvent('퇴실: ' + new Date(attendance.check_out).toLocaleTimeString(), date, '#4287f5', 2);
