@@ -1,4 +1,4 @@
-  # DevCampUs FivceGuys
+  # DevCampUs FiveGuys
 
 <div align="center">
 <img width="350" alt="image" src="https://github.com/DevCampUs-FiveGuys/main/assets/147224562/1719bb64-6e21-4cc8-bd47-ba583e28c387">
